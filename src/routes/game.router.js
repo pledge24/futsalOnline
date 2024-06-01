@@ -103,5 +103,47 @@ router.put("/player/:player_id", async (req, res) => {
     return res.status(500).json({ message: " 선수 수정 중 오류가 발생했습니다." });
   }
 });
+//가챠 api
+router.post('/gatcha', async (req, res) => {
+  try {
+      const { type } = req.body;
+      const numGatcha = type === "10Gatcha" ? 10 : 1;
+      let gatchaResult = [];
+      let gatchaMessage= [];
+
+      for (let i = 0; i < numGatcha; i++) {
+          const players = await gameDataClient.player.findMany({
+              where: {
+                  rarity: {
+                      in: ['bronze', 'silver', 'gold']
+                  }
+              }
+          });
+
+          if (players.length === 0) {
+              return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
+          }
+
+          const randomIndex = Math.floor(Math.random() * players.length);
+          const selectedPlayer = players[randomIndex];
+          //선수 이름과 메시지를 뽑을때 마다 출력
+          //배열로 뽑은 선수 아이디를 저장, 레어도저장
+          gatchaResult.push(selectedPlayer);
+          
+          if (selectedPlayer.rarity === 'bronze') {
+            gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`)
+          } else if (selectedPlayer.rarity === 'silver') {
+            gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`)
+          } else if (selectedPlayer.rarity === 'gold') {
+            gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`)
+          }
+      }
+      
+      return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", result: gatchaResult, gatchaMessage });
+  } catch (error) {
+      console.error(error);
+      return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });
+  }
+});
 
 export default router;
