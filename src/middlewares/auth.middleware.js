@@ -57,17 +57,20 @@ export default async function (req, res, next) {
     if (tokenType !== 'Bearer')
       throw new Error('토큰 타입이 일치하지 않습니다.');
 
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY );
+    const decodedToken = jwt.verify(token, "jwt-secret");
+
+    console.log("decodedToken:", decodedToken);
+
     const userId = decodedToken.userId;
-
-    //console.log(accountId);
-
-    const account = await userDataClient.account.findFirst({
-      where: { userId },
+    const user = await userDataClient.account.findFirst({
+      where: { account_id: userId },
     });
-    if (!account) {
-      //res.clearCookie('authorization');
-      throw new Error('토큰 사용자가 존재하지 않습니다.');
+
+    console.log("user:", user);
+
+    if (!user) {
+      res.clearCookie("authorization");
+      throw new Error("토큰 사용자가 존재하지 않습니다.");
     }
 
     // req.account에 사용자 정보를 저장합니다.
@@ -75,9 +78,9 @@ export default async function (req, res, next) {
 
     next();
   } catch (error) {
-    // res.clearCookie('authorization');
+    console.error("Error in authMiddleware:", error);
 
-    // 토큰이 만료되었거나, 조작되었을 때, 에러 메시지를 다르게 출력합니다.
+    res.clearCookie("authorization");
     switch (error.name) {
       case 'TokenExpiredError':
         return res.status(401).json({ message: '토큰이 만료되었습니다.' });

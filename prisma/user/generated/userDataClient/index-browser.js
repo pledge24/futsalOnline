@@ -134,6 +134,7 @@ exports.Prisma.User_playerScalarFieldEnum = {
 };
 
 exports.Prisma.User_clubScalarFieldEnum = {
+  id: 'id',
   account_id: 'account_id',
   player_id: 'player_id'
 };

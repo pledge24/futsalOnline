@@ -1038,11 +1038,13 @@ export namespace Prisma {
    */
 
   export type AccountCountOutputType = {
-    user_player: number
+    user_players: number
+    user_clubs: number
   }
 
   export type AccountCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_player?: boolean | AccountCountOutputTypeCountUser_playerArgs
+    user_players?: boolean | AccountCountOutputTypeCountUser_playersArgs
+    user_clubs?: boolean | AccountCountOutputTypeCountUser_clubsArgs
   }
 
   // Custom InputTypes
@@ -1059,8 +1061,15 @@ export namespace Prisma {
   /**
    * AccountCountOutputType without action
    */
-  export type AccountCountOutputTypeCountUser_playerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type AccountCountOutputTypeCountUser_playersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: user_playerWhereInput
+  }
+
+  /**
+   * AccountCountOutputType without action
+   */
+  export type AccountCountOutputTypeCountUser_clubsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_clubWhereInput
   }
 
 
@@ -1266,8 +1275,8 @@ export namespace Prisma {
     password?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user_player?: boolean | account$user_playerArgs<ExtArgs>
-    user_club?: boolean | account$user_clubArgs<ExtArgs>
+    user_players?: boolean | account$user_playersArgs<ExtArgs>
+    user_clubs?: boolean | account$user_clubsArgs<ExtArgs>
     _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
@@ -1281,8 +1290,8 @@ export namespace Prisma {
 
 
   export type accountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_player?: boolean | account$user_playerArgs<ExtArgs>
-    user_club?: boolean | account$user_clubArgs<ExtArgs>
+    user_players?: boolean | account$user_playersArgs<ExtArgs>
+    user_clubs?: boolean | account$user_clubsArgs<ExtArgs>
     _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
   }
 
@@ -1290,8 +1299,8 @@ export namespace Prisma {
   export type $accountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "account"
     objects: {
-      user_player: Prisma.$user_playerPayload<ExtArgs>[]
-      user_club: Prisma.$user_clubPayload<ExtArgs> | null
+      user_players: Prisma.$user_playerPayload<ExtArgs>[]
+      user_clubs: Prisma.$user_clubPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       account_id: number
@@ -1664,9 +1673,9 @@ export namespace Prisma {
   export interface Prisma__accountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    user_player<T extends account$user_playerArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findMany'> | Null>;
+    user_players<T extends account$user_playersArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findMany'> | Null>;
 
-    user_club<T extends account$user_clubArgs<ExtArgs> = {}>(args?: Subset<T, account$user_clubArgs<ExtArgs>>): Prisma__user_clubClient<$Result.GetResult<Prisma.$user_clubPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+    user_clubs<T extends account$user_clubsArgs<ExtArgs> = {}>(args?: Subset<T, account$user_clubsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_clubPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2000,9 +2009,9 @@ export namespace Prisma {
   }
 
   /**
-   * account.user_player
+   * account.user_players
    */
-  export type account$user_playerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type account$user_playersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the user_player
      */
@@ -2020,9 +2029,9 @@ export namespace Prisma {
   }
 
   /**
-   * account.user_club
+   * account.user_clubs
    */
-  export type account$user_clubArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type account$user_clubsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the user_club
      */
@@ -2032,6 +2041,11 @@ export namespace Prisma {
      */
     include?: user_clubInclude<ExtArgs> | null
     where?: user_clubWhereInput
+    orderBy?: user_clubOrderByWithRelationInput | user_clubOrderByWithRelationInput[]
+    cursor?: user_clubWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: User_clubScalarFieldEnum | User_clubScalarFieldEnum[]
   }
 
   /**
@@ -2987,26 +3001,31 @@ export namespace Prisma {
   }
 
   export type User_clubAvgAggregateOutputType = {
+    id: number | null
     account_id: number | null
     player_id: number | null
   }
 
   export type User_clubSumAggregateOutputType = {
+    id: number | null
     account_id: number | null
     player_id: number | null
   }
 
   export type User_clubMinAggregateOutputType = {
+    id: number | null
     account_id: number | null
     player_id: number | null
   }
 
   export type User_clubMaxAggregateOutputType = {
+    id: number | null
     account_id: number | null
     player_id: number | null
   }
 
   export type User_clubCountAggregateOutputType = {
+    id: number
     account_id: number
     player_id: number
     _all: number
@@ -3014,26 +3033,31 @@ export namespace Prisma {
 
 
   export type User_clubAvgAggregateInputType = {
+    id?: true
     account_id?: true
     player_id?: true
   }
 
   export type User_clubSumAggregateInputType = {
+    id?: true
     account_id?: true
     player_id?: true
   }
 
   export type User_clubMinAggregateInputType = {
+    id?: true
     account_id?: true
     player_id?: true
   }
 
   export type User_clubMaxAggregateInputType = {
+    id?: true
     account_id?: true
     player_id?: true
   }
 
   export type User_clubCountAggregateInputType = {
+    id?: true
     account_id?: true
     player_id?: true
     _all?: true
@@ -3126,6 +3150,7 @@ export namespace Prisma {
   }
 
   export type User_clubGroupByOutputType = {
+    id: number
     account_id: number
     player_id: number
     _count: User_clubCountAggregateOutputType | null
@@ -3150,12 +3175,14 @@ export namespace Prisma {
 
 
   export type user_clubSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
     account_id?: boolean
     player_id?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_club"]>
 
   export type user_clubSelectScalar = {
+    id?: boolean
     account_id?: boolean
     player_id?: boolean
   }
@@ -3172,6 +3199,7 @@ export namespace Prisma {
       account: Prisma.$accountPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
+      id: number
       account_id: number
       player_id: number
     }, ExtArgs["result"]["user_club"]>
@@ -3266,8 +3294,8 @@ export namespace Prisma {
      * // Get first 10 User_clubs
      * const user_clubs = await prisma.user_club.findMany({ take: 10 })
      * 
-     * // Only select the `account_id`
-     * const user_clubWithAccount_idOnly = await prisma.user_club.findMany({ select: { account_id: true } })
+     * // Only select the `id`
+     * const user_clubWithIdOnly = await prisma.user_club.findMany({ select: { id: true } })
      * 
     **/
     findMany<T extends user_clubFindManyArgs<ExtArgs>>(
@@ -3569,6 +3597,7 @@ export namespace Prisma {
    * Fields of the user_club model
    */ 
   interface user_clubFieldRefs {
+    readonly id: FieldRef<"user_club", 'Int'>
     readonly account_id: FieldRef<"user_club", 'Int'>
     readonly player_id: FieldRef<"user_club", 'Int'>
   }
@@ -3919,6 +3948,7 @@ export namespace Prisma {
 
 
   export const User_clubScalarFieldEnum: {
+    id: 'id',
     account_id: 'account_id',
     player_id: 'player_id'
   };
@@ -3979,8 +4009,8 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_player?: User_playerListRelationFilter
-    user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
+    user_players?: User_playerListRelationFilter
+    user_clubs?: User_clubListRelationFilter
   }
 
   export type accountOrderByWithRelationInput = {
@@ -3989,8 +4019,8 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user_player?: user_playerOrderByRelationAggregateInput
-    user_club?: user_clubOrderByWithRelationInput
+    user_players?: user_playerOrderByRelationAggregateInput
+    user_clubs?: user_clubOrderByRelationAggregateInput
   }
 
   export type accountWhereUniqueInput = Prisma.AtLeast<{
@@ -4002,8 +4032,8 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_player?: User_playerListRelationFilter
-    user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
+    user_players?: User_playerListRelationFilter
+    user_clubs?: User_clubListRelationFilter
   }, "account_id">
 
   export type accountOrderByWithAggregationInput = {
@@ -4082,28 +4112,31 @@ export namespace Prisma {
     AND?: user_clubWhereInput | user_clubWhereInput[]
     OR?: user_clubWhereInput[]
     NOT?: user_clubWhereInput | user_clubWhereInput[]
+    id?: IntFilter<"user_club"> | number
     account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
   export type user_clubOrderByWithRelationInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
   export type user_clubWhereUniqueInput = Prisma.AtLeast<{
-    account_id?: number
-    account_id_player_id?: user_clubAccount_idPlayer_idCompoundUniqueInput
+    id?: number
     AND?: user_clubWhereInput | user_clubWhereInput[]
     OR?: user_clubWhereInput[]
     NOT?: user_clubWhereInput | user_clubWhereInput[]
+    account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id_player_id" | "account_id">
+  }, "id">
 
   export type user_clubOrderByWithAggregationInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
     _count?: user_clubCountOrderByAggregateInput
@@ -4117,6 +4150,7 @@ export namespace Prisma {
     AND?: user_clubScalarWhereWithAggregatesInput | user_clubScalarWhereWithAggregatesInput[]
     OR?: user_clubScalarWhereWithAggregatesInput[]
     NOT?: user_clubScalarWhereWithAggregatesInput | user_clubScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"user_club"> | number
     account_id?: IntWithAggregatesFilter<"user_club"> | number
     player_id?: IntWithAggregatesFilter<"user_club"> | number
   }
@@ -4126,8 +4160,8 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerCreateNestedManyWithoutAccountInput
-    user_club?: user_clubCreateNestedOneWithoutAccountInput
+    user_players?: user_playerCreateNestedManyWithoutAccountInput
+    user_clubs?: user_clubCreateNestedManyWithoutAccountInput
   }
 
   export type accountUncheckedCreateInput = {
@@ -4136,8 +4170,8 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerUncheckedCreateNestedManyWithoutAccountInput
-    user_club?: user_clubUncheckedCreateNestedOneWithoutAccountInput
+    user_players?: user_playerUncheckedCreateNestedManyWithoutAccountInput
+    user_clubs?: user_clubUncheckedCreateNestedManyWithoutAccountInput
   }
 
   export type accountUpdateInput = {
@@ -4145,8 +4179,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUpdateManyWithoutAccountNestedInput
-    user_club?: user_clubUpdateOneWithoutAccountNestedInput
+    user_players?: user_playerUpdateManyWithoutAccountNestedInput
+    user_clubs?: user_clubUpdateManyWithoutAccountNestedInput
   }
 
   export type accountUncheckedUpdateInput = {
@@ -4155,8 +4189,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
-    user_club?: user_clubUncheckedUpdateOneWithoutAccountNestedInput
+    user_players?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
+    user_clubs?: user_clubUncheckedUpdateManyWithoutAccountNestedInput
   }
 
   export type accountCreateManyInput = {
@@ -4185,7 +4219,7 @@ export namespace Prisma {
   export type user_playerCreateInput = {
     player_id: number
     count: number
-    account: accountCreateNestedOneWithoutUser_playerInput
+    account: accountCreateNestedOneWithoutUser_playersInput
   }
 
   export type user_playerUncheckedCreateInput = {
@@ -4197,7 +4231,7 @@ export namespace Prisma {
   export type user_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    account?: accountUpdateOneRequiredWithoutUser_playerNestedInput
+    account?: accountUpdateOneRequiredWithoutUser_playersNestedInput
   }
 
   export type user_playerUncheckedUpdateInput = {
@@ -4225,25 +4259,28 @@ export namespace Prisma {
 
   export type user_clubCreateInput = {
     player_id: number
-    account: accountCreateNestedOneWithoutUser_clubInput
+    account: accountCreateNestedOneWithoutUser_clubsInput
   }
 
   export type user_clubUncheckedCreateInput = {
+    id?: number
     account_id: number
     player_id: number
   }
 
   export type user_clubUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    account?: accountUpdateOneRequiredWithoutUser_clubNestedInput
+    account?: accountUpdateOneRequiredWithoutUser_clubsNestedInput
   }
 
   export type user_clubUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateManyInput = {
+    id?: number
     account_id: number
     player_id: number
   }
@@ -4253,6 +4290,7 @@ export namespace Prisma {
   }
 
   export type user_clubUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
   }
@@ -4299,12 +4337,17 @@ export namespace Prisma {
     none?: user_playerWhereInput
   }
 
-  export type User_clubNullableRelationFilter = {
-    is?: user_clubWhereInput | null
-    isNot?: user_clubWhereInput | null
+  export type User_clubListRelationFilter = {
+    every?: user_clubWhereInput
+    some?: user_clubWhereInput
+    none?: user_clubWhereInput
   }
 
   export type user_playerOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type user_clubOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -4427,32 +4470,32 @@ export namespace Prisma {
     count?: SortOrder
   }
 
-  export type user_clubAccount_idPlayer_idCompoundUniqueInput = {
-    account_id: number
-    player_id: number
-  }
-
   export type user_clubCountOrderByAggregateInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
   }
 
   export type user_clubAvgOrderByAggregateInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
   }
 
   export type user_clubMaxOrderByAggregateInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
   }
 
   export type user_clubMinOrderByAggregateInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
   }
 
   export type user_clubSumOrderByAggregateInput = {
+    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
   }
@@ -4464,10 +4507,11 @@ export namespace Prisma {
     connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
   }
 
-  export type user_clubCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
-    connect?: user_clubWhereUniqueInput
+  export type user_clubCreateNestedManyWithoutAccountInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
+    createMany?: user_clubCreateManyAccountInputEnvelope
+    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
   }
 
   export type user_playerUncheckedCreateNestedManyWithoutAccountInput = {
@@ -4477,10 +4521,11 @@ export namespace Prisma {
     connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
   }
 
-  export type user_clubUncheckedCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
-    connect?: user_clubWhereUniqueInput
+  export type user_clubUncheckedCreateNestedManyWithoutAccountInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
+    createMany?: user_clubCreateManyAccountInputEnvelope
+    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4505,14 +4550,18 @@ export namespace Prisma {
     deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
   }
 
-  export type user_clubUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
-    upsert?: user_clubUpsertWithoutAccountInput
-    disconnect?: user_clubWhereInput | boolean
-    delete?: user_clubWhereInput | boolean
-    connect?: user_clubWhereUniqueInput
-    update?: XOR<XOR<user_clubUpdateToOneWithWhereWithoutAccountInput, user_clubUpdateWithoutAccountInput>, user_clubUncheckedUpdateWithoutAccountInput>
+  export type user_clubUpdateManyWithoutAccountNestedInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
+    upsert?: user_clubUpsertWithWhereUniqueWithoutAccountInput | user_clubUpsertWithWhereUniqueWithoutAccountInput[]
+    createMany?: user_clubCreateManyAccountInputEnvelope
+    set?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    disconnect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    delete?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    update?: user_clubUpdateWithWhereUniqueWithoutAccountInput | user_clubUpdateWithWhereUniqueWithoutAccountInput[]
+    updateMany?: user_clubUpdateManyWithWhereWithoutAccountInput | user_clubUpdateManyWithWhereWithoutAccountInput[]
+    deleteMany?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -4537,42 +4586,46 @@ export namespace Prisma {
     deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
   }
 
-  export type user_clubUncheckedUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
-    upsert?: user_clubUpsertWithoutAccountInput
-    disconnect?: user_clubWhereInput | boolean
-    delete?: user_clubWhereInput | boolean
-    connect?: user_clubWhereUniqueInput
-    update?: XOR<XOR<user_clubUpdateToOneWithWhereWithoutAccountInput, user_clubUpdateWithoutAccountInput>, user_clubUncheckedUpdateWithoutAccountInput>
+  export type user_clubUncheckedUpdateManyWithoutAccountNestedInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
+    upsert?: user_clubUpsertWithWhereUniqueWithoutAccountInput | user_clubUpsertWithWhereUniqueWithoutAccountInput[]
+    createMany?: user_clubCreateManyAccountInputEnvelope
+    set?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    disconnect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    delete?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
+    update?: user_clubUpdateWithWhereUniqueWithoutAccountInput | user_clubUpdateWithWhereUniqueWithoutAccountInput[]
+    updateMany?: user_clubUpdateManyWithWhereWithoutAccountInput | user_clubUpdateManyWithWhereWithoutAccountInput[]
+    deleteMany?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
   }
 
-  export type accountCreateNestedOneWithoutUser_playerInput = {
-    create?: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_playerInput
+  export type accountCreateNestedOneWithoutUser_playersInput = {
+    create?: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_playersInput
     connect?: accountWhereUniqueInput
   }
 
-  export type accountUpdateOneRequiredWithoutUser_playerNestedInput = {
-    create?: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_playerInput
-    upsert?: accountUpsertWithoutUser_playerInput
+  export type accountUpdateOneRequiredWithoutUser_playersNestedInput = {
+    create?: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_playersInput
+    upsert?: accountUpsertWithoutUser_playersInput
     connect?: accountWhereUniqueInput
-    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_playerInput, accountUpdateWithoutUser_playerInput>, accountUncheckedUpdateWithoutUser_playerInput>
+    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_playersInput, accountUpdateWithoutUser_playersInput>, accountUncheckedUpdateWithoutUser_playersInput>
   }
 
-  export type accountCreateNestedOneWithoutUser_clubInput = {
-    create?: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_clubInput
+  export type accountCreateNestedOneWithoutUser_clubsInput = {
+    create?: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_clubsInput
     connect?: accountWhereUniqueInput
   }
 
-  export type accountUpdateOneRequiredWithoutUser_clubNestedInput = {
-    create?: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_clubInput
-    upsert?: accountUpsertWithoutUser_clubInput
+  export type accountUpdateOneRequiredWithoutUser_clubsNestedInput = {
+    create?: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_clubsInput
+    upsert?: accountUpsertWithoutUser_clubsInput
     connect?: accountWhereUniqueInput
-    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_clubInput, accountUpdateWithoutUser_clubInput>, accountUncheckedUpdateWithoutUser_clubInput>
+    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_clubsInput, accountUpdateWithoutUser_clubsInput>, accountUncheckedUpdateWithoutUser_clubsInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -4694,12 +4747,18 @@ export namespace Prisma {
   }
 
   export type user_clubUncheckedCreateWithoutAccountInput = {
+    id?: number
     player_id: number
   }
 
   export type user_clubCreateOrConnectWithoutAccountInput = {
     where: user_clubWhereUniqueInput
     create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+  }
+
+  export type user_clubCreateManyAccountInputEnvelope = {
+    data: user_clubCreateManyAccountInput | user_clubCreateManyAccountInput[]
+    skipDuplicates?: boolean
   }
 
   export type user_playerUpsertWithWhereUniqueWithoutAccountInput = {
@@ -4727,128 +4786,139 @@ export namespace Prisma {
     count?: IntFilter<"user_player"> | number
   }
 
-  export type user_clubUpsertWithoutAccountInput = {
+  export type user_clubUpsertWithWhereUniqueWithoutAccountInput = {
+    where: user_clubWhereUniqueInput
     update: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
     create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-    where?: user_clubWhereInput
   }
 
-  export type user_clubUpdateToOneWithWhereWithoutAccountInput = {
-    where?: user_clubWhereInput
+  export type user_clubUpdateWithWhereUniqueWithoutAccountInput = {
+    where: user_clubWhereUniqueInput
     data: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
   }
 
-  export type user_clubUpdateWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
+  export type user_clubUpdateManyWithWhereWithoutAccountInput = {
+    where: user_clubScalarWhereInput
+    data: XOR<user_clubUpdateManyMutationInput, user_clubUncheckedUpdateManyWithoutAccountInput>
   }
 
-  export type user_clubUncheckedUpdateWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
+  export type user_clubScalarWhereInput = {
+    AND?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
+    OR?: user_clubScalarWhereInput[]
+    NOT?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
+    id?: IntFilter<"user_club"> | number
+    account_id?: IntFilter<"user_club"> | number
+    player_id?: IntFilter<"user_club"> | number
   }
 
-  export type accountCreateWithoutUser_playerInput = {
+  export type accountCreateWithoutUser_playersInput = {
     username: string
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_club?: user_clubCreateNestedOneWithoutAccountInput
+    user_clubs?: user_clubCreateNestedManyWithoutAccountInput
   }
 
-  export type accountUncheckedCreateWithoutUser_playerInput = {
+  export type accountUncheckedCreateWithoutUser_playersInput = {
     account_id?: number
     username: string
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_club?: user_clubUncheckedCreateNestedOneWithoutAccountInput
+    user_clubs?: user_clubUncheckedCreateNestedManyWithoutAccountInput
   }
 
-  export type accountCreateOrConnectWithoutUser_playerInput = {
+  export type accountCreateOrConnectWithoutUser_playersInput = {
     where: accountWhereUniqueInput
-    create: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+    create: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
   }
 
-  export type accountUpsertWithoutUser_playerInput = {
-    update: XOR<accountUpdateWithoutUser_playerInput, accountUncheckedUpdateWithoutUser_playerInput>
-    create: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+  export type accountUpsertWithoutUser_playersInput = {
+    update: XOR<accountUpdateWithoutUser_playersInput, accountUncheckedUpdateWithoutUser_playersInput>
+    create: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
     where?: accountWhereInput
   }
 
-  export type accountUpdateToOneWithWhereWithoutUser_playerInput = {
+  export type accountUpdateToOneWithWhereWithoutUser_playersInput = {
     where?: accountWhereInput
-    data: XOR<accountUpdateWithoutUser_playerInput, accountUncheckedUpdateWithoutUser_playerInput>
+    data: XOR<accountUpdateWithoutUser_playersInput, accountUncheckedUpdateWithoutUser_playersInput>
   }
 
-  export type accountUpdateWithoutUser_playerInput = {
+  export type accountUpdateWithoutUser_playersInput = {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_club?: user_clubUpdateOneWithoutAccountNestedInput
+    user_clubs?: user_clubUpdateManyWithoutAccountNestedInput
   }
 
-  export type accountUncheckedUpdateWithoutUser_playerInput = {
+  export type accountUncheckedUpdateWithoutUser_playersInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_club?: user_clubUncheckedUpdateOneWithoutAccountNestedInput
+    user_clubs?: user_clubUncheckedUpdateManyWithoutAccountNestedInput
   }
 
-  export type accountCreateWithoutUser_clubInput = {
+  export type accountCreateWithoutUser_clubsInput = {
     username: string
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerCreateNestedManyWithoutAccountInput
+    user_players?: user_playerCreateNestedManyWithoutAccountInput
   }
 
-  export type accountUncheckedCreateWithoutUser_clubInput = {
+  export type accountUncheckedCreateWithoutUser_clubsInput = {
     account_id?: number
     username: string
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerUncheckedCreateNestedManyWithoutAccountInput
+    user_players?: user_playerUncheckedCreateNestedManyWithoutAccountInput
   }
 
-  export type accountCreateOrConnectWithoutUser_clubInput = {
+  export type accountCreateOrConnectWithoutUser_clubsInput = {
     where: accountWhereUniqueInput
-    create: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+    create: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
   }
 
-  export type accountUpsertWithoutUser_clubInput = {
-    update: XOR<accountUpdateWithoutUser_clubInput, accountUncheckedUpdateWithoutUser_clubInput>
-    create: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+  export type accountUpsertWithoutUser_clubsInput = {
+    update: XOR<accountUpdateWithoutUser_clubsInput, accountUncheckedUpdateWithoutUser_clubsInput>
+    create: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
     where?: accountWhereInput
   }
 
-  export type accountUpdateToOneWithWhereWithoutUser_clubInput = {
+  export type accountUpdateToOneWithWhereWithoutUser_clubsInput = {
     where?: accountWhereInput
-    data: XOR<accountUpdateWithoutUser_clubInput, accountUncheckedUpdateWithoutUser_clubInput>
+    data: XOR<accountUpdateWithoutUser_clubsInput, accountUncheckedUpdateWithoutUser_clubsInput>
   }
 
-  export type accountUpdateWithoutUser_clubInput = {
+  export type accountUpdateWithoutUser_clubsInput = {
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUpdateManyWithoutAccountNestedInput
+    user_players?: user_playerUpdateManyWithoutAccountNestedInput
   }
 
-  export type accountUncheckedUpdateWithoutUser_clubInput = {
+  export type accountUncheckedUpdateWithoutUser_clubsInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
+    user_players?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
   }
 
   export type user_playerCreateManyAccountInput = {
     player_id: number
     count: number
+  }
+
+  export type user_clubCreateManyAccountInput = {
+    id?: number
+    player_id: number
   }
 
   export type user_playerUpdateWithoutAccountInput = {
@@ -4864,6 +4934,20 @@ export namespace Prisma {
   export type user_playerUncheckedUpdateManyWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_clubUpdateWithoutAccountInput = {
+    player_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_clubUncheckedUpdateWithoutAccountInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    player_id?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_clubUncheckedUpdateManyWithoutAccountInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    player_id?: IntFieldUpdateOperationsInput | number
   }
 
 

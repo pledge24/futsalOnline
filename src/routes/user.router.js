@@ -43,15 +43,27 @@ router.post("/sign-in", async (req, res, next) => {
     const user = await userDataClient.account.findFirst({ where: { account_id } });
 
     if (!user) return res.status(401).json({ message: "존재하지 않는 아이디입니다." });
+<<<<<<< HEAD
     console.log(process.env.JWT_SECRET_KEY);
+=======
+
+>>>>>>> 8deed75a4e9b742587fd936d2629a4b7178387e0
     const token = jwt.sign(
       {
         userId: user.id,
       },
+<<<<<<< HEAD
       "customized_secret_key"
     );
 
     return res.status(200).json({ message: "로그인 성공", token:`Bearer ${token}` });
+=======
+      "jwt-secret"
+    );
+
+    res.cookie("authorization", `Bearer ${token}`);
+    return res.status(200).json({ message: "로그인" });
+>>>>>>> 8deed75a4e9b742587fd936d2629a4b7178387e0
   } catch (error) {
     console.error("로그인 중 에러 발생:", error);
     return res.status(500).json({ message: "로그인 중 에러가 발생하였습니다." });
