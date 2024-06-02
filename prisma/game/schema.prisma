@@ -5,7 +5,7 @@ generator client {
 
 datasource gamedb {
   provider = "mysql"
-  url      = env("DATABASE_URL1")
+  url      = "mysql://zmwpssk:bk981231..@express-database.cpe46ge06d50.ap-northeast-2.rds.amazonaws.com:3306/futsal_gamedb"
 }
 
 model player {

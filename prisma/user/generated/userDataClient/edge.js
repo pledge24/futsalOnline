@@ -128,7 +128,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\rhwjd\\OneDrive\\바탕 화면\\member-solo\\gs-work-futsalonline\\prisma\\user\\generated\\userDataClient",
+      "value": "/mnt/c/Users/gwang/OneDrive/문서/GitHub/futsalOnline/prisma/user/generated/userDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -137,7 +137,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
@@ -157,13 +157,13 @@ const config = {
   "inlineDatasources": {
     "userdb": {
       "url": {
-        "fromEnvVar": "DATABASE_URL2",
-        "value": null
+        "fromEnvVar": null,
+        "value": "mysql://zmwpssk:bk981231..@express-database.cpe46ge06d50.ap-northeast-2.rds.amazonaws.com:3306/futsal_userdb"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/userDataClient\"\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL2\")\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_player user_player?\n  user_club   user_club?\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int     @unique\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  account_id Int     @unique\n  player_id  Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_club\")\n}\n",
-  "inlineSchemaHash": "3b412471d1f5bc975e866cea2fe68b97b40f8e5bdc9ea44a932b17830d3b2618",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/userDataClient\"\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = \"mysql://zmwpssk:bk981231..@express-database.cpe46ge06d50.ap-northeast-2.rds.amazonaws.com:3306/futsal_userdb\"\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_player user_player?\n  user_club   user_club?\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int     @unique\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  account_id Int     @unique\n  player_id  Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_club\")\n}\n",
+  "inlineSchemaHash": "8bace124b416a745f72f28b7ca064addb048083487c0483cea37e82d49e27b62",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -173,9 +173,7 @@ defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {
-    DATABASE_URL2: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL2'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL2 || undefined
-  }
+  parsed: {}
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

@@ -119,7 +119,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\rhwjd\\OneDrive\\바탕 화면\\member-solo\\gs-work-futsalonline\\prisma\\game\\generated\\gameDataClient",
+      "value": "/mnt/c/Users/gwang/OneDrive/문서/GitHub/futsalOnline/prisma/game/generated/gameDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -128,7 +128,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
@@ -148,13 +148,13 @@ const config = {
   "inlineDatasources": {
     "gamedb": {
       "url": {
-        "fromEnvVar": "DATABASE_URL1",
-        "value": null
+        "fromEnvVar": null,
+        "value": "mysql://zmwpssk:bk981231..@express-database.cpe46ge06d50.ap-northeast-2.rds.amazonaws.com:3306/futsal_gamedb"
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/gameDataClient\"\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL1\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
-  "inlineSchemaHash": "c0b3998c0a0889b21b7ebee111b7d912b6c62922489d083c0a319674704729b7",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/gameDataClient\"\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = \"mysql://zmwpssk:bk981231..@express-database.cpe46ge06d50.ap-northeast-2.rds.amazonaws.com:3306/futsal_gamedb\"\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
+  "inlineSchemaHash": "f4e43b30086b4011b64a40c6050c96a2e2f762bf021a334dd75702d2c9f4a803",
   "copyEngine": true
 }
 
@@ -192,8 +192,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "generated/gameDataClient/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "generated/gameDataClient/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "generated/gameDataClient/schema.prisma")
