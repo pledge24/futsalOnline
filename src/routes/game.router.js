@@ -106,7 +106,7 @@ router.put("/player/:player_id", async (req, res) => {
   }
 });
 
-//가챠 api 이삿짐
+//가챠 api
 router.post('/gatcha', authMiddleware, async (req, res) => {try {
   const { type } = req.body;
   console.log(req.account);
