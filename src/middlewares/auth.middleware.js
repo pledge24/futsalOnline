@@ -11,11 +11,16 @@ export default async function (req, res, next) {
     if (tokenType !== "Bearer") throw new Error("토큰 타입이 일치하지 않습니다.");
 
     const decodedToken = jwt.verify(token, "jwt-secret");
-    const userId = decodedToken.userId;
 
+    console.log("decodedToken:", decodedToken);
+
+    const userId = decodedToken.userId;
     const user = await userDataClient.account.findFirst({
-      where: { id: +userId },
+      where: { account_id: userId },
     });
+
+    console.log("user:", user);
+
     if (!user) {
       res.clearCookie("authorization");
       throw new Error("토큰 사용자가 존재하지 않습니다.");
@@ -24,6 +29,8 @@ export default async function (req, res, next) {
 
     next();
   } catch (error) {
+    console.error("Error in authMiddleware:", error);
+
     res.clearCookie("authorization");
     switch (error.name) {
       case "TokenExpiredError":
