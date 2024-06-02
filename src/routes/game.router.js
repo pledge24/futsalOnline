@@ -1,6 +1,7 @@
 import express from "express";
 import { gameDataClient } from "../utils/prisma/index.js";
 import { userDataClient } from "../utils/prisma/index.js";
+import auth from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -106,10 +107,11 @@ router.put("/player/:player_id", async (req, res) => {
 });
 
 //가챠 api 이삿짐
-router.post('/gatcha', async (req, res) => {
+router.post('/gatcha', auth, async (req, res) => {
   try {
       const { type } = req.body;
-      const { account } = req.body;//middleware
+      console.log(req.account);
+      const userId= req.account.account_id;
       const numGatcha = type === "10Gatcha" ? 10 : 1;
       let gatchaResult = [];
       let gatchaMessage= [];
@@ -143,35 +145,42 @@ router.post('/gatcha', async (req, res) => {
       }
     //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
     //  for문이 돌다 멈추면 transaction필요
-    await userDataClient.$transaction(async(transaction)=>{
-      for(const player of gatchaResult){
-        //우선 이전 결과 탐색
-        const isPlayerExist = await transaction.user_player.findFirst({
-          where:{
-            player_id:player.player_id
-          }
+    await userDataClient.$transaction(async (tx) => {
+      for (const player of gatchaResult) {
+        // 우선 이전 결과 탐색
+        const isPlayerExist = await tx.user_player.findFirst({
+            where: {
+                account_id: userId,
+                player_id: player.player_id
+            }
         });
-        if(isPlayerExist){
-          await transaction.user_player.update({
-            where:{
-              player_id:player.player_id
+        console.log("ssssssssss" +isPlayerExist);
+        if (isPlayerExist) {
+            await tx.user_player.update({
+              where: {
+                account_id_player_id: {
+                    account_id: userId,
+                    player_id: player.player_id
+                }
             },
-            data: {
-              count:{
-              increment: 1
-              }
-            }
-          });
-        }else{
-          await transaction.user_player.create({
-            data: {
-              player_id:player.player_id,
-              count: 1
-            }
-          });
+                data: {
+                    count: {
+                        increment: 1
+                    }
+                }
+            });
+        } else {
+            await tx.user_player.create({
+                data: {
+                    account_id: userId,
+                    player_id: player.player_id,
+                    count: 1
+                }
+            });
         }
-       }
-    })
+    }
+    });
+
       return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage });
   } catch (error) {
       console.error(error);

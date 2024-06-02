@@ -16,14 +16,14 @@ model account {
   createdAt     DateTime  @default(now())                 @map("createdAt")
   updatedAt     DateTime  @updatedAt                      @map("updatedAt")
 
-  user_player   user_player?
+  user_player   user_player[]
   user_club     user_club?
 
   @@map("account")
 }
 
 model user_player {
-  account_id  Int         @unique   
+  account_id  Int
   player_id   Int
   count       Int
 

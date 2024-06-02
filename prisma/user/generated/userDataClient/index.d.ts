@@ -1033,6 +1033,36 @@ export namespace Prisma {
    */
 
 
+  /**
+   * Count Type AccountCountOutputType
+   */
+
+  export type AccountCountOutputType = {
+    user_player: number
+  }
+
+  export type AccountCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user_player?: boolean | AccountCountOutputTypeCountUser_playerArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AccountCountOutputType without action
+   */
+  export type AccountCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AccountCountOutputType
+     */
+    select?: AccountCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AccountCountOutputType without action
+   */
+  export type AccountCountOutputTypeCountUser_playerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: user_playerWhereInput
+  }
+
 
   /**
    * Models
@@ -1238,6 +1268,7 @@ export namespace Prisma {
     updatedAt?: boolean
     user_player?: boolean | account$user_playerArgs<ExtArgs>
     user_club?: boolean | account$user_clubArgs<ExtArgs>
+    _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type accountSelectScalar = {
@@ -1252,13 +1283,14 @@ export namespace Prisma {
   export type accountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user_player?: boolean | account$user_playerArgs<ExtArgs>
     user_club?: boolean | account$user_clubArgs<ExtArgs>
+    _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
   }
 
 
   export type $accountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "account"
     objects: {
-      user_player: Prisma.$user_playerPayload<ExtArgs> | null
+      user_player: Prisma.$user_playerPayload<ExtArgs>[]
       user_club: Prisma.$user_clubPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
@@ -1632,7 +1664,7 @@ export namespace Prisma {
   export interface Prisma__accountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    user_player<T extends account$user_playerArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playerArgs<ExtArgs>>): Prisma__user_playerClient<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+    user_player<T extends account$user_playerArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playerArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findMany'> | Null>;
 
     user_club<T extends account$user_clubArgs<ExtArgs> = {}>(args?: Subset<T, account$user_clubArgs<ExtArgs>>): Prisma__user_clubClient<$Result.GetResult<Prisma.$user_clubPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
@@ -1980,6 +2012,11 @@ export namespace Prisma {
      */
     include?: user_playerInclude<ExtArgs> | null
     where?: user_playerWhereInput
+    orderBy?: user_playerOrderByWithRelationInput | user_playerOrderByWithRelationInput[]
+    cursor?: user_playerWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: User_playerScalarFieldEnum | User_playerScalarFieldEnum[]
   }
 
   /**
@@ -3942,7 +3979,7 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_player?: XOR<User_playerNullableRelationFilter, user_playerWhereInput> | null
+    user_player?: User_playerListRelationFilter
     user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
   }
 
@@ -3952,7 +3989,7 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user_player?: user_playerOrderByWithRelationInput
+    user_player?: user_playerOrderByRelationAggregateInput
     user_club?: user_clubOrderByWithRelationInput
   }
 
@@ -3965,7 +4002,7 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_player?: XOR<User_playerNullableRelationFilter, user_playerWhereInput> | null
+    user_player?: User_playerListRelationFilter
     user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
   }, "account_id">
 
@@ -4011,15 +4048,15 @@ export namespace Prisma {
   }
 
   export type user_playerWhereUniqueInput = Prisma.AtLeast<{
-    account_id?: number
     account_id_player_id?: user_playerAccount_idPlayer_idCompoundUniqueInput
     AND?: user_playerWhereInput | user_playerWhereInput[]
     OR?: user_playerWhereInput[]
     NOT?: user_playerWhereInput | user_playerWhereInput[]
+    account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id_player_id" | "account_id">
+  }, "account_id_player_id">
 
   export type user_playerOrderByWithAggregationInput = {
     account_id?: SortOrder
@@ -4089,7 +4126,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerCreateNestedOneWithoutAccountInput
+    user_player?: user_playerCreateNestedManyWithoutAccountInput
     user_club?: user_clubCreateNestedOneWithoutAccountInput
   }
 
@@ -4099,7 +4136,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerUncheckedCreateNestedOneWithoutAccountInput
+    user_player?: user_playerUncheckedCreateNestedManyWithoutAccountInput
     user_club?: user_clubUncheckedCreateNestedOneWithoutAccountInput
   }
 
@@ -4108,7 +4145,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUpdateManyWithoutAccountNestedInput
     user_club?: user_clubUpdateOneWithoutAccountNestedInput
   }
 
@@ -4118,7 +4155,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUncheckedUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
     user_club?: user_clubUncheckedUpdateOneWithoutAccountNestedInput
   }
 
@@ -4256,14 +4293,19 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type User_playerNullableRelationFilter = {
-    is?: user_playerWhereInput | null
-    isNot?: user_playerWhereInput | null
+  export type User_playerListRelationFilter = {
+    every?: user_playerWhereInput
+    some?: user_playerWhereInput
+    none?: user_playerWhereInput
   }
 
   export type User_clubNullableRelationFilter = {
     is?: user_clubWhereInput | null
     isNot?: user_clubWhereInput | null
+  }
+
+  export type user_playerOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type accountCountOrderByAggregateInput = {
@@ -4415,10 +4457,11 @@ export namespace Prisma {
     player_id?: SortOrder
   }
 
-  export type user_playerCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
-    connect?: user_playerWhereUniqueInput
+  export type user_playerCreateNestedManyWithoutAccountInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
+    createMany?: user_playerCreateManyAccountInputEnvelope
+    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
   }
 
   export type user_clubCreateNestedOneWithoutAccountInput = {
@@ -4427,10 +4470,11 @@ export namespace Prisma {
     connect?: user_clubWhereUniqueInput
   }
 
-  export type user_playerUncheckedCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
-    connect?: user_playerWhereUniqueInput
+  export type user_playerUncheckedCreateNestedManyWithoutAccountInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
+    createMany?: user_playerCreateManyAccountInputEnvelope
+    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
   }
 
   export type user_clubUncheckedCreateNestedOneWithoutAccountInput = {
@@ -4447,14 +4491,18 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type user_playerUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
-    upsert?: user_playerUpsertWithoutAccountInput
-    disconnect?: user_playerWhereInput | boolean
-    delete?: user_playerWhereInput | boolean
-    connect?: user_playerWhereUniqueInput
-    update?: XOR<XOR<user_playerUpdateToOneWithWhereWithoutAccountInput, user_playerUpdateWithoutAccountInput>, user_playerUncheckedUpdateWithoutAccountInput>
+  export type user_playerUpdateManyWithoutAccountNestedInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
+    upsert?: user_playerUpsertWithWhereUniqueWithoutAccountInput | user_playerUpsertWithWhereUniqueWithoutAccountInput[]
+    createMany?: user_playerCreateManyAccountInputEnvelope
+    set?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    disconnect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    delete?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    update?: user_playerUpdateWithWhereUniqueWithoutAccountInput | user_playerUpdateWithWhereUniqueWithoutAccountInput[]
+    updateMany?: user_playerUpdateManyWithWhereWithoutAccountInput | user_playerUpdateManyWithWhereWithoutAccountInput[]
+    deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
   }
 
   export type user_clubUpdateOneWithoutAccountNestedInput = {
@@ -4475,14 +4523,18 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type user_playerUncheckedUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
-    upsert?: user_playerUpsertWithoutAccountInput
-    disconnect?: user_playerWhereInput | boolean
-    delete?: user_playerWhereInput | boolean
-    connect?: user_playerWhereUniqueInput
-    update?: XOR<XOR<user_playerUpdateToOneWithWhereWithoutAccountInput, user_playerUpdateWithoutAccountInput>, user_playerUncheckedUpdateWithoutAccountInput>
+  export type user_playerUncheckedUpdateManyWithoutAccountNestedInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
+    upsert?: user_playerUpsertWithWhereUniqueWithoutAccountInput | user_playerUpsertWithWhereUniqueWithoutAccountInput[]
+    createMany?: user_playerCreateManyAccountInputEnvelope
+    set?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    disconnect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    delete?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
+    update?: user_playerUpdateWithWhereUniqueWithoutAccountInput | user_playerUpdateWithWhereUniqueWithoutAccountInput[]
+    updateMany?: user_playerUpdateManyWithWhereWithoutAccountInput | user_playerUpdateManyWithWhereWithoutAccountInput[]
+    deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
   }
 
   export type user_clubUncheckedUpdateOneWithoutAccountNestedInput = {
@@ -4632,6 +4684,11 @@ export namespace Prisma {
     create: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
   }
 
+  export type user_playerCreateManyAccountInputEnvelope = {
+    data: user_playerCreateManyAccountInput | user_playerCreateManyAccountInput[]
+    skipDuplicates?: boolean
+  }
+
   export type user_clubCreateWithoutAccountInput = {
     player_id: number
   }
@@ -4645,25 +4702,29 @@ export namespace Prisma {
     create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
   }
 
-  export type user_playerUpsertWithoutAccountInput = {
+  export type user_playerUpsertWithWhereUniqueWithoutAccountInput = {
+    where: user_playerWhereUniqueInput
     update: XOR<user_playerUpdateWithoutAccountInput, user_playerUncheckedUpdateWithoutAccountInput>
     create: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
-    where?: user_playerWhereInput
   }
 
-  export type user_playerUpdateToOneWithWhereWithoutAccountInput = {
-    where?: user_playerWhereInput
+  export type user_playerUpdateWithWhereUniqueWithoutAccountInput = {
+    where: user_playerWhereUniqueInput
     data: XOR<user_playerUpdateWithoutAccountInput, user_playerUncheckedUpdateWithoutAccountInput>
   }
 
-  export type user_playerUpdateWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
+  export type user_playerUpdateManyWithWhereWithoutAccountInput = {
+    where: user_playerScalarWhereInput
+    data: XOR<user_playerUpdateManyMutationInput, user_playerUncheckedUpdateManyWithoutAccountInput>
   }
 
-  export type user_playerUncheckedUpdateWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
+  export type user_playerScalarWhereInput = {
+    AND?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
+    OR?: user_playerScalarWhereInput[]
+    NOT?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
+    account_id?: IntFilter<"user_player"> | number
+    player_id?: IntFilter<"user_player"> | number
+    count?: IntFilter<"user_player"> | number
   }
 
   export type user_clubUpsertWithoutAccountInput = {
@@ -4740,7 +4801,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerCreateNestedOneWithoutAccountInput
+    user_player?: user_playerCreateNestedManyWithoutAccountInput
   }
 
   export type accountUncheckedCreateWithoutUser_clubInput = {
@@ -4749,7 +4810,7 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_player?: user_playerUncheckedCreateNestedOneWithoutAccountInput
+    user_player?: user_playerUncheckedCreateNestedManyWithoutAccountInput
   }
 
   export type accountCreateOrConnectWithoutUser_clubInput = {
@@ -4773,7 +4834,7 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUpdateManyWithoutAccountNestedInput
   }
 
   export type accountUncheckedUpdateWithoutUser_clubInput = {
@@ -4782,7 +4843,27 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_player?: user_playerUncheckedUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
+  }
+
+  export type user_playerCreateManyAccountInput = {
+    player_id: number
+    count: number
+  }
+
+  export type user_playerUpdateWithoutAccountInput = {
+    player_id?: IntFieldUpdateOperationsInput | number
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_playerUncheckedUpdateWithoutAccountInput = {
+    player_id?: IntFieldUpdateOperationsInput | number
+    count?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type user_playerUncheckedUpdateManyWithoutAccountInput = {
+    player_id?: IntFieldUpdateOperationsInput | number
+    count?: IntFieldUpdateOperationsInput | number
   }
 
 
@@ -4790,6 +4871,10 @@ export namespace Prisma {
   /**
    * Aliases for legacy arg types
    */
+    /**
+     * @deprecated Use AccountCountOutputTypeDefaultArgs instead
+     */
+    export type AccountCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccountCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use accountDefaultArgs instead
      */
