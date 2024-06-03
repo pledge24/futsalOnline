@@ -106,6 +106,86 @@ router.put("/player/:player_id", async (req, res) => {
   }
 });
 
+//가챠 api
+router.post('/gatcha', authMiddleware, async (req, res) => {try {
+  const { type } = req.body;
+  console.log(req.account);
+  const userId= req.account.account_id;
+  const numGatcha = type === "10Gatcha" ? 10 : 1;
+  let gatchaResult = [];
+  let gatchaMessage= [];
+
+  for (let i = 0; i < numGatcha; i++) {
+      const players = await gameDataClient.player.findMany({
+          where: {
+              rarity: {
+                  in: ['bronze', 'silver', 'gold']
+              }
+          }
+      });
+
+      if (players.length === 0) {
+          return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
+      }
+
+      const randomIndex = Math.floor(Math.random() * players.length);
+      const selectedPlayer = players[randomIndex];
+
+      gatchaResult.push(selectedPlayer);
+      
+      if (selectedPlayer.rarity === 'bronze') {
+        gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`)
+      } else if (selectedPlayer.rarity === 'silver') {
+        gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`)
+      } else if (selectedPlayer.rarity === 'gold') {
+        gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`)
+      }
+      
+  }
+//  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
+//  for문이 돌다 멈추면 transaction필요
+await userDataClient.$transaction(async (tx) => {
+  for (const player of gatchaResult) {
+    // 우선 이전 결과 탐색
+    const isPlayerExist = await tx.user_player.findFirst({
+        where: {
+            account_id: userId,
+            player_id: player.player_id
+        }
+    });
+
+    if (isPlayerExist) {
+        await tx.user_player.update({
+          where: {
+            account_id_player_id: {
+                account_id: userId,
+                player_id: player.player_id
+            }
+        },
+            data: {
+                count: {
+                    increment: 1
+                }
+            }
+        });
+    } else {
+        await tx.user_player.create({
+            data: {
+                account_id: userId,
+                player_id: player.player_id,
+                count: 1
+            }
+        });
+    }
+}
+});
+
+  return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage });
+} catch (error) {
+console.error(error);
+return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });}
+});
+
 // user_player(인벤토리)에 선수 넣기(임시)
 router.post("/club_add", authMiddleware, async (req, res) => {
   const { player_id } = req.body;
