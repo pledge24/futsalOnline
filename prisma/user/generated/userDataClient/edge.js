@@ -163,13 +163,13 @@ const config = {
   "inlineDatasources": {
     "userdb": {
       "url": {
-        "fromEnvVar": null,
-        "value": "mysql://root:aaaa4321@express-database.cv8yomww2hzu.ap-northeast-2.rds.amazonaws.com:3306/userdb"
+        "fromEnvVar": "DATABASE_USER_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/userDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = \"mysql://root:aaaa4321@express-database.cv8yomww2hzu.ap-northeast-2.rds.amazonaws.com:3306/userdb\"\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
-  "inlineSchemaHash": "15dff9c8e0d02d3aa9b3fdf79f47461b634fa481f08c868dd8c3d5cb608871db",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/userDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_USER_URL\")\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
+  "inlineSchemaHash": "eec415f72ed9fbce27f6ba6d896f6e03922de56c2672d25ba52416ef38a765d1",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -179,7 +179,9 @@ defineDmmfProperty(exports.Prisma, config.runtimeDataModel)
 config.engineWasm = undefined
 
 config.injectableEdgeEnv = () => ({
-  parsed: {}
+  parsed: {
+    DATABASE_USER_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_USER_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_USER_URL || undefined
+  }
 })
 
 if (typeof globalThis !== 'undefined' && globalThis['DEBUG'] || typeof process !== 'undefined' && process.env && process.env.DEBUG || undefined) {

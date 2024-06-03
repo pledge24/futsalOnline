@@ -153,13 +153,13 @@ const config = {
   "inlineDatasources": {
     "gamedb": {
       "url": {
-        "fromEnvVar": "DATABASE_URL1",
+        "fromEnvVar": "DATABASE_GAME_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/gameDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL1\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
-  "inlineSchemaHash": "1bf424bcc7fd5deb01739a9170df4bac5289b8deac5fd7c4a023d74ce02e7981",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/gameDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_GAME_URL\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
+  "inlineSchemaHash": "756a18bf85fa048881c643e452478aa910b7f358563c66bd2d18bc29ce77bc8a",
   "copyEngine": true
 }
 
