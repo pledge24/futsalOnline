@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\Web\\futsalOnline\\prisma\\user\\generated\\userDataClient",
+      "value": "/mnt/c/Users/gwang/OneDrive/문서/GitHub/futsalOnline/prisma/user/generated/userDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -139,8 +139,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -166,8 +170,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/userDataClient\"\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_USER_URL\")\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
-  "inlineSchemaHash": "9729ac97ef4cb5316ff75a6878c66e748032f91175e6622158083baa41c16431",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/userDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_USER_URL\")\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
+  "inlineSchemaHash": "eec415f72ed9fbce27f6ba6d896f6e03922de56c2672d25ba52416ef38a765d1",
   "copyEngine": true
 }
 
@@ -205,8 +209,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma/user/generated/userDataClient/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "generated/userDataClient/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/user/generated/userDataClient/schema.prisma")

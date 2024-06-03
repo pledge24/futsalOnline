@@ -119,7 +119,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "E:\\Web\\futsalOnline\\prisma\\game\\generated\\gameDataClient",
+      "value": "/mnt/c/Users/gwang/OneDrive/문서/GitHub/futsalOnline/prisma/game/generated/gameDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -128,8 +128,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
+      },
+      {
+        "fromEnvVar": null,
+        "value": "debian-openssl-3.0.x"
       }
     ],
     "previewFeatures": [],
@@ -155,8 +159,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/gameDataClient\"\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_GAME_URL\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
-  "inlineSchemaHash": "88f7f1801dd05d59c059d886a690c165f3bb59b4148b316150c08eaee8ba12d2",
+  "inlineSchema": "generator client {\n  provider      = \"prisma-client-js\"\n  output        = \"./generated/gameDataClient\"\n  binaryTargets = [\"native\", \"debian-openssl-3.0.x\"]\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_GAME_URL\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
+  "inlineSchemaHash": "756a18bf85fa048881c643e452478aa910b7f358563c66bd2d18bc29ce77bc8a",
   "copyEngine": true
 }
 
@@ -194,8 +198,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma/game/generated/gameDataClient/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "generated/gameDataClient/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/game/generated/gameDataClient/schema.prisma")
