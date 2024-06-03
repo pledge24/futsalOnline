@@ -119,7 +119,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\rhwjd\\OneDrive\\바탕 화면\\member-solo\\gs-work-futsalonline\\prisma\\game\\generated\\gameDataClient",
+      "value": "E:\\Web\\futsalOnline\\prisma\\game\\generated\\gameDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -136,7 +136,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "5.14.0",
@@ -145,16 +146,17 @@ const config = {
     "gamedb"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "gamedb": {
       "url": {
-        "fromEnvVar": "DATABASE_URL1",
+        "fromEnvVar": "DATABASE_GAME_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/gameDataClient\"\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_URL1\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
-  "inlineSchemaHash": "c0b3998c0a0889b21b7ebee111b7d912b6c62922489d083c0a319674704729b7",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/gameDataClient\"\n}\n\ndatasource gamedb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_GAME_URL\")\n}\n\nmodel player {\n  player_id     Int    @id\n  name          String // 선수명\n  speed         Int // 이속\n  goal_desicion Int // 골결\n  shoot_power   Int // 슛 파워\n  defense       Int // 수비\n  stamina       Int // 스테미나\n  rarity        String // 등급\n\n  @@map(\"players\")\n}\n",
+  "inlineSchemaHash": "88f7f1801dd05d59c059d886a690c165f3bb59b4148b316150c08eaee8ba12d2",
   "copyEngine": true
 }
 
@@ -163,8 +165,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "generated/gameDataClient",
-    "gameDataClient",
+    "prisma/game/generated/gameDataClient",
+    "game/generated/gameDataClient",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -193,7 +195,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "generated/gameDataClient/query_engine-windows.dll.node")
+path.join(process.cwd(), "prisma/game/generated/gameDataClient/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/gameDataClient/schema.prisma")
+path.join(process.cwd(), "prisma/game/generated/gameDataClient/schema.prisma")

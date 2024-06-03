@@ -34,9 +34,8 @@ router.post("/sign-up", validateID, validatePassword, async (req, res, next) => 
         .json({ message: "비밀번호 확인이 일치하지 않습니다." });
 
      // 계정 생성
-     const [account, userInfo] = await userDataClient.$transaction(
-      async (tx) => {
-        const account = await tx.account.create({
+     
+        const account = await userDataClient.account.create({
           data: {
             account_id,
             username,
@@ -44,18 +43,6 @@ router.post("/sign-up", validateID, validatePassword, async (req, res, next) => 
           },
         });
 
-        // UserInfos에 데이터 생성
-        const userInfo = await tx.userInfos.create({
-          data: {
-            account_id: account.account_id,
-          },
-        });
-        return [account, userInfo];
-      },
-      {
-        isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted,
-      }
-    );
     return res.status(201).json({ message: "회원가입이 완료되었습니다." });
   } catch (error) {
     console.error("회원가입 중 에러 발생:", error);

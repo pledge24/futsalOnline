@@ -130,7 +130,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\rhwjd\\OneDrive\\바탕 화면\\member-solo\\gs-work-futsalonline\\prisma\\user\\generated\\userDataClient",
+      "value": "E:\\Web\\futsalOnline\\prisma\\user\\generated\\userDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -147,7 +147,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "5.14.0",
@@ -156,16 +157,17 @@ const config = {
     "userdb"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "userdb": {
       "url": {
-        "fromEnvVar": null,
-        "value": "mysql://root:aaaa4321@express-database.cv8yomww2hzu.ap-northeast-2.rds.amazonaws.com:3306/userdb"
+        "fromEnvVar": "DATABASE_USER_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/userDataClient\"\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = \"mysql://root:aaaa4321@express-database.cv8yomww2hzu.ap-northeast-2.rds.amazonaws.com:3306/userdb\"\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
-  "inlineSchemaHash": "90ce2146d23733ed5eba35852504530e9a6614408496844b2b89c459885a028c",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./generated/userDataClient\"\n}\n\ndatasource userdb {\n  provider = \"mysql\"\n  url      = env(\"DATABASE_USER_URL\")\n}\n\nmodel account {\n  account_id Int    @id @default(autoincrement()) @map(\"account_id\")\n  username   String @map(\"name\")\n  password   String @map(\"password\")\n\n  createdAt DateTime @default(now()) @map(\"createdAt\")\n  updatedAt DateTime @updatedAt @map(\"updatedAt\")\n\n  user_players user_player[]\n  user_clubs   user_club[]\n\n  @@map(\"account\")\n}\n\nmodel user_player {\n  account_id Int\n  player_id  Int\n  count      Int\n  account    account @relation(fields: [account_id], references: [account_id])\n\n  @@id([account_id, player_id])\n  @@map(\"user_player\")\n}\n\nmodel user_club {\n  id         Int @id @default(autoincrement()) @map(\"id\")\n  account_id Int @map(\"account_id\")\n  player_id  Int @map(\"player_id\")\n\n  account account @relation(fields: [account_id], references: [account_id])\n\n  @@map(\"user_club\")\n}\n",
+  "inlineSchemaHash": "9729ac97ef4cb5316ff75a6878c66e748032f91175e6622158083baa41c16431",
   "copyEngine": true
 }
 
@@ -174,8 +176,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "generated/userDataClient",
-    "userDataClient",
+    "prisma/user/generated/userDataClient",
+    "user/generated/userDataClient",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -204,7 +206,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "generated/userDataClient/query_engine-windows.dll.node")
+path.join(process.cwd(), "prisma/user/generated/userDataClient/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/userDataClient/schema.prisma")
+path.join(process.cwd(), "prisma/user/generated/userDataClient/schema.prisma")
