@@ -1,11 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/userDataClient"
+  provider      = "prisma-client-js"
+  output        = "./generated/userDataClient"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource userdb {
   provider = "mysql"
-  url      = "mysql://root:aaaa4321@express-database.cv8yomww2hzu.ap-northeast-2.rds.amazonaws.com:3306/userdb"
+  url      = env("DATABASE_USER_URL")
 }
 
 model account {

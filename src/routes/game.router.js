@@ -109,8 +109,7 @@ router.put("/player/:player_id", async (req, res) => {
 //가챠 api
 router.post('/gatcha', authMiddleware, async (req, res) => {try {
   const { type } = req.body;
-  console.log(req.account);
-  const userId= req.account.account_id;
+  const userId= req.user.account_id;
   const numGatcha = type === "10Gatcha" ? 10 : 1;
   let gatchaResult = [];
   let gatchaMessage= [];
@@ -144,6 +143,7 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
   }
 //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
 //  for문이 돌다 멈추면 transaction필요
+console.log(userId);
 await userDataClient.$transaction(async (tx) => {
   for (const player of gatchaResult) {
     // 우선 이전 결과 탐색

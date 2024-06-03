@@ -44,12 +44,10 @@ router.post("/sign-in", async (req, res, next) => {
   try {
     // 요청받은 데이터 accountId, accountPassword를 저장합니다.
     const { username, password } = req.body;
-
     // 해당 계정 id와 일치하는 계정 id가 있는지 DB에서 찾아봅니다.
     const account = await userDataClient.account.findFirst({
       where: { username },
     });
-
     // 해당 계정id가 DB에 존재하지 않는 계정id라면, 해당 사실을 알립니다.
     if (!account) return res.status(401).json({ message: "존재하지 않는 계정입니다." });
     // 입력받은 사용자의 비밀번호와 데이터베이스에 저장된 비밀번호를 비교합니다.

@@ -17,7 +17,7 @@ export default async function (req, res, next) {
 
     console.log("decodedToken:", decodedToken);
 
-    const userId = decodedToken.userId;
+    const userId = decodedToken.user_id;
     const user = await userDataClient.account.findFirst({
       where: { account_id: userId },
     });
