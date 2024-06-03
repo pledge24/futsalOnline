@@ -328,5 +328,124 @@ router.delete("/club/unequip", authMiddleware, async (req, res) => {
   }
 });
 
+// user_player(인벤토리) 조회 API
+router.get("/userinventory", authMiddleware, async (req, res) => {
+  try {
+    const user_player = await userDataClient.user_player.findMany({
+      select: {
+        player_id: true,
+        count: true,
+      },
+    });
+
+    const player = await gameDataClient.player.findMany({
+      select: {
+        player_id: true,
+        name: true,
+      },
+    });
+
+    if (user_player.length === 0) {
+      return res.status(404).json({ message: "선수가 없습니다. 카드깡부터 하세요." });
+    }
+
+    const playerMap = player.reduce((map, obj) => {
+      map[obj.player_id] = obj.name;
+      return map;
+    }, {});
+
+    const user_players = user_player.map((up) => ({
+      player_id: up.player_id,
+      count: up.count,
+      name: playerMap[up.player_id] || "Unknown",
+    }));
+
+    return res.status(200).json(user_players);
+  } catch (error) {
+    console.error("선수 조회 중 에러 발생:", error);
+    return res.status(500).json({ message: "선수 조회 중 오류가 발생했습니다." });
+  }
+});
+
+// 구단(club) 선수 조회 API
+router.get("/clubs", async (req, res) => {
+  try {
+    const userId = parseInt(req.query.user_id);
+
+    const userClubs = await userDataClient.user_club.findMany({
+      where: { account_id: userId },
+      select: {
+        player_id: true,
+      },
+    });
+
+    if (userClubs.length === 0) {
+      return res.status(404).json({ message: "구단에 선수가 없습니다." });
+    }
+
+    const playerIds = userClubs.map((userClub) => userClub.player_id);
+
+    const players = await gameDataClient.player.findMany({
+      where: {
+        player_id: { in: playerIds },
+      },
+      select: {
+        name: true,
+      },
+    });
+
+    const response = players.map((player) => player.name);
+
+    return res.status(200).json(response);
+  } catch (error) {
+    console.error("선수 조회 중 에러 발생", error);
+    return res.status(500).json({ message: "선수 조회 중 오류가 발생했습니다." });
+  }
+});
+
+// 구단 선수 상세조회 API
+router.get("/club", async (req, res) => {
+  try {
+    const userId = parseInt(req.query.user_id);
+    const playerId = parseInt(req.query.player_id);
+
+    if (isNaN(userId) || isNaN(playerId)) {
+      return res.status(400).json({ message: "잘못된 사용자 ID 또는 선수 ID입니다." });
+    }
+
+    const userClubs = await userDataClient.user_club.findMany({
+      where: { account_id: userId, player_id: playerId },
+    });
+
+    if (userClubs.length === 0) {
+      return res.status(404).json({ message: "구단에 해당 선수가 없습니다." });
+    }
+
+    const player = await gameDataClient.player.findUnique({
+      where: {
+        player_id: playerId,
+      },
+      select: {
+        player_id: true,
+        name: true,
+        speed: true,
+        goal_desicion: true,
+        shoot_power: true,
+        defense: true,
+        stamina: true,
+      },
+    });
+
+    if (!player) {
+      return res.status(404).json({ message: "선수를 찾을 수 없습니다." });
+    }
+
+    return res.status(200).json(player);
+  } catch (error) {
+    console.error("구단선수 조회 중 에러 발생", error);
+    return res.status(500).json({ message: "구단선수 조회 중 오류가 발생했습니다." });
+  }
+});
+
 export default router;
 

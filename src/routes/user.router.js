@@ -5,6 +5,9 @@ import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -60,14 +63,15 @@ router.post("/sign-up", validateID, validatePassword, async (req, res, next) => 
   }
 });
 
-// 로그인 API (임시)
+// / 로그인 API /
 router.post("/sign-in", async (req, res, next) => {
   try {
-    const { account_id, password } = req.body;
+    // 요청받은 데이터 accountId, accountPassword를 저장합니다.
+    const { username, password } = req.body;
 
    // 존재하는 계정인지 체크
    const account = await userDataClient.account.findFirst({
-    where: { account_id },
+    where: { username },
   });
   if (!account)
     return res.status(401).json({ message: "존재하지 않는 계정입니다." });
@@ -78,19 +82,20 @@ router.post("/sign-in", async (req, res, next) => {
   // jwt token 생성
   const token = jwt.sign(
     {
-      account: account_id,
+      type:"JWT",
+      user_id: account.account_id,
     },
     process.env.JWT_SECRET_KEY,
     {
-      expiresIn:'60m',
+      expiresIn:'60m', // 60분 후 만료
     }
   );
 
     
     return res.status(200).json({ message: "로그인" , authorization : `Bearer ${token}`});
   } catch (error) {
-    console.error("로그인 중 에러 발생:", error);
-    return res.status(500).json({ message: "로그인 중 에러가 발생하였습니다." });
+    console.error("로그인에 오류 발생!", error);
+    return res.status(500).json("Server Error: 500");
   }
 });
 
