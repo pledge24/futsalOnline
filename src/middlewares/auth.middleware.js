@@ -1,16 +1,19 @@
 import jwt from "jsonwebtoken";
 import { userDataClient } from "../utils/prisma/index.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 export default async function (req, res, next) {
   try {
-    const { authorization } = req.cookies;
+    const { authorization } = req.headers;
     if (!authorization) throw new Error("토큰이 존재하지 않습니다.");
 
     const [tokenType, token] = authorization.split(" ");
 
     if (tokenType !== "Bearer") throw new Error("토큰 타입이 일치하지 않습니다.");
 
-    const decodedToken = jwt.verify(token, "jwt-secret");
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET_KEY);
 
     console.log("decodedToken:", decodedToken);
 
@@ -22,7 +25,7 @@ export default async function (req, res, next) {
     console.log("user:", user);
 
     if (!user) {
-      res.clearCookie("authorization");
+      // res.clearCookie("authorization");
       throw new Error("토큰 사용자가 존재하지 않습니다.");
     }
     req.user = user;
@@ -31,7 +34,7 @@ export default async function (req, res, next) {
   } catch (error) {
     console.error("Error in authMiddleware:", error);
 
-    res.clearCookie("authorization");
+    // res.clearCookie("authorization");
     switch (error.name) {
       case "TokenExpiredError":
         return res.status(401).json({ message: "토큰이 만료되었습니다." });
