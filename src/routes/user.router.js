@@ -3,6 +3,9 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const router = express.Router();
 
@@ -20,11 +23,12 @@ router.post("/sign-up", async (req, res, next) => {
       return res.status(409).json({ message: "이미 존재하는 아이디입니다." });
     }
 
+    const hashedPassword = await bcrypt.hash(password, 10);
     const user = await userDataClient.account.create({
       data: {
         account_id,
         username,
-        password,
+        password: hashedPassword,
       },
     });
 
@@ -35,27 +39,44 @@ router.post("/sign-up", async (req, res, next) => {
   }
 });
 
-// 로그인 API (임시)
+// / 로그인 API /
 router.post("/sign-in", async (req, res, next) => {
   try {
-    const { account_id, password } = req.body;
+    // 요청받은 데이터 accountId, accountPassword를 저장합니다.
+    const { username, password } = req.body;
 
-    const user = await userDataClient.account.findFirst({ where: { account_id } });
+    // 해당 계정 id와 일치하는 계정 id가 있는지 DB에서 찾아봅니다.
+    const account = await userDataClient.account.findFirst({
+      where: { username },
+    });
 
-    if (!user) return res.status(401).json({ message: "존재하지 않는 아이디입니다." });
+    // 해당 계정id가 DB에 존재하지 않는 계정id라면, 해당 사실을 알립니다.
+    if (!account) return res.status(401).json({ message: "존재하지 않는 계정입니다." });
+    // 입력받은 사용자의 비밀번호와 데이터베이스에 저장된 비밀번호를 비교합니다.
+    else if (!(await bcrypt.compare(password, account.password)))
+      return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
 
-    const token = jwt.sign(
+    // 로그인에 성공하면, 사용자의 accountId를 바탕으로 JWT토큰을 생성합니다.
+    let token = jwt.sign(
       {
-        userId: user.id,
+        type: "JWT",
+        user_id: account.account_id,
       },
-      "jwt-secret"
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "60m", // 15분후 만료
+      }
     );
 
-    res.cookie("authorization", `Bearer ${token}`);
-    return res.status(200).json({ message: "로그인" });
+    // 로그인을 성공적으로 수행했다면, 해당 사실과 함께 계정Id와 JWT토큰을 반환합니다.
+    return res.status(200).json({
+      message: "로그인 성공",
+      account_id: account.account_id,
+      token: `Bearer ${token}`,
+    });
   } catch (error) {
-    console.error("로그인 중 에러 발생:", error);
-    return res.status(500).json({ message: "로그인 중 에러가 발생하였습니다." });
+    console.error("로그인에 오류 발생!", error);
+    return res.status(500).json("Server Error: 500");
   }
 });
 
