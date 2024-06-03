@@ -329,3 +329,4 @@ router.delete("/club/unequip", authMiddleware, async (req, res) => {
 });
 
 export default router;
+
