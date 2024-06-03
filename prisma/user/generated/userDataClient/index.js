@@ -151,7 +151,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "5.14.0",
@@ -179,8 +180,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "generated/userDataClient",
-    "userDataClient",
+    "prisma/user/generated/userDataClient",
+    "user/generated/userDataClient",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -212,4 +213,4 @@ path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
 path.join(process.cwd(), "generated/userDataClient/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/userDataClient/schema.prisma")
+path.join(process.cwd(), "prisma/user/generated/userDataClient/schema.prisma")

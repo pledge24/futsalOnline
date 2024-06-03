@@ -140,7 +140,8 @@ const config = {
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../.env"
   },
   "relativePath": "../..",
   "clientVersion": "5.14.0",
@@ -168,8 +169,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "generated/gameDataClient",
-    "gameDataClient",
+    "prisma/game/generated/gameDataClient",
+    "game/generated/gameDataClient",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -201,4 +202,4 @@ path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
 path.join(process.cwd(), "generated/gameDataClient/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "generated/gameDataClient/schema.prisma")
+path.join(process.cwd(), "prisma/game/generated/gameDataClient/schema.prisma")
