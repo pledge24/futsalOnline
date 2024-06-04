@@ -107,97 +107,97 @@ router.put("/player/:player_id", async (req, res) => {
 });
 
 //가챠 api
-router.post('/gatcha', authMiddleware, async (req, res) => {try {
-  const { type } = req.body;
-  const userId= req.user.account_id;
-  const numGatcha = type === "10Gatcha" ? 10 : 1;
-  let gatchaResult = [];
-  let gatchaMessage= [];
-  const zlatan = await gameDataClient.player.findUnique({
-    where: {
-      player_id: 9
-    }
-  });
-  
-  for (let i = 0; i < numGatcha; i++) {
-    //즐라탄 찬스
-    let platinumChance = Math.floor(Math.random() * 1000) + 1;
-    console.log(platinumChance);
-if (platinumChance === 1000) {
-  gatchaMessage.push(`${zlatan.name}이 당신을 뽑았습니다!`);
-  gatchaResult.push(zlatan);
-}
-    else{
-      const players = await gameDataClient.player.findMany({
-          where: {
-              rarity: {
-                  in: ['bronze', 'silver', 'gold']
-              }
-          }
-      });
-
-      if (players.length === 0) {
-          return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
-      }
-
-      const randomIndex = Math.floor(Math.random() * players.length);
-      const selectedPlayer = players[randomIndex];
-
-      gatchaResult.push(selectedPlayer);
-      
-      if (selectedPlayer.rarity === 'bronze') {
-        gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`)
-      } else if (selectedPlayer.rarity === 'silver') {
-        gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`)
-      } else if (selectedPlayer.rarity === 'gold') {
-        gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`)
-      }
-      
-  }
-}
-//  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
-//  for문이 돌다 멈추면 transaction필요
-console.log(userId);
-await userDataClient.$transaction(async (tx) => {
-  for (const player of gatchaResult) {
-    // 우선 이전 결과 탐색
-    const isPlayerExist = await tx.user_player.findFirst({
-        where: {
-            account_id: userId,
-            player_id: player.player_id
-        }
+router.post("/gatcha", authMiddleware, async (req, res) => {
+  try {
+    const { type } = req.body;
+    const userId = req.user.account_id;
+    const numGatcha = type === "10Gatcha" ? 10 : 1;
+    let gatchaResult = [];
+    let gatchaMessage = [];
+    const zlatan = await gameDataClient.player.findUnique({
+      where: {
+        player_id: 9,
+      },
     });
 
-    if (isPlayerExist) {
-        await tx.user_player.update({
+    for (let i = 0; i < numGatcha; i++) {
+      //즐라탄 찬스
+      let platinumChance = Math.floor(Math.random() * 1000) + 1;
+      console.log(platinumChance);
+      if (platinumChance === 1000) {
+        gatchaMessage.push(`${zlatan.name}이 당신을 뽑았습니다!`);
+        gatchaResult.push(zlatan);
+      } else {
+        const players = await gameDataClient.player.findMany({
           where: {
-            account_id_player_id: {
-                account_id: userId,
-                player_id: player.player_id
-            }
-        },
-            data: {
-                count: {
-                    increment: 1
-                }
-            }
+            rarity: {
+              in: ["bronze", "silver", "gold"],
+            },
+          },
         });
-    } else {
-        await tx.user_player.create({
-            data: {
+
+        if (players.length === 0) {
+          return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
+        }
+
+        const randomIndex = Math.floor(Math.random() * players.length);
+        const selectedPlayer = players[randomIndex];
+
+        gatchaResult.push(selectedPlayer);
+
+        if (selectedPlayer.rarity === "bronze") {
+          gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`);
+        } else if (selectedPlayer.rarity === "silver") {
+          gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`);
+        } else if (selectedPlayer.rarity === "gold") {
+          gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`);
+        }
+      }
+    }
+    //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
+    //  for문이 돌다 멈추면 transaction필요
+    console.log(userId);
+    await userDataClient.$transaction(async (tx) => {
+      for (const player of gatchaResult) {
+        // 우선 이전 결과 탐색
+        const isPlayerExist = await tx.user_player.findFirst({
+          where: {
+            account_id: userId,
+            player_id: player.player_id,
+          },
+        });
+
+        if (isPlayerExist) {
+          await tx.user_player.update({
+            where: {
+              account_id_player_id: {
                 account_id: userId,
                 player_id: player.player_id,
-                count: 1
-            }
-        });
-    }
-}
-});
+              },
+            },
+            data: {
+              count: {
+                increment: 1,
+              },
+            },
+          });
+        } else {
+          await tx.user_player.create({
+            data: {
+              account_id: userId,
+              player_id: player.player_id,
+              count: 1,
+            },
+          });
+        }
+      }
+    });
 
-  return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage });
-} catch (error) {
-console.error(error);
-return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });}
+    return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });
+  }
 });
 
 // user_player(인벤토리)에 선수 넣기(임시)
@@ -411,13 +411,14 @@ router.get("/userinventory", authMiddleware, async (req, res) => {
       return res.status(403).json({ message: "내 구단이 아닙니다." });
     }
     const user_player = await userDataClient.user_player.findMany({
-      where:{
-        account_id: userId
+      where: {
+        account_id: userId,
       },
       select: {
         account_id: true,
         player_id: true,
         count: true,
+        reinforce: true,
       },
     });
 
@@ -530,37 +531,54 @@ router.get("/club", async (req, res) => {
   }
 });
 
-// 선수 강화 
-router.patch('/test', authMiddleware, async(req, res, next)=>{
-  try{
+// 선수 강화
+router.patch("/test", authMiddleware, async (req, res, next) => {
+  try {
     const userId = req.user.account_id;
-    const {player_id, count} = req.body;
+    const { player_id, count } = req.body;
 
     const account = await userDataClient.account.findFirst({
-      where:{
-        account_id: +userId
-      }
-    })
-    if(!account){
-      return res.status(403).json({message:"내 구단이 아닙니다."})
-    }
-    const selectedPlayer = await userDataClient.user_player.findFirst({
-      where:{
+      where: {
         account_id: +userId,
-        player_id: +player_id,
       },
+    });
+    if (!account) {
+      return res.status(403).json({ message: "내 구단이 아닙니다." });
+    }
+
+   const player = await gameDataClient.player.findUnique({
+      where: {player_id: player_id}
     })
 
-    
-
-
-    
-  }catch(err){
-
-  }
-})
-
-
+    await userDataClient.$transaction(async (tx) => {
+      // 선수 선택
+      const selectedPlayer = await tx.user_player.findUnique({
+        where: {
+          account_id_player_id: {
+            account_id: userId,
+            player_id: player_id,
+          },
+        },
+      });
+      // 선수 강화
+      if (selectedPlayer.reinforce > 0) {
+        for (let i = 0; i <= selectedPlayer.reinforce; i++) {
+          await tx.user_player.update({
+            where: {
+              account_id_player_id: {
+                account_id: userId,
+                player_id: player_id,
+              },
+            },
+            data: {
+              count: selectedPlayer.count - 1,
+            },
+          });
+        }
+        selectedPlayer.reinforce++;
+      }
+    });
+  } catch (err) {}
+});
 
 export default router;
-
