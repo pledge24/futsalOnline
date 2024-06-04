@@ -202,13 +202,37 @@ router.post("/club_add", authMiddleware, async (req, res) => {
       return res.status(403).json({ message: "내 구단이 아닙니다." });
     }
 
-    await userDataClient.user_player.create({
-      data: {
-        account_id: userId,
-        player_id: player_id,
-        count: 1,
+    const existingUserPlayer = await userDataClient.user_player.findUnique({
+      where: {
+        account_id_player_id: {
+          account_id: userId,
+          player_id: player_id,
+        },
       },
     });
+
+    if (existingUserPlayer) {
+      await userDataClient.user_player.update({
+        where: {
+          account_id_player_id: {
+            account_id: userId,
+            player_id: player_id,
+          },
+        },
+        data: {
+          count: existingUserPlayer.count + 1,
+        },
+      });
+    } else {
+      await userDataClient.user_player.create({
+        data: {
+          account_id: userId,
+          player_id: player_id,
+          count: 1,
+        },
+      });
+    }
+
     return res.status(200).json({ message: "선수가 성공적으로 추가되었습니다." });
   } catch (error) {
     console.error("선수 추가 중 오류:", error);
@@ -239,7 +263,7 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
       },
     });
 
-    if (!userInventory) {
+    if (!userInventory || userInventory.count < 1) {
       return res.status(400).json({ message: "인벤토리에 해당 선수가 없습니다." });
     }
 
@@ -250,9 +274,7 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
     });
 
     if (clubPlayerCount >= 3) {
-      return res.status(403).json({
-        message: "클럽엔 3명이상 넣을 수 없습니다.",
-      });
+      return res.status(403).json({ message: "클럽엔 3명이상 넣을 수 없습니다." });
     }
 
     await userDataClient.user_club.create({
@@ -262,16 +284,30 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
       },
     });
 
-    await userDataClient.user_player.delete({
-      where: {
-        account_id_player_id: {
-          account_id: userId,
-          player_id: player_id,
+    if (userInventory.count > 1) {
+      await userDataClient.user_player.update({
+        where: {
+          account_id_player_id: {
+            account_id: userId,
+            player_id: player_id,
+          },
         },
-      },
-    });
+        data: {
+          count: userInventory.count - 1,
+        },
+      });
+    } else {
+      await userDataClient.user_player.delete({
+        where: {
+          account_id_player_id: {
+            account_id: userId,
+            player_id: player_id,
+          },
+        },
+      });
+    }
 
-    return res.status(200).json({ message: "선수가 추가되었습니다." });
+    return res.status(200).json({ message: "선수가 구단에 추가되었습니다." });
   } catch (error) {
     console.error("선수 추가 중 에러 발생:", error);
     return res.status(500).json({ message: "선수 추가 중 오류가 발생했습니다." });
@@ -294,34 +330,53 @@ router.delete("/club/unequip", authMiddleware, async (req, res) => {
       return res.status(403).json({ message: "내 구단이 아닙니다." });
     }
 
-    const userclub = await userDataClient.user_club.findFirst({
+    const userClub = await userDataClient.user_club.findFirst({
       where: {
         account_id: account.account_id,
         player_id: player_id,
       },
     });
 
-    if (!userclub) {
+    if (!userClub) {
       return res.status(400).json({ message: "구단에 해당 선수가 없습니다." });
     }
 
     await userDataClient.user_club.delete({
       where: {
+        id: userClub.id,
+      },
+    });
+
+    const userInventory = await userDataClient.user_player.findFirst({
+      where: {
         account_id: userId,
         player_id: player_id,
-        id: userclub.id,
       },
     });
 
-    await userDataClient.user_player.create({
-      data: {
-        account_id: account.account_id,
-        player_id: player_id,
-        count: 1,
-      },
-    });
+    if (userInventory) {
+      await userDataClient.user_player.update({
+        where: {
+          account_id_player_id: {
+            account_id: userId,
+            player_id: player_id,
+          },
+        },
+        data: {
+          count: userInventory.count + 1,
+        },
+      });
+    } else {
+      await userDataClient.user_player.create({
+        data: {
+          account_id: account.account_id,
+          player_id: player_id,
+          count: 1,
+        },
+      });
+    }
 
-    return res.status(200).json({ message: "선수가 제거되었습니다." });
+    return res.status(200).json({ message: "선수가 구단에서 제거되었습니다." });
   } catch (error) {
     console.error("선수 제거 중 에러 발생:", error);
     return res.status(500).json({ message: "선수 제거 중 오류가 발생했습니다." });
