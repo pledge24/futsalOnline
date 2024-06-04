@@ -2079,30 +2079,35 @@ export namespace Prisma {
     account_id: number | null
     player_id: number | null
     count: number | null
+    reinforce: number | null
   }
 
   export type User_playerSumAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    reinforce: number | null
   }
 
   export type User_playerMinAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    reinforce: number | null
   }
 
   export type User_playerMaxAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    reinforce: number | null
   }
 
   export type User_playerCountAggregateOutputType = {
     account_id: number
     player_id: number
     count: number
+    reinforce: number
     _all: number
   }
 
@@ -2111,30 +2116,35 @@ export namespace Prisma {
     account_id?: true
     player_id?: true
     count?: true
+    reinforce?: true
   }
 
   export type User_playerSumAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    reinforce?: true
   }
 
   export type User_playerMinAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    reinforce?: true
   }
 
   export type User_playerMaxAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    reinforce?: true
   }
 
   export type User_playerCountAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    reinforce?: true
     _all?: true
   }
 
@@ -2228,6 +2238,7 @@ export namespace Prisma {
     account_id: number
     player_id: number
     count: number
+    reinforce: number
     _count: User_playerCountAggregateOutputType | null
     _avg: User_playerAvgAggregateOutputType | null
     _sum: User_playerSumAggregateOutputType | null
@@ -2253,6 +2264,7 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
+    reinforce?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_player"]>
 
@@ -2260,6 +2272,7 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
+    reinforce?: boolean
   }
 
 
@@ -2277,6 +2290,7 @@ export namespace Prisma {
       account_id: number
       player_id: number
       count: number
+      reinforce: number
     }, ExtArgs["result"]["user_player"]>
     composites: {}
   }
@@ -2675,6 +2689,7 @@ export namespace Prisma {
     readonly account_id: FieldRef<"user_player", 'Int'>
     readonly player_id: FieldRef<"user_player", 'Int'>
     readonly count: FieldRef<"user_player", 'Int'>
+    readonly reinforce: FieldRef<"user_player", 'Int'>
   }
     
 
@@ -3941,7 +3956,8 @@ export namespace Prisma {
   export const User_playerScalarFieldEnum: {
     account_id: 'account_id',
     player_id: 'player_id',
-    count: 'count'
+    count: 'count',
+    reinforce: 'reinforce'
   };
 
   export type User_playerScalarFieldEnum = (typeof User_playerScalarFieldEnum)[keyof typeof User_playerScalarFieldEnum]
@@ -4067,6 +4083,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    reinforce?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
@@ -4074,6 +4091,7 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
@@ -4085,6 +4103,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    reinforce?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }, "account_id_player_id">
 
@@ -4092,6 +4111,7 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
     _count?: user_playerCountOrderByAggregateInput
     _avg?: user_playerAvgOrderByAggregateInput
     _max?: user_playerMaxOrderByAggregateInput
@@ -4106,6 +4126,7 @@ export namespace Prisma {
     account_id?: IntWithAggregatesFilter<"user_player"> | number
     player_id?: IntWithAggregatesFilter<"user_player"> | number
     count?: IntWithAggregatesFilter<"user_player"> | number
+    reinforce?: IntWithAggregatesFilter<"user_player"> | number
   }
 
   export type user_clubWhereInput = {
@@ -4219,6 +4240,7 @@ export namespace Prisma {
   export type user_playerCreateInput = {
     player_id: number
     count: number
+    reinforce?: number
     account: accountCreateNestedOneWithoutUser_playersInput
   }
 
@@ -4226,11 +4248,13 @@ export namespace Prisma {
     account_id: number
     player_id: number
     count: number
+    reinforce?: number
   }
 
   export type user_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
     account?: accountUpdateOneRequiredWithoutUser_playersNestedInput
   }
 
@@ -4238,23 +4262,27 @@ export namespace Prisma {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerCreateManyInput = {
     account_id: number
     player_id: number
     count: number
+    reinforce?: number
   }
 
   export type user_playerUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateManyInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateInput = {
@@ -4444,30 +4472,35 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
   }
 
   export type user_playerAvgOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
   }
 
   export type user_playerMaxOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
   }
 
   export type user_playerMinOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
   }
 
   export type user_playerSumOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    reinforce?: SortOrder
   }
 
   export type user_clubCountOrderByAggregateInput = {
@@ -4725,11 +4758,13 @@ export namespace Prisma {
   export type user_playerCreateWithoutAccountInput = {
     player_id: number
     count: number
+    reinforce?: number
   }
 
   export type user_playerUncheckedCreateWithoutAccountInput = {
     player_id: number
     count: number
+    reinforce?: number
   }
 
   export type user_playerCreateOrConnectWithoutAccountInput = {
@@ -4784,6 +4819,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    reinforce?: IntFilter<"user_player"> | number
   }
 
   export type user_clubUpsertWithWhereUniqueWithoutAccountInput = {
@@ -4914,6 +4950,7 @@ export namespace Prisma {
   export type user_playerCreateManyAccountInput = {
     player_id: number
     count: number
+    reinforce?: number
   }
 
   export type user_clubCreateManyAccountInput = {
@@ -4924,16 +4961,19 @@ export namespace Prisma {
   export type user_playerUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateManyWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    reinforce?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUpdateWithoutAccountInput = {

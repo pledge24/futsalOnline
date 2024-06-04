@@ -130,7 +130,8 @@ exports.Prisma.AccountScalarFieldEnum = {
 exports.Prisma.User_playerScalarFieldEnum = {
   account_id: 'account_id',
   player_id: 'player_id',
-  count: 'count'
+  count: 'count',
+  reinforce: 'reinforce'
 };
 
 exports.Prisma.User_clubScalarFieldEnum = {

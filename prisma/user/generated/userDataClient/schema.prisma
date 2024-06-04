@@ -27,6 +27,7 @@ model user_player {
   account_id Int
   player_id  Int
   count      Int
+  reinforce  Int     @default(1)
   account    account @relation(fields: [account_id], references: [account_id])
 
   @@id([account_id, player_id])

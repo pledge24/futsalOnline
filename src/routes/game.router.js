@@ -234,8 +234,8 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
 
     const userInventory = await userDataClient.user_player.findFirst({
       where: {
-        account_id: account.account_id,
-        player_id: player_id,
+        account_id: +account.account_id,
+        player_id: +player_id,
       },
     });
 
@@ -331,8 +331,22 @@ router.delete("/club/unequip", authMiddleware, async (req, res) => {
 // user_player(인벤토리) 조회 API
 router.get("/userinventory", authMiddleware, async (req, res) => {
   try {
+    const userId = req.user.account_id;
+    const account = await userDataClient.account.findFirst({
+      where: {
+        account_id: userId,
+      },
+    });
+
+    if (!account) {
+      return res.status(403).json({ message: "내 구단이 아닙니다." });
+    }
     const user_player = await userDataClient.user_player.findMany({
+      where:{
+        account_id: userId
+      },
       select: {
+        account_id: true,
         player_id: true,
         count: true,
       },
@@ -446,6 +460,38 @@ router.get("/club", async (req, res) => {
     return res.status(500).json({ message: "구단선수 조회 중 오류가 발생했습니다." });
   }
 });
+
+// 선수 강화 
+router.patch('/test', authMiddleware, async(req, res, next)=>{
+  try{
+    const userId = req.user.account_id;
+    const {player_id, count} = req.body;
+
+    const account = await userDataClient.account.findFirst({
+      where:{
+        account_id: +userId
+      }
+    })
+    if(!account){
+      return res.status(403).json({message:"내 구단이 아닙니다."})
+    }
+    const selectedPlayer = await userDataClient.user_player.findFirst({
+      where:{
+        account_id: +userId,
+        player_id: +player_id,
+      },
+    })
+
+    
+
+
+    
+  }catch(err){
+
+  }
+})
+
+
 
 export default router;
 
