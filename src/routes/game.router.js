@@ -113,8 +113,21 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
   const numGatcha = type === "10Gatcha" ? 10 : 1;
   let gatchaResult = [];
   let gatchaMessage= [];
-
+  const zlatan = await gameDataClient.player.findUnique({
+    where: {
+      player_id: 9
+    }
+  });
+  
   for (let i = 0; i < numGatcha; i++) {
+    //즐라탄 찬스
+    let platinumChance = Math.floor(Math.random() * 1000) + 1;
+    console.log(platinumChance);
+if (platinumChance === 1000) {
+  gatchaMessage.push(`${zlatan.name}이 당신을 뽑았습니다!`);
+  gatchaResult.push(zlatan);
+}
+    else{
       const players = await gameDataClient.player.findMany({
           where: {
               rarity: {
@@ -141,6 +154,7 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
       }
       
   }
+}
 //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
 //  for문이 돌다 멈추면 transaction필요
 console.log(userId);
