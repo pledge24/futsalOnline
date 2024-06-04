@@ -118,7 +118,21 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
       player_id: 9
     }
   });
-  
+  console.log(userId);
+  const playerInfo = await userDataClient.user_info.findUnique({
+    where: {
+       account_id:userId
+      }
+  });
+  console.log(playerInfo);
+  const cashRemainder= playerInfo.money;
+  console.log("남은 돈 :"+ cashRemainder);
+  const totalCost = numGatcha * 100;
+  console.log("총 비용:"+totalCost);
+  const cashAfterGatcha = cashRemainder - totalCost;
+  if(cashRemainder < totalCost){
+  return res.status(200).json({ message: "게임머니가 부족해서 가챠를 진행할 수 없습니다."});
+  }
   for (let i = 0; i < numGatcha; i++) {
     //즐라탄 찬스
     let platinumChance = Math.floor(Math.random() * 1000) + 1;
@@ -159,6 +173,14 @@ if (platinumChance === 1000) {
 //  for문이 돌다 멈추면 transaction필요
 console.log(userId);
 await userDataClient.$transaction(async (tx) => {
+  await tx.user_info.update({
+    where:{
+      account_id:userId
+    },
+    data:{
+      money: cashAfterGatcha
+    }
+  })
   for (const player of gatchaResult) {
     // 우선 이전 결과 탐색
     const isPlayerExist = await tx.user_player.findFirst({

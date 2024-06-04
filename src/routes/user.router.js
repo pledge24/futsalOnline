@@ -29,19 +29,26 @@ router.post("/sign-up", validateID, validatePassword, async (req, res, next) => 
     const hashedPassword = await bcrypt.hash(password, 10);
     // 비밀번호 확인
     if (password !== confirmPassword)
-      return res
-        .status(409)
-        .json({ message: "비밀번호 확인이 일치하지 않습니다." });
+      return res.status(409).json({ message: "비밀번호 확인이 일치하지 않습니다." });
 
-     // 계정 생성
-     
-        const account = await userDataClient.account.create({
-          data: {
-            account_id,
-            username,
-            password: hashedPassword,
-          },
-        });
+    // 계정 생성
+
+    const account = await userDataClient.account.create({
+      data: {
+        username,
+        password: hashedPassword,
+        user_info: {
+          create: {
+            rank_score: 1000,
+            wins: 0,
+            loses: 0,
+            draws: 0,
+            money: 10000,
+            have_club: false
+          }
+        }
+      }
+    });
 
     return res.status(201).json({ message: "회원가입이 완료되었습니다." });
   } catch (error) {
