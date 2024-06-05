@@ -5,7 +5,7 @@ import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -29,19 +29,20 @@ router.post("/sign-up", validateID, validatePassword, async (req, res, next) => 
     const hashedPassword = await bcrypt.hash(password, 10);
     // 비밀번호 확인
     if (password !== confirmPassword)
-      return res
-        .status(409)
-        .json({ message: "비밀번호 확인이 일치하지 않습니다." });
+      return res.status(409).json({ message: "비밀번호 확인이 일치하지 않습니다." });
 
-     // 계정 생성
-     
-        const account = await userDataClient.account.create({
-          data: {
-            account_id,
-            username,
-            password: hashedPassword,
-          },
-        });
+    // 계정 생성
+
+    const account = await userDataClient.account.create({
+      data: {
+        account_id,
+        username,
+        password: hashedPassword,
+        user_info:{
+          create:{account_id}
+        }
+      }
+    });
 
     return res.status(201).json({ message: "회원가입이 완료되었습니다." });
   } catch (error) {
@@ -65,20 +66,19 @@ router.post("/sign-in", async (req, res, next) => {
     else if (!(await bcrypt.compare(password, account.password)))
       return res.status(401).json({ message: "비밀번호가 일치하지 않습니다." });
 
-  // jwt token 생성
-  const token = jwt.sign(
-    {
-      type:"JWT",
-      user_id: account.account_id,
-    },
-    process.env.JWT_SECRET_KEY,
-    {
-      expiresIn:'60m', // 60분 후 만료
-    }
-  );
+    // jwt token 생성
+    const token = jwt.sign(
+      {
+        type: "JWT",
+        user_id: account.account_id,
+      },
+      process.env.JWT_SECRET_KEY,
+      {
+        expiresIn: "60m", // 60분 후 만료
+      }
+    );
 
-    
-    return res.status(200).json({ message: "로그인" , authorization : `Bearer ${token}`});
+    return res.status(200).json({ message: "로그인", authorization: `Bearer ${token}` });
   } catch (error) {
     console.error("로그인에 오류 발생!", error);
     return res.status(500).json("Server Error: 500");
