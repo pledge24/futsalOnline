@@ -212,7 +212,7 @@ router.post("/gatcha", authMiddleware, async (req, res) => {
               account_id: userId,
               player_id: player.player_id,
               count: 1,
-              enhancement_level: 0
+              enhancement_level: 0,
             },
           });
         }
@@ -674,7 +674,6 @@ router.post("/enhance", authMiddleware, async (req, res) => {
     return res.status(500).json({ message: "강화 중 오류가 발생했습니다." });
   }
 });
-
 
 /** 랭크 매치 시스템 함수
  * @params myUserInfo: 내 유저 정보
