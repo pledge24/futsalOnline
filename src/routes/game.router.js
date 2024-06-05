@@ -108,44 +108,60 @@ router.put("/player/:player_id", async (req, res) => {
   }
 });
 
-//가챠 api
+/** 가챠 api */ 
 
 router.post('/gatcha', authMiddleware, async (req, res) => {try {
-  const { type } = req.body;
+  const { tickets } = req.body;
+
   const userId= req.user.account_id;
-  const numGatcha = type === "10Gatcha" ? 10 : 1;
+  const numGatcha = +tickets === 10 ? 10 : (+tickets === 1 ? 1 : 0);
+  //가챠 횟수 유효성 검사
+  //만약, tickets가 10개면 numGatcha는 10, 티켓이 한개면, 가챠횟수도 하나 그 외에는 유효하지 않습니다.
+  //가챠 실행전 가챠횟수 확인용
+  //console.log("가챠횟수:"+numGatcha);
+  if(!numGatcha){
+    res.status(400).json({error: "falsy한 가챠횟수입니다"});
+  }
   let gatchaResult = [];
   let gatchaMessage= [];
+  //단하나 뿐인 플래티넘 카드, id로 접근해서 가져왔습니다
   const zlatan = await gameDataClient.player.findUnique({
     where: {
       player_id: 9
     }
   });
-  console.log(userId);
   const playerInfo = await userDataClient.user_info.findUnique({
     where: {
        account_id:userId
       }
   });
-  console.log(playerInfo);
+  //토큰에 저장된 유저의 남은 캐쉬를 변수에 저장합니다
   const cashRemainder= playerInfo.money;
-  console.log("남은 돈 :"+ cashRemainder);
+  // console.log("뽑기 전 남은 돈 :"+ cashRemainder);
+  
+  //총 비용을 계산해서 변수에 저장합니다.
   const totalCost = numGatcha * 100;
-  console.log("총 비용:"+totalCost);
+  // console.log("뽑기 전 총 비용:"+totalCost);
   const cashAfterGatcha = cashRemainder - totalCost;
+  //만약 돈이 없으면 가챠를 할 수 없도록 유효성 검사를 합니다.
   if(cashRemainder < totalCost){
-  return res.status(200).json({ message: "게임머니가 부족해서 가챠를 진행할 수 없습니다."});
+  return res.status(400).json({ message: "게임머니가 부족해서 가챠를 진행할 수 없습니다."});
   }
+  //위의 결격 사유에 걸리지 않는 다면, 가챠 횟수만큼 가챠를 실행합니다.
+  //------------가챠 시작-------------
   for (let i = 0; i < numGatcha; i++) {
-    //즐라탄 찬스
-    let platinumChance = Math.floor(Math.random() * 1000) + 1;
-    console.log(platinumChance);
+    //우선, 플래티넘찬스(1000분의 1확률로 플래티넘 찬스에 도달하면 즐라탄을 뽑을 수 있습니다)
+    let platinumChance = Math.floor(Math.random() * 1000); 
+    //플래티넘 찬스가 1~1000중 1000이 되면 즐라탄을 획득(0.1퍼센트 확률)
 if (platinumChance === 1000) {
+  //player_id:9번인 즐라탄 전용 메시지입니다. 가챠 메시지에 추가해줍니다.
+  //즐라탄을 가챠결과에 추가해줍니다
   gatchaMessage.push(`${zlatan.name}이 당신을 뽑았습니다!`);
   gatchaResult.push(zlatan);
 }
+//플래티넘 카드 뽑기에 실패했다면 실행되는 브실골 뽑기입니다.
     else{
-
+//브론즈, 실버, 골드의 선수들을 players 변수에 저장합니다.
       const players = await gameDataClient.player.findMany({
         where: {
           rarity: {
@@ -153,29 +169,28 @@ if (platinumChance === 1000) {
           },
         },
       });
-
+//만약 플레이어가 없으면 
       if (players.length === 0) {
         return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
       }
 
       const randomIndex = Math.floor(Math.random() * players.length);
       const selectedPlayer = players[randomIndex];
-
+      //가챠 결과: 결론적으로 user_player 테이블에 저장되는 배열
       gatchaResult.push(selectedPlayer);
-
+      //가챠 메시지: 결론적으로 유저에게 띄워주는 메시지를 저장하는 배열
       if (selectedPlayer.rarity === "bronze") {
-        gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`);
+        gatchaMessage.push({message:`브론즈등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       } else if (selectedPlayer.rarity === "silver") {
-        gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`);
+        gatchaMessage.push({message:`실버등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       } else if (selectedPlayer.rarity === "gold") {
-        gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`);
+        gatchaMessage.push({message:`골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       }
       
   }
 }
 //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
 //  for문이 돌다 멈추면 transaction필요
-console.log(userId);
 await userDataClient.$transaction(async (tx) => {
   await tx.user_info.update({
     where:{

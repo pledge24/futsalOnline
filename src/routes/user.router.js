@@ -90,13 +90,10 @@ router.get("/ranking", async (req, res) => {
   try {
     const userRank = await userDataClient.user_info.findMany({
       orderBy: {
-        //내림차순
         rank_score: 'desc'
       },
-      //10개 출력
       take: 10,
       include:{
-        //계정 테이블에 접근해서 유저이름 가져오기
         account:{
           select:{
           username:true
