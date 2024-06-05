@@ -918,4 +918,44 @@ router.post("/play", authMiddleware, async (req, res) => {
   }
 });
 
+/** 유저 정보 조회 API */ 
+router.get("/user/:username", async (req, res) => {
+  const {username} = req.params;
+  console.log(username);
+  if(!username){
+    return res.status(400).json({ message: "Bad Request: username is required" });
+  }
+
+  try {
+    // 입력받은 username을 가지는 계정 정보를 DB에서 가져옵니다. 
+    const account = await userDataClient.account.findFirst({
+      where: {
+        username
+      }
+    });
+
+    // 만약 계정이 존재하지 않다면, 해당 사실을 클라이언트에 전달합니다.
+    if(!account){
+      return res.status(404).json({ message: "해당 이름을 가진 계정이 존재하지 않습니다" });
+    }
+
+    // 해당 계정의 유저 정보를 DB에서 가져옵니다.
+    const user_info = await userDataClient.user_info.findFirst({
+      where: {
+        account_id : account.account_id
+      }
+    });
+
+    return res.status(200).json({
+      message: `유저 정보 조회 완료`,
+      user_info: user_info,
+    });
+    
+  } catch (error) {
+    console.error("유저 정보 조회 중 에러 발생", error);
+    return res.status(500).json({ message: "유저 정보 조회 중 오류가 발생했습니다." });
+  }
+
+})
+
 export default router;
