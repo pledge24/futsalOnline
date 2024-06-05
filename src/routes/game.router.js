@@ -187,6 +187,7 @@ router.post("/gatcha", authMiddleware, async (req, res) => {
               account_id: userId,
               player_id: player.player_id,
               count: 1,
+              enhancement_level: 0
             },
           });
         }
@@ -278,7 +279,9 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
     });
 
     if (!userInventory || userInventory.count < 1) {
-      return res.status(400).json({ message: "인벤토리에 해당 선수가 없습니다." });
+      if (userInventory.reinforce === 0) {
+        return res.status(400).json({ message: "인벤토리에 해당 선수가 없습니다." });
+      }
     }
 
     const clubPlayerCount = await userDataClient.user_club.count({
@@ -308,15 +311,6 @@ router.post("/club/equip", authMiddleware, async (req, res) => {
         },
         data: {
           count: userInventory.count - 1,
-        },
-      });
-    } else {
-      await userDataClient.user_player.delete({
-        where: {
-          account_id_player_id: {
-            account_id: userId,
-            player_id: player_id,
-          },
         },
       });
     }
@@ -418,7 +412,7 @@ router.get("/userinventory", authMiddleware, async (req, res) => {
         account_id: true,
         player_id: true,
         count: true,
-        reinforce: true,
+        enhancement_level: true,
       },
     });
 
@@ -441,6 +435,7 @@ router.get("/userinventory", authMiddleware, async (req, res) => {
     const user_players = user_player.map((up) => ({
       player_id: up.player_id,
       count: up.count,
+      enhancement_level: up.enhancement_level,
       name: playerMap[up.player_id] || "Unknown",
     }));
 
@@ -505,80 +500,163 @@ router.get("/club", async (req, res) => {
       return res.status(404).json({ message: "구단에 해당 선수가 없습니다." });
     }
 
-    const player = await gameDataClient.player.findUnique({
-      where: {
+    const userPlayer = await userDataClient.user_player.findFirst({
+      where:{ 
         player_id: playerId,
+        account_id: userId
+       },
+    })
+    const enhancedPlayer = await gameDataClient.enhanced_player.findFirst({
+      where:{
+        player_id: playerId,
+        enhancement_level: userPlayer.enhancement_level,
+      }
+    })
+
+    if(!enhancedPlayer){
+      return res.status(404).json({message:"강화된 선수 정보를 찾을 수 없습니다."});
+    }
+    return res.status(200).json(enhancedPlayer);
+  }catch (error){
+    console.error("구단선수 조회 중 에러 발생", error);
+    return res.status(500).json({message:"구단 선수 조회 중 오류 발생"})
+  }
+})
+
+// 선수 강화 API (dev )
+router.post("/enhance", authMiddleware, async (req, res) => {
+  const { player_id } = req.body;
+  const userId = req.user.account_id;
+  try {
+    const userPlayer = await userDataClient.user_player.findUnique({
+      where: {
+        account_id_player_id: {
+          account_id: userId,
+          player_id: player_id,
+        },
       },
-      select: {
-        player_id: true,
-        name: true,
-        speed: true,
-        goal_desicion: true,
-        shoot_power: true,
-        defense: true,
-        stamina: true,
+    });
+    if (!userPlayer) {
+      return res.status(404).json({ message: "인벤토리에 해당 선수가 존재하지 않습니다." });
+    }
+
+    // 현재 강화 레벨 계산
+    const currentEnhancementLevel = userPlayer.enhancement_level || 0;
+
+    // 필요한 카드 개수는 강화 레벨 + 1
+    const requiredCardCount = currentEnhancementLevel + 1;
+
+    // 카드 개수가 충분한지 확인
+    if (userPlayer.count < requiredCardCount) {
+      return res.status(400).json({ message: "강화에 필요한 선수 카드가 부족합니다." });
+    }
+
+    // 강화 성공 시 강화된 선수 데이터를 유저 인벤토리에 저장
+    const enhancedPlayer = await userDataClient.user_player.update({
+      where: {
+        account_id_player_id: {
+          account_id: userId,
+          player_id: player_id,
+        },
+      },
+      data: {
+        enhancement_level: currentEnhancementLevel + 1, // 현재 강화 레벨에서 1 증가
+        count: userPlayer.count - requiredCardCount, // 사용한 선수 카드 갯수를 뺀 값
       },
     });
 
-    if (!player) {
-      return res.status(404).json({ message: "선수를 찾을 수 없습니다." });
-    }
-
-    return res.status(200).json(player);
+    // 강화 성공 여부에 따라 응답을 다르게 처리할 수 있습니다.
+    // 예시로 성공 시에는 성공 메시지와 강화된 선수 데이터를 응답합니다.
+    return res.status(200).json({
+      message: "강화가 성공적으로 완료되었습니다.",
+      enhancedPlayer,
+    });
   } catch (error) {
-    console.error("구단선수 조회 중 에러 발생", error);
-    return res.status(500).json({ message: "구단선수 조회 중 오류가 발생했습니다." });
+    console.error("Error enhancing player:", error);
+    return res.status(500).json({ message: "강화 중 오류가 발생했습니다." });
   }
 });
 
-// 선수 강화
-router.patch("/test", authMiddleware, async (req, res, next) => {
-  try {
-    const userId = req.user.account_id;
-    const { player_id, count } = req.body;
 
-    const account = await userDataClient.account.findFirst({
-      where: {
-        account_id: +userId,
-      },
+
+
+// 강화 선수 데이터 생성 (dev)
+router.post("/enhanced_players_batch", async (req, res) => {
+  const { player_id } = req.body;
+
+  try {
+    // 선수 기본 데이터 조회
+    const player = await gameDataClient.player.findUnique({
+      where: { player_id: player_id },
     });
-    if (!account) {
-      return res.status(403).json({ message: "내 구단이 아닙니다." });
+
+    if (!player) {
+      return res.status(404).json({ message: "선수가 존재하지 않습니다." });
     }
 
-   const player = await gameDataClient.player.findUnique({
-      where: {player_id: player_id}
-    })
+    // 강화된 선수 데이터 생성
+    const enhancedPlayers = [];
 
-    await userDataClient.$transaction(async (tx) => {
-      // 선수 선택
-      const selectedPlayer = await tx.user_player.findUnique({
+    for (let i = 1; i <= 10; i++) {
+      const enhancement_level = i;
+
+      // 강화 값 조회
+      const increment = await gameDataClient.enhanced_value.findFirst({
         where: {
-          account_id_player_id: {
-            account_id: userId,
-            player_id: player_id,
-          },
+          rarity: player.rarity,
+          enhancement_level: enhancement_level,
         },
       });
-      // 선수 강화
-      if (selectedPlayer.reinforce > 0) {
-        for (let i = 0; i <= selectedPlayer.reinforce; i++) {
-          await tx.user_player.update({
-            where: {
-              account_id_player_id: {
-                account_id: userId,
-                player_id: player_id,
-              },
-            },
-            data: {
-              count: selectedPlayer.count - 1,
-            },
-          });
-        }
-        selectedPlayer.reinforce++;
+
+      if (!increment) {
+        return res.status(404).json({ message: "강화 값이 존재하지 않습니다." });
       }
+
+      const enhancedPlayer = await gameDataClient.enhanced_player.create({
+        data: {
+          player_id: player.player_id,
+          enhancement_level: enhancement_level,
+          speed: player.speed + increment.increment,
+          goal_desicion: player.goal_desicion + increment.increment,
+          shoot_power: player.shoot_power + increment.increment,
+          defense: player.defense + increment.increment,
+          stamina: player.stamina + increment.increment,
+        },
+      });
+
+      enhancedPlayers.push(enhancedPlayer);
+    }
+
+    return res.status(200).json({
+      message: "강화된 선수가 정상적으로 추가되었습니다.",
+      enhancedPlayers,
     });
-  } catch (err) {}
+  } catch (error) {
+    console.error("선수 생성 중 에러 발생", error);
+    return res.status(500).json({
+      message: "선수 생성 중 오류가 발생했습니다.",
+      error: error.message,
+    });
+  }
 });
 
+// 강화 수치 생성 API
+router.post("/increment", async (req, res, next) => {
+  const { rarity, enhancement_level, increment } = req.body;
+  console.log("any");
+  try {
+    const createdIncrement = await gameDataClient.enhanced_value.create({
+      data: {
+        rarity,
+        enhancement_level,
+        increment,
+      },
+    });
+
+    return res.status(200).json({ message: "강화 수치를 정상적으로 생성했습니다." });
+  } catch (error) {
+    console.error("강화 수치 생성 중 오류:", error);
+    return res.status(500).json({ message: "강화 수치 생성 중 오류가 발생했습니다." });
+  }
+});
 export default router;
