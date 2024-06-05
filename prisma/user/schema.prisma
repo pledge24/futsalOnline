@@ -56,7 +56,7 @@ model user_info {
   money         Int           @default(10000)      @map("money")
   have_club     Boolean       @default(false)      @map("have_club")
 
-  account      account        @relation(fields: [account_id], references: [account_id])
+  account      account        @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
  
   @@map("user_info")
 }
