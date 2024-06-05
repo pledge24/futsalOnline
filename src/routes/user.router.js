@@ -78,7 +78,11 @@ router.post("/sign-in", async (req, res, next) => {
       }
     );
 
-    return res.status(200).json({ message: "로그인", authorization: `Bearer ${token}` });
+    return res.status(200).json({ 
+      message: "로그인", 
+      authorization: `Bearer ${token}`,
+      acocunt_id: account.account_id
+    });
   } catch (error) {
     console.error("로그인에 오류 발생!", error);
     return res.status(500).json("Server Error: 500");
@@ -121,6 +125,40 @@ router.get("/ranking", async (req, res) => {
   } catch (error) {
     console.error("랭크를 가져오는 중 오류가 발생했습니다.", error);
     res.status(500).json({ error: "서버에서 오류가 발생했습니다." }); 
+  }
+});
+
+
+// 캐쉬 충전 엔드포인트
+router.patch("/payment", async (req, res) => {
+  const Character_Id = +req.params.Character_Id;
+  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+
+  if (!amount || amount <= 1000) {
+    return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
+  }
+
+  try {
+
+    // 캐쉬 충전
+    const newBalance = character.cash + amount;
+
+    await CuserClient.userinfo.update({
+      data: {
+        cash: newBalance,
+      },
+      where: {
+        Character_Id,
+      },
+    });
+
+    return res.status(200).json({
+      message: `캐쉬가 성공적으로 충전되었습니다.`,
+      newBalance: newBalance,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ errorMessage: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요." });
   }
 });
 
