@@ -28,7 +28,7 @@ model user_player {
   account_id        Int
   player_id         Int
   count             Int
-  enhancement_level Int
+  enhancement_level Int     @default(0)
   account           account @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
 
   @@id([account_id, player_id])

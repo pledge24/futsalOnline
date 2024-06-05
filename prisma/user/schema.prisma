@@ -25,10 +25,10 @@ model account {
 }
 
 model user_player {
-  account_id  Int         
+  account_id  Int
   player_id   Int
   count       Int
-  enhancement_level Int
+  enhancement_level  Int   @default(0)
 
   @@id([account_id, player_id])
   account     account     @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
@@ -37,10 +37,11 @@ model user_player {
 }
 
 model user_club {
-  id           Int       @id @default(autoincrement())   @map("id")
   account_id   Int                                      @map("account_id")
   player_id    Int                                      @map("player_id")
+  enhancement_level Int     @default(0)                 @map("enhancement_level")
 
+  @@id([account_id, player_id])
   account      account   @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
  
   @@map("user_club")
@@ -55,8 +56,7 @@ model user_info {
   money         Int           @default(10000)      @map("money")
   have_club     Boolean       @default(false)      @map("have_club")
 
-  account      account        @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
+  account      account        @relation(fields: [account_id], references: [account_id])
  
   @@map("user_info")
 }
-

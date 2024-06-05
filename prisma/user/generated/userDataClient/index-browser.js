@@ -135,9 +135,19 @@ exports.Prisma.User_playerScalarFieldEnum = {
 };
 
 exports.Prisma.User_clubScalarFieldEnum = {
-  id: 'id',
   account_id: 'account_id',
-  player_id: 'player_id'
+  player_id: 'player_id',
+  enhancement_level: 'enhancement_level'
+};
+
+exports.Prisma.User_infoScalarFieldEnum = {
+  account_id: 'account_id',
+  rank_score: 'rank_score',
+  wins: 'wins',
+  loses: 'loses',
+  draws: 'draws',
+  money: 'money',
+  have_club: 'have_club'
 };
 
 exports.Prisma.User_infoScalarFieldEnum = {
