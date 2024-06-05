@@ -2181,30 +2181,35 @@ export namespace Prisma {
     account_id: number | null
     player_id: number | null
     count: number | null
+    enhancement_level: number | null
   }
 
   export type User_playerSumAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    enhancement_level: number | null
   }
 
   export type User_playerMinAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    enhancement_level: number | null
   }
 
   export type User_playerMaxAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
+    enhancement_level: number | null
   }
 
   export type User_playerCountAggregateOutputType = {
     account_id: number
     player_id: number
     count: number
+    enhancement_level: number
     _all: number
   }
 
@@ -2213,30 +2218,35 @@ export namespace Prisma {
     account_id?: true
     player_id?: true
     count?: true
+    enhancement_level?: true
   }
 
   export type User_playerSumAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    enhancement_level?: true
   }
 
   export type User_playerMinAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    enhancement_level?: true
   }
 
   export type User_playerMaxAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    enhancement_level?: true
   }
 
   export type User_playerCountAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
+    enhancement_level?: true
     _all?: true
   }
 
@@ -2330,6 +2340,7 @@ export namespace Prisma {
     account_id: number
     player_id: number
     count: number
+    enhancement_level: number
     _count: User_playerCountAggregateOutputType | null
     _avg: User_playerAvgAggregateOutputType | null
     _sum: User_playerSumAggregateOutputType | null
@@ -2355,6 +2366,7 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
+    enhancement_level?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_player"]>
 
@@ -2362,6 +2374,7 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
+    enhancement_level?: boolean
   }
 
 
@@ -2379,6 +2392,7 @@ export namespace Prisma {
       account_id: number
       player_id: number
       count: number
+      enhancement_level: number
     }, ExtArgs["result"]["user_player"]>
     composites: {}
   }
@@ -2777,6 +2791,7 @@ export namespace Prisma {
     readonly account_id: FieldRef<"user_player", 'Int'>
     readonly player_id: FieldRef<"user_player", 'Int'>
     readonly count: FieldRef<"user_player", 'Int'>
+    readonly enhancement_level: FieldRef<"user_player", 'Int'>
   }
     
 
@@ -3103,65 +3118,65 @@ export namespace Prisma {
   }
 
   export type User_clubAvgAggregateOutputType = {
-    id: number | null
     account_id: number | null
     player_id: number | null
+    enhancement_level: number | null
   }
 
   export type User_clubSumAggregateOutputType = {
-    id: number | null
     account_id: number | null
     player_id: number | null
+    enhancement_level: number | null
   }
 
   export type User_clubMinAggregateOutputType = {
-    id: number | null
     account_id: number | null
     player_id: number | null
+    enhancement_level: number | null
   }
 
   export type User_clubMaxAggregateOutputType = {
-    id: number | null
     account_id: number | null
     player_id: number | null
+    enhancement_level: number | null
   }
 
   export type User_clubCountAggregateOutputType = {
-    id: number
     account_id: number
     player_id: number
+    enhancement_level: number
     _all: number
   }
 
 
   export type User_clubAvgAggregateInputType = {
-    id?: true
     account_id?: true
     player_id?: true
+    enhancement_level?: true
   }
 
   export type User_clubSumAggregateInputType = {
-    id?: true
     account_id?: true
     player_id?: true
+    enhancement_level?: true
   }
 
   export type User_clubMinAggregateInputType = {
-    id?: true
     account_id?: true
     player_id?: true
+    enhancement_level?: true
   }
 
   export type User_clubMaxAggregateInputType = {
-    id?: true
     account_id?: true
     player_id?: true
+    enhancement_level?: true
   }
 
   export type User_clubCountAggregateInputType = {
-    id?: true
     account_id?: true
     player_id?: true
+    enhancement_level?: true
     _all?: true
   }
 
@@ -3252,9 +3267,9 @@ export namespace Prisma {
   }
 
   export type User_clubGroupByOutputType = {
-    id: number
     account_id: number
     player_id: number
+    enhancement_level: number
     _count: User_clubCountAggregateOutputType | null
     _avg: User_clubAvgAggregateOutputType | null
     _sum: User_clubSumAggregateOutputType | null
@@ -3277,16 +3292,16 @@ export namespace Prisma {
 
 
   export type user_clubSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    id?: boolean
     account_id?: boolean
     player_id?: boolean
+    enhancement_level?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_club"]>
 
   export type user_clubSelectScalar = {
-    id?: boolean
     account_id?: boolean
     player_id?: boolean
+    enhancement_level?: boolean
   }
 
 
@@ -3301,9 +3316,9 @@ export namespace Prisma {
       account: Prisma.$accountPayload<ExtArgs>
     }
     scalars: $Extensions.GetPayloadResult<{
-      id: number
       account_id: number
       player_id: number
+      enhancement_level: number
     }, ExtArgs["result"]["user_club"]>
     composites: {}
   }
@@ -3396,8 +3411,8 @@ export namespace Prisma {
      * // Get first 10 User_clubs
      * const user_clubs = await prisma.user_club.findMany({ take: 10 })
      * 
-     * // Only select the `id`
-     * const user_clubWithIdOnly = await prisma.user_club.findMany({ select: { id: true } })
+     * // Only select the `account_id`
+     * const user_clubWithAccount_idOnly = await prisma.user_club.findMany({ select: { account_id: true } })
      * 
     **/
     findMany<T extends user_clubFindManyArgs<ExtArgs>>(
@@ -3699,9 +3714,9 @@ export namespace Prisma {
    * Fields of the user_club model
    */ 
   interface user_clubFieldRefs {
-    readonly id: FieldRef<"user_club", 'Int'>
     readonly account_id: FieldRef<"user_club", 'Int'>
     readonly player_id: FieldRef<"user_club", 'Int'>
+    readonly enhancement_level: FieldRef<"user_club", 'Int'>
   }
     
 
@@ -5024,16 +5039,17 @@ export namespace Prisma {
   export const User_playerScalarFieldEnum: {
     account_id: 'account_id',
     player_id: 'player_id',
-    count: 'count'
+    count: 'count',
+    enhancement_level: 'enhancement_level'
   };
 
   export type User_playerScalarFieldEnum = (typeof User_playerScalarFieldEnum)[keyof typeof User_playerScalarFieldEnum]
 
 
   export const User_clubScalarFieldEnum: {
-    id: 'id',
     account_id: 'account_id',
-    player_id: 'player_id'
+    player_id: 'player_id',
+    enhancement_level: 'enhancement_level'
   };
 
   export type User_clubScalarFieldEnum = (typeof User_clubScalarFieldEnum)[keyof typeof User_clubScalarFieldEnum]
@@ -5173,6 +5189,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    enhancement_level?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
@@ -5180,6 +5197,7 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
@@ -5191,6 +5209,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    enhancement_level?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }, "account_id_player_id">
 
@@ -5198,6 +5217,7 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
     _count?: user_playerCountOrderByAggregateInput
     _avg?: user_playerAvgOrderByAggregateInput
     _max?: user_playerMaxOrderByAggregateInput
@@ -5212,39 +5232,41 @@ export namespace Prisma {
     account_id?: IntWithAggregatesFilter<"user_player"> | number
     player_id?: IntWithAggregatesFilter<"user_player"> | number
     count?: IntWithAggregatesFilter<"user_player"> | number
+    enhancement_level?: IntWithAggregatesFilter<"user_player"> | number
   }
 
   export type user_clubWhereInput = {
     AND?: user_clubWhereInput | user_clubWhereInput[]
     OR?: user_clubWhereInput[]
     NOT?: user_clubWhereInput | user_clubWhereInput[]
-    id?: IntFilter<"user_club"> | number
     account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
+    enhancement_level?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
   export type user_clubOrderByWithRelationInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
   export type user_clubWhereUniqueInput = Prisma.AtLeast<{
-    id?: number
+    account_id_player_id?: user_clubAccount_idPlayer_idCompoundUniqueInput
     AND?: user_clubWhereInput | user_clubWhereInput[]
     OR?: user_clubWhereInput[]
     NOT?: user_clubWhereInput | user_clubWhereInput[]
     account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
+    enhancement_level?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "id">
+  }, "account_id_player_id">
 
   export type user_clubOrderByWithAggregationInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
     _count?: user_clubCountOrderByAggregateInput
     _avg?: user_clubAvgOrderByAggregateInput
     _max?: user_clubMaxOrderByAggregateInput
@@ -5256,9 +5278,9 @@ export namespace Prisma {
     AND?: user_clubScalarWhereWithAggregatesInput | user_clubScalarWhereWithAggregatesInput[]
     OR?: user_clubScalarWhereWithAggregatesInput[]
     NOT?: user_clubScalarWhereWithAggregatesInput | user_clubScalarWhereWithAggregatesInput[]
-    id?: IntWithAggregatesFilter<"user_club"> | number
     account_id?: IntWithAggregatesFilter<"user_club"> | number
     player_id?: IntWithAggregatesFilter<"user_club"> | number
+    enhancement_level?: IntWithAggregatesFilter<"user_club"> | number
   }
 
   export type user_infoWhereInput = {
@@ -5396,6 +5418,7 @@ export namespace Prisma {
   export type user_playerCreateInput = {
     player_id: number
     count: number
+    enhancement_level?: number
     account: accountCreateNestedOneWithoutUser_playersInput
   }
 
@@ -5403,11 +5426,13 @@ export namespace Prisma {
     account_id: number
     player_id: number
     count: number
+    enhancement_level?: number
   }
 
   export type user_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
     account?: accountUpdateOneRequiredWithoutUser_playersNestedInput
   }
 
@@ -5415,61 +5440,68 @@ export namespace Prisma {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerCreateManyInput = {
     account_id: number
     player_id: number
     count: number
+    enhancement_level?: number
   }
 
   export type user_playerUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateManyInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateInput = {
     player_id: number
+    enhancement_level?: number
     account: accountCreateNestedOneWithoutUser_clubsInput
   }
 
   export type user_clubUncheckedCreateInput = {
-    id?: number
     account_id: number
     player_id: number
+    enhancement_level?: number
   }
 
   export type user_clubUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
     account?: accountUpdateOneRequiredWithoutUser_clubsNestedInput
   }
 
   export type user_clubUncheckedUpdateInput = {
-    id?: IntFieldUpdateOperationsInput | number
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateManyInput = {
-    id?: number
     account_id: number
     player_id: number
+    enhancement_level?: number
   }
 
   export type user_clubUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUncheckedUpdateManyInput = {
-    id?: IntFieldUpdateOperationsInput | number
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_infoCreateInput = {
@@ -5695,60 +5727,70 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_playerAvgOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_playerMaxOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_playerMinOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_playerSumOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
+    enhancement_level?: SortOrder
+  }
+
+  export type user_clubAccount_idPlayer_idCompoundUniqueInput = {
+    account_id: number
+    player_id: number
   }
 
   export type user_clubCountOrderByAggregateInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_clubAvgOrderByAggregateInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_clubMaxOrderByAggregateInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_clubMinOrderByAggregateInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type user_clubSumOrderByAggregateInput = {
-    id?: SortOrder
     account_id?: SortOrder
     player_id?: SortOrder
+    enhancement_level?: SortOrder
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -6100,11 +6142,13 @@ export namespace Prisma {
   export type user_playerCreateWithoutAccountInput = {
     player_id: number
     count: number
+    enhancement_level?: number
   }
 
   export type user_playerUncheckedCreateWithoutAccountInput = {
     player_id: number
     count: number
+    enhancement_level?: number
   }
 
   export type user_playerCreateOrConnectWithoutAccountInput = {
@@ -6119,11 +6163,12 @@ export namespace Prisma {
 
   export type user_clubCreateWithoutAccountInput = {
     player_id: number
+    enhancement_level?: number
   }
 
   export type user_clubUncheckedCreateWithoutAccountInput = {
-    id?: number
     player_id: number
+    enhancement_level?: number
   }
 
   export type user_clubCreateOrConnectWithoutAccountInput = {
@@ -6182,6 +6227,7 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
+    enhancement_level?: IntFilter<"user_player"> | number
   }
 
   export type user_clubUpsertWithWhereUniqueWithoutAccountInput = {
@@ -6204,9 +6250,9 @@ export namespace Prisma {
     AND?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
     OR?: user_clubScalarWhereInput[]
     NOT?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
-    id?: IntFilter<"user_club"> | number
     account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
+    enhancement_level?: IntFilter<"user_club"> | number
   }
 
   export type user_infoUpsertWithoutAccountInput = {
@@ -6403,40 +6449,45 @@ export namespace Prisma {
   export type user_playerCreateManyAccountInput = {
     player_id: number
     count: number
+    enhancement_level?: number
   }
 
   export type user_clubCreateManyAccountInput = {
-    id?: number
     player_id: number
+    enhancement_level?: number
   }
 
   export type user_playerUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateManyWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUncheckedUpdateWithoutAccountInput = {
-    id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUncheckedUpdateManyWithoutAccountInput = {
-    id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
 
