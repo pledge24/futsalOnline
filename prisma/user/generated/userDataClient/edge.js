@@ -140,7 +140,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/mnt/c/Users/gwang/OneDrive/문서/GitHub/futsalOnline/prisma/user/generated/userDataClient",
+      "value": "C:\\Users\\zmwps\\OneDrive\\바탕 화면\\NodeJSWorkspace\\futsalOnline\\prisma\\user\\generated\\userDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -149,7 +149,7 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "debian-openssl-3.0.x",
+        "value": "windows",
         "native": true
       },
       {
