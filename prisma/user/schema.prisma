@@ -19,6 +19,7 @@ model account {
 
   user_players   user_player[]
   user_clubs     user_club[]
+  user_info      user_info?
 
   @@map("account")
 }
@@ -42,4 +43,18 @@ model user_club {
   account      account   @relation(fields: [account_id], references: [account_id])
  
   @@map("user_club")
+}
+
+model user_info {
+  account_id    Int           @id                  @map("account_id")
+  rank_score    Int           @default(1000)       @map("rank_score")
+  wins          Int           @default(0)          @map("wins")
+  loses         Int           @default(0)          @map("loses")
+  draws         Int           @default(0)          @map("draws")
+  money         Int           @default(10000)      @map("money")
+  have_club     Boolean       @default(false)      @map("have_club")
+
+  account      account        @relation(fields: [account_id], references: [account_id])
+ 
+  @@map("user_info")
 }
