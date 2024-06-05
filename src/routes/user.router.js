@@ -138,16 +138,6 @@ router.patch("/payment", async (req, res) => {
   }
 
   try {
-    // 캐릭터 정보 가져오기
-    const character = await Characters.findUnique({
-      where: {
-        Character_Id,
-      },
-    });
-
-    if (!character) {
-      return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
-    }
 
     // 캐쉬 충전
     const newBalance = character.cash + amount;
