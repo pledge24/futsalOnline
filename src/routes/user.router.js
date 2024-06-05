@@ -128,4 +128,48 @@ router.get("/ranking", async (req, res) => {
 });
 
 
+// 캐쉬 충전 엔드포인트
+router.patch("/payment", async (req, res) => {
+  const Character_Id = +req.params.Character_Id;
+  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+
+  if (!amount || amount <= 1000) {
+    return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
+  }
+
+  try {
+    // 캐릭터 정보 가져오기
+    const character = await Characters.findUnique({
+      where: {
+        Character_Id,
+      },
+    });
+
+    if (!character) {
+      return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
+    }
+
+    // 캐쉬 충전
+    const newBalance = character.cash + amount;
+
+    await CuserClient.userinfo.update({
+      data: {
+        cash: newBalance,
+      },
+      where: {
+        Character_Id,
+      },
+    });
+
+    return res.status(200).json({
+      message: `캐쉬가 성공적으로 충전되었습니다.`,
+      newBalance: newBalance,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ errorMessage: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요." });
+  }
+});
+
+
 export default router;
