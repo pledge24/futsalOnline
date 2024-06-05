@@ -92,4 +92,47 @@ router.post("/sign-in", async (req, res, next) => {
   }
 });
 
+//랭킹 api
+router.get("/ranking", async (req, res) => {
+  try {
+    const userRank = await userDataClient.user_info.findMany({
+      orderBy: {
+        //내림차순
+        rank_score: 'desc'
+      },
+      //10개 출력
+      take: 10,
+      include:{
+        //계정 테이블에 접근해서 유저이름 가져오기
+        account:{
+          select:{
+          username:true
+          }
+        }
+      }
+    });
+
+    const rankedUsers = userRank.map((user, index)=>{
+      const totalGames = user.wins + user.draws + user.loses;
+      // 승률 계산
+      const winRate = totalGames > 0 ? (user.wins / totalGames) * 100 : 0;
+      return {
+      rank: index +1,
+      username:user.account.username,
+      rank_score:user.rank_score,
+      winRate: winRate.toFixed(2) +"%",//소숫점 2자리까지 표시
+      win:user.wins,
+      draws:user.draws,
+      loses:user.loses
+    };
+    });
+
+    res.status(200).json(rankedUsers); 
+  } catch (error) {
+    console.error("랭크를 가져오는 중 오류가 발생했습니다.", error);
+    res.status(500).json({ error: "서버에서 오류가 발생했습니다." }); 
+  }
+});
+
+
 export default router;
