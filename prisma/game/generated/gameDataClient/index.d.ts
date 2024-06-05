@@ -1997,66 +1997,56 @@ export namespace Prisma {
   export type Enhanced_playerAvgAggregateOutputType = {
     enhanced_player_id: number | null
     player_id: number | null
-    account_id: number | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
     shoot_power: number | null
     defense: number | null
     stamina: number | null
-    count: number | null
   }
 
   export type Enhanced_playerSumAggregateOutputType = {
     enhanced_player_id: number | null
     player_id: number | null
-    account_id: number | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
     shoot_power: number | null
     defense: number | null
     stamina: number | null
-    count: number | null
   }
 
   export type Enhanced_playerMinAggregateOutputType = {
     enhanced_player_id: number | null
     player_id: number | null
-    account_id: number | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
     shoot_power: number | null
     defense: number | null
     stamina: number | null
-    count: number | null
   }
 
   export type Enhanced_playerMaxAggregateOutputType = {
     enhanced_player_id: number | null
     player_id: number | null
-    account_id: number | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
     shoot_power: number | null
     defense: number | null
     stamina: number | null
-    count: number | null
   }
 
   export type Enhanced_playerCountAggregateOutputType = {
     enhanced_player_id: number
     player_id: number
-    account_id: number
     enhancement_level: number
     speed: number
     goal_desicion: number
     shoot_power: number
     defense: number
     stamina: number
-    count: number
     _all: number
   }
 
@@ -2064,66 +2054,56 @@ export namespace Prisma {
   export type Enhanced_playerAvgAggregateInputType = {
     enhanced_player_id?: true
     player_id?: true
-    account_id?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
     shoot_power?: true
     defense?: true
     stamina?: true
-    count?: true
   }
 
   export type Enhanced_playerSumAggregateInputType = {
     enhanced_player_id?: true
     player_id?: true
-    account_id?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
     shoot_power?: true
     defense?: true
     stamina?: true
-    count?: true
   }
 
   export type Enhanced_playerMinAggregateInputType = {
     enhanced_player_id?: true
     player_id?: true
-    account_id?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
     shoot_power?: true
     defense?: true
     stamina?: true
-    count?: true
   }
 
   export type Enhanced_playerMaxAggregateInputType = {
     enhanced_player_id?: true
     player_id?: true
-    account_id?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
     shoot_power?: true
     defense?: true
     stamina?: true
-    count?: true
   }
 
   export type Enhanced_playerCountAggregateInputType = {
     enhanced_player_id?: true
     player_id?: true
-    account_id?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
     shoot_power?: true
     defense?: true
     stamina?: true
-    count?: true
     _all?: true
   }
 
@@ -2216,14 +2196,12 @@ export namespace Prisma {
   export type Enhanced_playerGroupByOutputType = {
     enhanced_player_id: number
     player_id: number
-    account_id: number
     enhancement_level: number
     speed: number
     goal_desicion: number
     shoot_power: number
     defense: number
     stamina: number
-    count: number
     _count: Enhanced_playerCountAggregateOutputType | null
     _avg: Enhanced_playerAvgAggregateOutputType | null
     _sum: Enhanced_playerSumAggregateOutputType | null
@@ -2248,27 +2226,23 @@ export namespace Prisma {
   export type enhanced_playerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     enhanced_player_id?: boolean
     player_id?: boolean
-    account_id?: boolean
     enhancement_level?: boolean
     speed?: boolean
     goal_desicion?: boolean
     shoot_power?: boolean
     defense?: boolean
     stamina?: boolean
-    count?: boolean
   }, ExtArgs["result"]["enhanced_player"]>
 
   export type enhanced_playerSelectScalar = {
     enhanced_player_id?: boolean
     player_id?: boolean
-    account_id?: boolean
     enhancement_level?: boolean
     speed?: boolean
     goal_desicion?: boolean
     shoot_power?: boolean
     defense?: boolean
     stamina?: boolean
-    count?: boolean
   }
 
 
@@ -2279,14 +2253,12 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       enhanced_player_id: number
       player_id: number
-      account_id: number
       enhancement_level: number
       speed: number
       goal_desicion: number
       shoot_power: number
       defense: number
       stamina: number
-      count: number
     }, ExtArgs["result"]["enhanced_player"]>
     composites: {}
   }
@@ -2683,14 +2655,12 @@ export namespace Prisma {
   interface enhanced_playerFieldRefs {
     readonly enhanced_player_id: FieldRef<"enhanced_player", 'Int'>
     readonly player_id: FieldRef<"enhanced_player", 'Int'>
-    readonly account_id: FieldRef<"enhanced_player", 'Int'>
     readonly enhancement_level: FieldRef<"enhanced_player", 'Int'>
     readonly speed: FieldRef<"enhanced_player", 'Int'>
     readonly goal_desicion: FieldRef<"enhanced_player", 'Int'>
     readonly shoot_power: FieldRef<"enhanced_player", 'Int'>
     readonly defense: FieldRef<"enhanced_player", 'Int'>
     readonly stamina: FieldRef<"enhanced_player", 'Int'>
-    readonly count: FieldRef<"enhanced_player", 'Int'>
   }
     
 
@@ -3883,14 +3853,12 @@ export namespace Prisma {
   export const Enhanced_playerScalarFieldEnum: {
     enhanced_player_id: 'enhanced_player_id',
     player_id: 'player_id',
-    account_id: 'account_id',
     enhancement_level: 'enhancement_level',
     speed: 'speed',
     goal_desicion: 'goal_desicion',
     shoot_power: 'shoot_power',
     defense: 'defense',
-    stamina: 'stamina',
-    count: 'count'
+    stamina: 'stamina'
   };
 
   export type Enhanced_playerScalarFieldEnum = (typeof Enhanced_playerScalarFieldEnum)[keyof typeof Enhanced_playerScalarFieldEnum]
@@ -4018,27 +3986,23 @@ export namespace Prisma {
     NOT?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
     enhanced_player_id?: IntFilter<"enhanced_player"> | number
     player_id?: IntFilter<"enhanced_player"> | number
-    account_id?: IntFilter<"enhanced_player"> | number
     enhancement_level?: IntFilter<"enhanced_player"> | number
     speed?: IntFilter<"enhanced_player"> | number
     goal_desicion?: IntFilter<"enhanced_player"> | number
     shoot_power?: IntFilter<"enhanced_player"> | number
     defense?: IntFilter<"enhanced_player"> | number
     stamina?: IntFilter<"enhanced_player"> | number
-    count?: IntFilter<"enhanced_player"> | number
   }
 
   export type enhanced_playerOrderByWithRelationInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_playerWhereUniqueInput = Prisma.AtLeast<{
@@ -4047,27 +4011,23 @@ export namespace Prisma {
     OR?: enhanced_playerWhereInput[]
     NOT?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
     player_id?: IntFilter<"enhanced_player"> | number
-    account_id?: IntFilter<"enhanced_player"> | number
     enhancement_level?: IntFilter<"enhanced_player"> | number
     speed?: IntFilter<"enhanced_player"> | number
     goal_desicion?: IntFilter<"enhanced_player"> | number
     shoot_power?: IntFilter<"enhanced_player"> | number
     defense?: IntFilter<"enhanced_player"> | number
     stamina?: IntFilter<"enhanced_player"> | number
-    count?: IntFilter<"enhanced_player"> | number
   }, "enhanced_player_id">
 
   export type enhanced_playerOrderByWithAggregationInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
     _count?: enhanced_playerCountOrderByAggregateInput
     _avg?: enhanced_playerAvgOrderByAggregateInput
     _max?: enhanced_playerMaxOrderByAggregateInput
@@ -4081,14 +4041,12 @@ export namespace Prisma {
     NOT?: enhanced_playerScalarWhereWithAggregatesInput | enhanced_playerScalarWhereWithAggregatesInput[]
     enhanced_player_id?: IntWithAggregatesFilter<"enhanced_player"> | number
     player_id?: IntWithAggregatesFilter<"enhanced_player"> | number
-    account_id?: IntWithAggregatesFilter<"enhanced_player"> | number
     enhancement_level?: IntWithAggregatesFilter<"enhanced_player"> | number
     speed?: IntWithAggregatesFilter<"enhanced_player"> | number
     goal_desicion?: IntWithAggregatesFilter<"enhanced_player"> | number
     shoot_power?: IntWithAggregatesFilter<"enhanced_player"> | number
     defense?: IntWithAggregatesFilter<"enhanced_player"> | number
     stamina?: IntWithAggregatesFilter<"enhanced_player"> | number
-    count?: IntWithAggregatesFilter<"enhanced_player"> | number
   }
 
   export type enhanced_valueWhereInput = {
@@ -4219,90 +4177,76 @@ export namespace Prisma {
 
   export type enhanced_playerCreateInput = {
     player_id: number
-    account_id: number
     enhancement_level: number
     speed: number
     goal_desicion: number
     shoot_power: number
     defense: number
     stamina: number
-    count: number
   }
 
   export type enhanced_playerUncheckedCreateInput = {
     enhanced_player_id?: number
     player_id: number
-    account_id: number
     enhancement_level: number
     speed: number
     goal_desicion: number
     shoot_power: number
     defense: number
     stamina: number
-    count: number
   }
 
   export type enhanced_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    account_id?: IntFieldUpdateOperationsInput | number
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
     shoot_power?: IntFieldUpdateOperationsInput | number
     defense?: IntFieldUpdateOperationsInput | number
     stamina?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
   }
 
   export type enhanced_playerUncheckedUpdateInput = {
     enhanced_player_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
-    account_id?: IntFieldUpdateOperationsInput | number
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
     shoot_power?: IntFieldUpdateOperationsInput | number
     defense?: IntFieldUpdateOperationsInput | number
     stamina?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
   }
 
   export type enhanced_playerCreateManyInput = {
     enhanced_player_id?: number
     player_id: number
-    account_id: number
     enhancement_level: number
     speed: number
     goal_desicion: number
     shoot_power: number
     defense: number
     stamina: number
-    count: number
   }
 
   export type enhanced_playerUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    account_id?: IntFieldUpdateOperationsInput | number
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
     shoot_power?: IntFieldUpdateOperationsInput | number
     defense?: IntFieldUpdateOperationsInput | number
     stamina?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
   }
 
   export type enhanced_playerUncheckedUpdateManyInput = {
     enhanced_player_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
-    account_id?: IntFieldUpdateOperationsInput | number
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
     shoot_power?: IntFieldUpdateOperationsInput | number
     defense?: IntFieldUpdateOperationsInput | number
     stamina?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
   }
 
   export type enhanced_valueCreateInput = {
@@ -4463,66 +4407,56 @@ export namespace Prisma {
   export type enhanced_playerCountOrderByAggregateInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_playerAvgOrderByAggregateInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_playerMaxOrderByAggregateInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_playerMinOrderByAggregateInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_playerSumOrderByAggregateInput = {
     enhanced_player_id?: SortOrder
     player_id?: SortOrder
-    account_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
     shoot_power?: SortOrder
     defense?: SortOrder
     stamina?: SortOrder
-    count?: SortOrder
   }
 
   export type enhanced_valueCountOrderByAggregateInput = {
