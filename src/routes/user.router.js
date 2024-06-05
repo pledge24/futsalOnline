@@ -78,7 +78,11 @@ router.post("/sign-in", async (req, res, next) => {
       }
     );
 
-    return res.status(200).json({ message: "로그인", authorization: `Bearer ${token}` });
+    return res.status(200).json({ 
+      message: "로그인", 
+      authorization: `Bearer ${token}`,
+      acocunt_id: account.account_id
+    });
   } catch (error) {
     console.error("로그인에 오류 발생!", error);
     return res.status(500).json("Server Error: 500");
