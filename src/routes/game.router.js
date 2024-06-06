@@ -1120,6 +1120,10 @@ router.post("/play", authMiddleware, async (req, res) => {
     // 각 유저의 골 점수를 계산합니다. 점수 비율이 높을 수록 득점 할 확률이 높으며,
     // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
     let totalScore = myClubScore + opponentClubScore; // 나의 구단 총 점수 + 상대 구단 총 점수
+
+    console.log("myClubScore", myClubScore / totalScore);
+    console.log("opponentClubScore", opponentClubScore / totalScore);
+
     let myGameScore = 0,
       opponentGameScore = 0; // 내 골 점수, 상대 골 점수
     const maxGoals = 10; // 최대 골 시도 횟수
@@ -1134,8 +1138,24 @@ router.post("/play", authMiddleware, async (req, res) => {
     // Test용
     // console.log("sssssss", myGameScore, opponentGameScore);
 
+    const opponentAccount = await userDataClient.account.findFirst({
+      where:{
+        account_id: opponentClub[0].account_id
+      }
+    });
+
+    const opponentUserInfo = await userDataClient.user_info.findFirst({
+      where:{
+        account_id: opponentClub[0].account_id
+      }
+    })
+
+
     // 게임 결과를 정산하고, 결과에 따른 메세지를 gameResult에 저장합니다.
     const gameResult = {};
+    gameResult.opponent = `상대: ${opponentAccount.username}, account_id: ${opponentAccount.account_id}`;
+    gameResult.myGoalRate = myClubScore / totalScore;
+    gameResult.OppGoalRate = opponentClubScore / totalScore;
     if (myGameScore > opponentGameScore) {
       // 나의 승리
       gameResult.result = `승리하였습니다! ${myGameScore} : ${opponentGameScore}`;
@@ -1170,7 +1190,7 @@ router.post("/play", authMiddleware, async (req, res) => {
                   increment: 1,
                 },
                 rank_score: {
-                  decrement: 100,
+                  decrement: opponentUserInfo.rank_score - 100 >= 0 ? 100 : 0,
                 },
               },
             });
@@ -1201,7 +1221,7 @@ router.post("/play", authMiddleware, async (req, res) => {
                   increment: 1,
                 },
                 rank_score: {
-                  decrement: myUserInfo.rank_score - 100 > 0 ? 100 : 0,
+                  decrement: myUserInfo.rank_score - 100 >= 0 ? 100 : 0,
                 },
               },
             });
