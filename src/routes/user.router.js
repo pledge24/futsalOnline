@@ -5,7 +5,6 @@ import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
-import { userDataClient } from "../middlewares/userValidate.js";
 import dotenv from "dotenv";
 
 
@@ -136,43 +135,44 @@ router.get("/ranking", async (req, res) => {
 
 
 // 캐쉬 충전 엔드포인트
-router.patch("/payment", async (req, res) => {
-  const { Character_Id, amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+router.patch("/payment", authMiddleware, async (req, res) => {
 
-  if (!Character_Id ||  Character_Id <= 0) {
-    return res.status(400).json({ errorMessage: "유효한 Character_Id를 제공해야 합니다." });
-  }
 
+  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+  const userId= req.user.account_id;//유저 아이디를 미들웨어에서 가져옵니다.
+
+  //충전 금액 유효성 검사
   if (!amount || amount < 1000) {
     return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
   }
 
   try {
+    const account = await userDataClient.user_info.findUnique({
+      where: { account_id: userId },
+  });
 
-    const character = await userDataClient.userinfo.findUnique({
-      where: { Character_Id: Number(Character_Id) },
-    });
-
-    if (!character) {
+    if (!account) {
       return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
     }
     
     // 캐쉬 충전
-    const newBalance = character.cash + amount;
+    const chargedCash = Math.floor(amount / 10);
 
-    await userDataClient.userinfo.update({
+    const updatedUserInfo =await userDataClient.user_info.update({
       data: {
-        cash: newBalance,
+        money: {
+          increment:chargedCash
+        },
       },
       where: {
-        Character_Id,
+        account_id:userId,
       },
       
     });
 
     return res.status(200).json({
-      message: `캐쉬가 성공적으로 충전되었습니다.`,
-      newBalance: newBalance,
+      message: `${chargedCash}이 충전되었습니다.`,
+      gamemoney: updatedUserInfo.money
     });
     
   } catch (error) {
