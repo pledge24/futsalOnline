@@ -207,6 +207,7 @@ await userDataClient.$transaction(async (tx) => {
         where: {
             account_id: userId,
             player_id: player.player_id,
+            enhancement_level:0
           },
         });
 
