@@ -1157,8 +1157,9 @@ router.post("/play", authMiddleware, async (req, res) => {
     // 게임 결과를 정산하고, 결과에 따른 메세지를 gameResult에 저장합니다.
     const gameResult = {};
     gameResult.opponent = `상대: ${opponentAccount.username}, account_id: ${opponentAccount.account_id}`;
-    gameResult.myGoalRate = myClubScore / totalScore;
-    gameResult.OppGoalRate = opponentClubScore / totalScore;
+    gameResult.RatingVs =  `Me : Opponent, ${myUserInfo.rank_score} : ${opponentUserInfo.rank_score}`;
+    gameResult.myGoalRate = (myClubScore / totalScore * 100).toFixed(2) + "%";
+    gameResult.OppGoalRate = (opponentClubScore / totalScore * 100).toFixed(2) + "%";
     if (myGameScore > opponentGameScore) {
       // 나의 승리
       gameResult.result = `승리하였습니다! ${myGameScore} : ${opponentGameScore}`;
