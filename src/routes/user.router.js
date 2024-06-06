@@ -7,6 +7,7 @@ import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
 import dotenv from "dotenv";
 
+
 dotenv.config();
 
 const router = express.Router();
@@ -134,35 +135,49 @@ router.get("/ranking", async (req, res) => {
 
 
 // 캐쉬 충전 엔드포인트
-router.patch("/payment", async (req, res) => {
-  const Character_Id = +req.params.Character_Id;
-  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+router.patch("/payment", authMiddleware, async (req, res) => {
 
-  if (!amount || amount <= 1000) {
+
+  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+  const userId= req.user.account_id;//유저 아이디를 미들웨어에서 가져옵니다.
+
+  //충전 금액 유효성 검사
+  if (!amount || amount < 1000) {
     return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
   }
 
   try {
+    const account = await userDataClient.user_info.findUnique({
+      where: { account_id: userId },
+  });
 
+    if (!account) {
+      return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
+    }
+    
     // 캐쉬 충전
-    const newBalance = character.cash + amount;
+    const chargedCash = Math.floor(amount / 10);
 
-    await CuserClient.userinfo.update({
+    const updatedUserInfo =await userDataClient.user_info.update({
       data: {
-        cash: newBalance,
+        money: {
+          increment:chargedCash
+        },
       },
       where: {
-        Character_Id,
+        account_id:userId,
       },
+      
     });
 
     return res.status(200).json({
-      message: `캐쉬가 성공적으로 충전되었습니다.`,
-      newBalance: newBalance,
+      message: `${chargedCash}이 충전되었습니다.`,
+      gamemoney: updatedUserInfo.money
     });
+    
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ errorMessage: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요." });
+    console.error("캐쉬를 가져오는 중 오류가 발생했습니다.", error);
+    res.status(500).json({ error: "서버에서 오류가 발생했습니다." }); 
   }
 });
 

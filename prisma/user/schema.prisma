@@ -30,7 +30,7 @@ model user_player {
   count       Int
   enhancement_level  Int   @default(0)
 
-  @@id([account_id, player_id])
+  @@id([account_id, player_id, enhancement_level])
   account     account     @relation(fields: [account_id], references: [account_id], onDelete: Cascade)
 
   @@map("user_player")
