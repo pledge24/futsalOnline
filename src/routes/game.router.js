@@ -60,6 +60,7 @@ router.get("/player/:player_id", async (req, res) => {
         player_id: true,
         name: true,
         speed: true,
+        shoot_power: true,
         goal_desicion: true,
         defense: true,
         stamina: true,
@@ -419,7 +420,7 @@ router.delete("/club", authMiddleware, async (req, res) => {
 
     // 만약 구단에 선수가 한 명도 없다면, 해당 사실을 클라이언트에게 전달합니다.
     if (club.length === 0) {
-      return res.status(404).json({ message: "내 구단이 존재하지 않습니다." });
+      return res.status(404).json({ message: "내 구단에 선수가 존재하지 않습니다." });
     }
 
     // 내 구단에서 해당 플레이어가 있는지 확인합니다.
@@ -966,7 +967,7 @@ router.post("/play", authMiddleware, async (req, res) => {
       const weight = {
         speed: 0.1,
         goal_decision: 0.25,
-        show_power: 0.15,
+        shoot_power: 0.15,
         defense: 0.3,
         stamina: 0.2,
       };
