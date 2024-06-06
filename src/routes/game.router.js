@@ -109,102 +109,108 @@ router.put("/player/:player_id", async (req, res) => {
   }
 });
 
-/** 가챠 api */ 
+/** 가챠 api */
 
-router.post('/gatcha', authMiddleware, async (req, res) => {try {
-  const { tickets } = req.body;
-  console.log(tickets);
+router.post("/gatcha", authMiddleware, async (req, res) => {
+  try {
+    const { tickets } = req.body;
+    console.log(tickets);
 
-  const userId= req.user.account_id;
-  const numGatcha = +tickets === 10 ? 10 : (+tickets === 1 ? 1 : 0);
-  //가챠 횟수 유효성 검사
-  //만약, tickets가 10개면 numGatcha는 10, 티켓이 한개면, 가챠횟수도 하나 그 외에는 유효하지 않습니다.
-  //가챠 실행전 가챠횟수 확인용
-  //console.log("가챠횟수:"+numGatcha);
-  if(!numGatcha){
-    res.status(400).json({error: "falsy한 가챠횟수입니다"});
-  }
-  let gatchaResult = [];
-  let gatchaMessage= [];
-  //단하나 뿐인 플래티넘 카드, id로 접근해서 가져왔습니다
-  const zlatan = await gameDataClient.player.findUnique({
-    where: {
-      player_id: 9
+    const userId = req.user.account_id;
+    const numGatcha = +tickets === 10 ? 10 : +tickets === 1 ? 1 : 0;
+    //가챠 횟수 유효성 검사
+    //만약, tickets가 10개면 numGatcha는 10, 티켓이 한개면, 가챠횟수도 하나 그 외에는 유효하지 않습니다.
+    //가챠 실행전 가챠횟수 확인용
+    //console.log("가챠횟수:"+numGatcha);
+    if (!numGatcha) {
+      res.status(400).json({ error: "falsy한 가챠횟수입니다" });
     }
-  });
-  const playerInfo = await userDataClient.user_info.findUnique({
-    where: {
-       account_id:userId
-      }
-  });
-  //토큰에 저장된 유저의 남은 캐쉬를 변수에 저장합니다
-  const cashRemainder= playerInfo.money;
-  // console.log("뽑기 전 남은 돈 :"+ cashRemainder);
+    let gatchaResult = [];
+    let gatchaMessage = [];
+    //단하나 뿐인 플래티넘 카드, id로 접근해서 가져왔습니다
+    const zlatan = await gameDataClient.player.findUnique({
+      where: {
+        player_id: 9,
+      },
+    });
+    const playerInfo = await userDataClient.user_info.findUnique({
+      where: {
+        account_id: userId,
+      },
+    });
+    //토큰에 저장된 유저의 남은 캐쉬를 변수에 저장합니다
+    const cashRemainder = playerInfo.money;
+    // console.log("뽑기 전 남은 돈 :"+ cashRemainder);
 
-  //총 비용을 계산해서 변수에 저장합니다.
-  const totalCost = numGatcha * 100;
-  // console.log("뽑기 전 총 비용:"+totalCost);
-  const cashAfterGatcha = cashRemainder - totalCost;
-  //만약 돈이 없으면 가챠를 할 수 없도록 유효성 검사를 합니다.
-  if(cashRemainder < totalCost){
-  return res.status(400).json({ message: "게임머니가 부족해서 가챠를 진행할 수 없습니다."});
-  }
-  //위의 결격 사유에 걸리지 않는 다면, 가챠 횟수만큼 가챠를 실행합니다.
-  //------------가챠 시작-------------
-  for (let i = 0; i < numGatcha; i++) {
-    //우선, 플래티넘찬스(1000분의 1확률로 플래티넘 찬스에 도달하면 즐라탄을 뽑을 수 있습니다)
-    let platinumChance = Math.floor(Math.random() * 1000); 
-    //플래티넘 찬스가 1~1000중 1000이 되면 즐라탄을 획득(0.1퍼센트 확률)
-if (platinumChance === 1000) {
-  //player_id:9번인 즐라탄 전용 메시지입니다. 가챠 메시지에 추가해줍니다.
-  //즐라탄을 가챠결과에 추가해줍니다
-  gatchaMessage.push(`🎉🎉🎉🏆${zlatan.name}🏆이 당신을 뽑았습니다!🎉🎉🎉`);
-  gatchaResult.push(zlatan);
-}
-//플래티넘 카드 뽑기에 실패했다면 실행되는 브실골 뽑기입니다.
-    else{
-//브론즈, 실버, 골드의 선수들을 players 변수에 저장합니다.
-      const players = await gameDataClient.player.findMany({
-        where: {
-          rarity: {
-            in: ["bronze", "silver", "gold"],
+    //총 비용을 계산해서 변수에 저장합니다.
+    const totalCost = numGatcha * 100;
+    // console.log("뽑기 전 총 비용:"+totalCost);
+    const cashAfterGatcha = cashRemainder - totalCost;
+    //만약 돈이 없으면 가챠를 할 수 없도록 유효성 검사를 합니다.
+    if (cashRemainder < totalCost) {
+      return res.status(400).json({ message: "게임머니가 부족해서 가챠를 진행할 수 없습니다." });
+    }
+    //위의 결격 사유에 걸리지 않는 다면, 가챠 횟수만큼 가챠를 실행합니다.
+    //------------가챠 시작-------------
+    for (let i = 0; i < numGatcha; i++) {
+      //우선, 플래티넘찬스(1000분의 1확률로 플래티넘 찬스에 도달하면 즐라탄을 뽑을 수 있습니다)
+      let platinumChance = Math.floor(Math.random() * 1000);
+      //플래티넘 찬스가 1~1000중 1000이 되면 즐라탄을 획득(0.1퍼센트 확률)
+      if (platinumChance === 1000) {
+        //player_id:9번인 즐라탄 전용 메시지입니다. 가챠 메시지에 추가해줍니다.
+        //즐라탄을 가챠결과에 추가해줍니다
+        gatchaMessage.push(`🎉🎉🎉🏆${zlatan.name}🏆이 당신을 뽑았습니다!🎉🎉🎉`);
+        gatchaResult.push(zlatan);
+      }
+      //플래티넘 카드 뽑기에 실패했다면 실행되는 브실골 뽑기입니다.
+      else {
+        //브론즈, 실버, 골드의 선수들을 players 변수에 저장합니다.
+        const players = await gameDataClient.player.findMany({
+          where: {
+            rarity: {
+              in: ["bronze", "silver", "gold"],
+            },
           },
+        });
+        //만약 플레이어가 없으면
+        if (players.length === 0) {
+          return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
+        }
+        const randomIndex = Math.floor(Math.random() * players.length);
+        const selectedPlayer = players[randomIndex];
+        //가챠 결과: 결론적으로 user_player 테이블에 저장되는 배열
+        gatchaResult.push(selectedPlayer);
+        //가챠 메시지: 결론적으로 유저에게 띄워주는 메시지를 저장하는 배열
+        if (selectedPlayer.rarity === "bronze") {
+          gatchaMessage.push({
+            message: `브론즈등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`,
+          });
+        } else if (selectedPlayer.rarity === "silver") {
+          gatchaMessage.push({
+            message: `💪실버등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다💪`,
+          });
+        } else if (selectedPlayer.rarity === "gold") {
+          gatchaMessage.push({
+            message: `⭐️⭐️⭐️골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다⭐️⭐️⭐️`,
+          });
+        }
+      }
+    }
+    //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
+    //  for문이 돌다 멈추면 transaction필요
+    await userDataClient.$transaction(async (tx) => {
+      await tx.user_info.update({
+        where: {
+          account_id: userId,
+        },
+        data: {
+          money: cashAfterGatcha,
         },
       });
-//만약 플레이어가 없으면 
-      if (players.length === 0) {
-        return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
-      }
-      const randomIndex = Math.floor(Math.random() * players.length);
-      const selectedPlayer = players[randomIndex];
-      //가챠 결과: 결론적으로 user_player 테이블에 저장되는 배열
-      gatchaResult.push(selectedPlayer);
-      //가챠 메시지: 결론적으로 유저에게 띄워주는 메시지를 저장하는 배열
-      if (selectedPlayer.rarity === "bronze") {
-        gatchaMessage.push({message:`브론즈등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
-      } else if (selectedPlayer.rarity === "silver") {
-        gatchaMessage.push({message:`💪실버등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다💪`});
-      } else if (selectedPlayer.rarity === "gold") {
-        gatchaMessage.push({message:`⭐️⭐️⭐️골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다⭐️⭐️⭐️`});
-      }
-
-  }
-}
-//  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
-//  for문이 돌다 멈추면 transaction필요
-await userDataClient.$transaction(async (tx) => {
-  await tx.user_info.update({
-    where:{
-      account_id:userId
-    },
-    data:{
-      money: cashAfterGatcha
-    }
-  })
-  for (const player of gatchaResult) {
-    // 우선 이전 결과 탐색
-    const isPlayerExist = await tx.user_player.findFirst({
-        where: {
+      for (const player of gatchaResult) {
+        // 우선 이전 결과 탐색
+        const isPlayerExist = await tx.user_player.findFirst({
+          where: {
             account_id: userId,
             player_id: player.player_id,
           },
@@ -216,7 +222,7 @@ await userDataClient.$transaction(async (tx) => {
               account_id_player_id_enhancement_level: {
                 account_id: userId,
                 player_id: player.player_id,
-                enhancement_level: 0
+                enhancement_level: 0,
               },
             },
             data: {
@@ -237,7 +243,13 @@ await userDataClient.$transaction(async (tx) => {
       }
     });
 
-    return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage, cash_remainder: cashAfterGatcha +" 게임머니 남았습니다."});
+    return res
+      .status(200)
+      .json({
+        message: "테스트 성공, 선수를 뽑았습니다.",
+        gatchaMessage,
+        cash_remainder: cashAfterGatcha + " 게임머니 남았습니다.",
+      });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });
@@ -296,7 +308,7 @@ await userDataClient.$transaction(async (tx) => {
 
 /** 구단 선수 추가 API */
 router.post("/club", authMiddleware, async (req, res) => {
-  const { player_id, enhancement_level} = req.body;
+  const { player_id, enhancement_level } = req.body;
   const account_id = req.user.account_id;
 
   try {
@@ -365,7 +377,7 @@ router.post("/club", authMiddleware, async (req, res) => {
             account_id_player_id_enhancement_level: {
               account_id,
               player_id,
-              enhancement_level: +enhancement_level
+              enhancement_level: +enhancement_level,
             },
           },
           data: {
@@ -380,7 +392,7 @@ router.post("/club", authMiddleware, async (req, res) => {
             account_id_player_id_enhancement_level: {
               account_id,
               player_id,
-              enhancement_level: +enhancement_level
+              enhancement_level: +enhancement_level,
             },
           },
         });
@@ -432,13 +444,13 @@ router.delete("/club", authMiddleware, async (req, res) => {
     // 그렇지 않다면 새로운 레코드를 생성합니다.
     await userDataClient.$transaction(async (tx) => {
       await tx.user_info.update({
-        where:{
-          account_id
+        where: {
+          account_id,
         },
-        data:{
-          have_club: false
-        }
-      })
+        data: {
+          have_club: false,
+        },
+      });
 
       // 내 구단에서 해당 선수를 제거합니다.
       await tx.user_club.delete({
@@ -455,7 +467,7 @@ router.delete("/club", authMiddleware, async (req, res) => {
         where: {
           account_id,
           player_id: unequippingPlayer.player_id,
-          enhancement_level: unequippingPlayer.enhancement_level
+          enhancement_level: unequippingPlayer.enhancement_level,
         },
       });
 
@@ -466,7 +478,7 @@ router.delete("/club", authMiddleware, async (req, res) => {
             account_id_player_id_enhancement_level: {
               account_id,
               player_id: unequippingPlayer.player_id,
-              enhancement_level: unequippingPlayer.enhancement_level
+              enhancement_level: unequippingPlayer.enhancement_level,
             },
           },
           data: {
@@ -758,22 +770,25 @@ router.post("/enhance", authMiddleware, async (req, res) => {
   const { player_id, enhancement_level } = req.body;
   const userId = req.user.account_id;
 
-  if(!player_id || !enhancement_level){
-    return res.status(400).json({ message: "Invliad Request: player_id, enhancement_level are required" });
+  if (!player_id || !enhancement_level) {
+    return res
+      .status(400)
+      .json({ message: "Invliad Request: player_id, enhancement_level are required" });
   }
 
   try {
-
     // 내가 가진 선수들을 내 인벤토리에서 가져옵니다.
     const myPlayers = await userDataClient.user_player.findMany({
-      where: { 
+      where: {
         account_id: +userId,
         player_id: +player_id,
       },
     });
 
-    const enhancingPlayer = myPlayers.find(player => player.enhancement_level === +enhancement_level);
-    const defaultPlayer = myPlayers.find(player => player.enhancement_level === 0);
+    const enhancingPlayer = myPlayers.find(
+      (player) => player.enhancement_level === +enhancement_level
+    );
+    const defaultPlayer = myPlayers.find((player) => player.enhancement_level === 0);
 
     //console.log("havePlayer", enhancingPlayer);
 
@@ -789,108 +804,110 @@ router.post("/enhance", authMiddleware, async (req, res) => {
 
     // 카드 개수가 충분한지 확인
     // 0레벨 강화인 경우 최소 2개 필요, 1레벨 이상 강화인 경우 최소 레벨+1개 필요.
-    if(!defaultPlayer || +enhancement_level===0 && defaultPlayer.count < 2 || defaultPlayer.count < requiredCardCount){
+    if (
+      !defaultPlayer ||
+      (+enhancement_level === 0 && defaultPlayer.count < 2) ||
+      defaultPlayer.count < requiredCardCount
+    ) {
       return res.status(400).json({ message: "강화에 필요한 선수 카드가 부족합니다." });
     }
 
     // ---------- 강화에 따른 인벤토리 변경 -----------
 
-    const updatedPlayer = await userDataClient.$transaction(async (tx) =>{
-      
-      
+    const updatedPlayer = await userDataClient.$transaction(async (tx) => {
       // 강화된(+1) 카드를 하나 추가. 레코드가 있으면 수량 1 증가, 없으면 레코드 새로 생성
       const updatedPlayer = await tx.user_player.upsert({
         where: {
           account_id_player_id_enhancement_level: {
             account_id: userId,
             player_id: +player_id,
-            enhancement_level: +enhancement_level+1
-          }
+            enhancement_level: +enhancement_level + 1,
+          },
         },
         update: {
-          count: { increment: 1 }
+          count: { increment: 1 },
         },
         create: {
           account_id: userId,
           player_id: +player_id,
-          enhancement_level: +enhancement_level+1,
-          count: 1
-        }
+          enhancement_level: +enhancement_level + 1,
+          count: 1,
+        },
       });
 
       // 강화가 되었으니 강화로 사용한 타켓 카드는 수량 1 감소, 0이되면 레코드 삭제
-      if(myPlayers.find(player => player.enhancement_level === +enhancement_level && player.count > 1)){
+      if (
+        myPlayers.find(
+          (player) => player.enhancement_level === +enhancement_level && player.count > 1
+        )
+      ) {
         await tx.user_player.update({
           where: {
             account_id_player_id_enhancement_level: {
               account_id: userId,
               player_id: +player_id,
-              enhancement_level: +enhancement_level
-            }
+              enhancement_level: +enhancement_level,
+            },
           },
-          data:{
-            count: { decrement: 1 }
-          }
-        })
-      }
-      else{
+          data: {
+            count: { decrement: 1 },
+          },
+        });
+      } else {
         await tx.user_player.delete({
           where: {
             account_id_player_id_enhancement_level: {
               account_id: userId,
               player_id: +player_id,
-              enhancement_level: +enhancement_level
-            }
-          }
-        })
+              enhancement_level: +enhancement_level,
+            },
+          },
+        });
       }
-      
+
       // dmadmadma
       const dp = await tx.user_player.findFirst({
-        where: { 
+        where: {
           account_id: +userId,
           player_id: +player_id,
-          enhancement_level: 0
+          enhancement_level: 0,
         },
       });
-         
+
       // 강화 재료로 사용한 카드(+0강) 수량 사용한 만큼 감소, 0이되면 레코드 삭제
-      if(dp.count > requiredCardCount){
+      if (dp.count > requiredCardCount) {
         await tx.user_player.update({
           where: {
             account_id_player_id_enhancement_level: {
               account_id: userId,
               player_id: +player_id,
-              enhancement_level: 0
-            }
+              enhancement_level: 0,
+            },
           },
-          data:{
-            count: { decrement: requiredCardCount }
-          }
-        })
-      }
-      else{
+          data: {
+            count: { decrement: requiredCardCount },
+          },
+        });
+      } else {
         await tx.user_player.delete({
           where: {
             account_id_player_id_enhancement_level: {
               account_id: userId,
               player_id: +player_id,
-              enhancement_level: 0
-            }
-          }
-        })
+              enhancement_level: 0,
+            },
+          },
+        });
       }
 
       return updatedPlayer;
-    })
-    
+    });
 
     // 강화 성공 여부에 따라 응답을 다르게 처리할 수 있습니다.
     // 예시로 성공 시에는 성공 메시지와 강화된 선수 데이터를 응답합니다.
     return res.status(200).json({
       message: "강화가 성공적으로 완료되었습니다.",
-      updatedPlayer: updatedPlayer
-     
+      updatedPlayer: updatedPlayer,
     });
   } catch (error) {
     console.error("Error enhancing player:", error);
@@ -907,7 +924,7 @@ const find_opponent = async (myUserInfo) => {
   const rating = myUserInfo.rank_score; // 내 레이팅 점수
   const myAccountId = myUserInfo.account_id; // 내 계정 id
 
-  console.log("rating, myAccountId", rating, myAccountId)
+  console.log("rating, myAccountId", rating, myAccountId);
   // 내 레이팅의 -1000~+1000인 상대를 찾습니다.
   // 상대를 찾았다면 상대 구단 정보를 반환하고, 더 이상 찾지 않고 while문을 종료합니다.
   while (ratingRange <= 1600) {
@@ -918,7 +935,7 @@ const find_opponent = async (myUserInfo) => {
           account_id: myAccountId,
         },
         rank_score: {
-          gte: (rating - ratingRange) > 0 ? (rating - ratingRange) : 0,
+          gte: rating - ratingRange > 0 ? rating - ratingRange : 0,
           lte: rating + ratingRange,
         },
         have_club: true,
@@ -1047,14 +1064,13 @@ router.post("/play", authMiddleware, async (req, res) => {
     async function getClubScore(club) {
       const playerInfos = [];
 
-
       // 클럽에 존재하는 선수 데이터를 가져옵니다.
-      for(const player of club){
+      for (const player of club) {
         const playerInfo = await gameDataClient.enhanced_player.findFirst({
           where: {
             player_id: player.player_id,
-            enhancement_level: player.enhancement_level
-          }
+            enhancement_level: player.enhancement_level,
+          },
         });
 
         playerInfos.push(playerInfo);
@@ -1101,13 +1117,13 @@ router.post("/play", authMiddleware, async (req, res) => {
     // console.log("opponentClubScore", opponentClubScore);
 
     // 각 유저의 골 점수를 계산합니다. 점수 비율이 높을 수록 득점 할 확률이 높으며,
-   // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
+    // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
     let totalScore = myClubScore + opponentClubScore; // 나의 구단 총 점수 + 상대 구단 총 점수
     let myGameScore = 0,
       opponentGameScore = 0; // 내 골 점수, 상대 골 점수
-      const maxGoals = 10;  // 최대 골 시도 횟수
-      let goalTries = Math.floor(Math.random()*maxGoals); // 지금 게임 최대 골 랜덤 설정
-      //console.log(goalTries);
+    const maxGoals = 10; // 최대 골 시도 횟수
+    let goalTries = Math.floor(Math.random() * maxGoals); // 지금 게임 최대 골 랜덤 설정
+    //console.log(goalTries);
     for (let goal_try = 0; goal_try < goalTries; goal_try++) {
       const randomValue = Math.random() * totalScore;
       if (randomValue < myClubScore) myGameScore++;
@@ -1170,7 +1186,6 @@ router.post("/play", authMiddleware, async (req, res) => {
       // 나의 패배
       gameResult.result = `패배하였습니다... ${myGameScore} : ${opponentGameScore}`;
 
-      
       // 랭크모드일 경우, 게임 결과에 따라 유저 정보를 수정합니다.
       if (play_mode === "rank") {
         const [updatedMyInfo, updatedOpponentInfo] = await userDataClient.$transaction(
@@ -1295,7 +1310,6 @@ router.post("/increment", async (req, res, next) => {
         increment,
       },
     });
-
 
     return res.status(200).json({ message: "강화 수치를 정상적으로 생성했습니다." });
   } catch (error) {
