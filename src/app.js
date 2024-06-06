@@ -12,12 +12,12 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static('./assets'));
+app.use(express.static("./assets"));
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  return res.json({ message: 'Welcome to our futsal Online!!' });
+router.get("/", (req, res) => {
+  return res.json({ message: "Welcome to our futsal Online!!" });
 });
 
 app.use("/api", [router, GameRouter, UsersRouter]);
