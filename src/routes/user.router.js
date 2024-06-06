@@ -5,7 +5,6 @@ import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
-import { userDataClient } from "../middlewares/userValidate.js";
 import dotenv from "dotenv";
 
 

@@ -5202,7 +5202,7 @@ export namespace Prisma {
   }
 
   export type user_playerWhereUniqueInput = Prisma.AtLeast<{
-    account_id_player_id?: user_playerAccount_idPlayer_idCompoundUniqueInput
+    account_id_player_id_enhancement_level?: user_playerAccount_idPlayer_idEnhancement_levelCompoundUniqueInput
     AND?: user_playerWhereInput | user_playerWhereInput[]
     OR?: user_playerWhereInput[]
     NOT?: user_playerWhereInput | user_playerWhereInput[]
@@ -5211,7 +5211,7 @@ export namespace Prisma {
     count?: IntFilter<"user_player"> | number
     enhancement_level?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id_player_id">
+  }, "account_id_player_id_enhancement_level">
 
   export type user_playerOrderByWithAggregationInput = {
     account_id?: SortOrder
@@ -5718,9 +5718,10 @@ export namespace Prisma {
     isNot?: accountWhereInput
   }
 
-  export type user_playerAccount_idPlayer_idCompoundUniqueInput = {
+  export type user_playerAccount_idPlayer_idEnhancement_levelCompoundUniqueInput = {
     account_id: number
     player_id: number
+    enhancement_level: number
   }
 
   export type user_playerCountOrderByAggregateInput = {

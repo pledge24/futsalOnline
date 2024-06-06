@@ -1995,7 +1995,6 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerAvgAggregateOutputType = {
-    enhanced_player_id: number | null
     player_id: number | null
     enhancement_level: number | null
     speed: number | null
@@ -2006,7 +2005,6 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerSumAggregateOutputType = {
-    enhanced_player_id: number | null
     player_id: number | null
     enhancement_level: number | null
     speed: number | null
@@ -2017,8 +2015,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerMinAggregateOutputType = {
-    enhanced_player_id: number | null
     player_id: number | null
+    name: string | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
@@ -2028,8 +2026,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerMaxAggregateOutputType = {
-    enhanced_player_id: number | null
     player_id: number | null
+    name: string | null
     enhancement_level: number | null
     speed: number | null
     goal_desicion: number | null
@@ -2039,8 +2037,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerCountAggregateOutputType = {
-    enhanced_player_id: number
     player_id: number
+    name: number
     enhancement_level: number
     speed: number
     goal_desicion: number
@@ -2052,7 +2050,6 @@ export namespace Prisma {
 
 
   export type Enhanced_playerAvgAggregateInputType = {
-    enhanced_player_id?: true
     player_id?: true
     enhancement_level?: true
     speed?: true
@@ -2063,7 +2060,6 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerSumAggregateInputType = {
-    enhanced_player_id?: true
     player_id?: true
     enhancement_level?: true
     speed?: true
@@ -2074,8 +2070,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerMinAggregateInputType = {
-    enhanced_player_id?: true
     player_id?: true
+    name?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
@@ -2085,8 +2081,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerMaxAggregateInputType = {
-    enhanced_player_id?: true
     player_id?: true
+    name?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
@@ -2096,8 +2092,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerCountAggregateInputType = {
-    enhanced_player_id?: true
     player_id?: true
+    name?: true
     enhancement_level?: true
     speed?: true
     goal_desicion?: true
@@ -2194,8 +2190,8 @@ export namespace Prisma {
   }
 
   export type Enhanced_playerGroupByOutputType = {
-    enhanced_player_id: number
     player_id: number
+    name: string
     enhancement_level: number
     speed: number
     goal_desicion: number
@@ -2224,8 +2220,8 @@ export namespace Prisma {
 
 
   export type enhanced_playerSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    enhanced_player_id?: boolean
     player_id?: boolean
+    name?: boolean
     enhancement_level?: boolean
     speed?: boolean
     goal_desicion?: boolean
@@ -2235,8 +2231,8 @@ export namespace Prisma {
   }, ExtArgs["result"]["enhanced_player"]>
 
   export type enhanced_playerSelectScalar = {
-    enhanced_player_id?: boolean
     player_id?: boolean
+    name?: boolean
     enhancement_level?: boolean
     speed?: boolean
     goal_desicion?: boolean
@@ -2251,8 +2247,8 @@ export namespace Prisma {
     name: "enhanced_player"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
-      enhanced_player_id: number
       player_id: number
+      name: string
       enhancement_level: number
       speed: number
       goal_desicion: number
@@ -2351,8 +2347,8 @@ export namespace Prisma {
      * // Get first 10 Enhanced_players
      * const enhanced_players = await prisma.enhanced_player.findMany({ take: 10 })
      * 
-     * // Only select the `enhanced_player_id`
-     * const enhanced_playerWithEnhanced_player_idOnly = await prisma.enhanced_player.findMany({ select: { enhanced_player_id: true } })
+     * // Only select the `player_id`
+     * const enhanced_playerWithPlayer_idOnly = await prisma.enhanced_player.findMany({ select: { player_id: true } })
      * 
     **/
     findMany<T extends enhanced_playerFindManyArgs<ExtArgs>>(
@@ -2653,8 +2649,8 @@ export namespace Prisma {
    * Fields of the enhanced_player model
    */ 
   interface enhanced_playerFieldRefs {
-    readonly enhanced_player_id: FieldRef<"enhanced_player", 'Int'>
     readonly player_id: FieldRef<"enhanced_player", 'Int'>
+    readonly name: FieldRef<"enhanced_player", 'String'>
     readonly enhancement_level: FieldRef<"enhanced_player", 'Int'>
     readonly speed: FieldRef<"enhanced_player", 'Int'>
     readonly goal_desicion: FieldRef<"enhanced_player", 'Int'>
@@ -3851,8 +3847,8 @@ export namespace Prisma {
 
 
   export const Enhanced_playerScalarFieldEnum: {
-    enhanced_player_id: 'enhanced_player_id',
     player_id: 'player_id',
+    name: 'name',
     enhancement_level: 'enhancement_level',
     speed: 'speed',
     goal_desicion: 'goal_desicion',
@@ -3984,8 +3980,8 @@ export namespace Prisma {
     AND?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
     OR?: enhanced_playerWhereInput[]
     NOT?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
-    enhanced_player_id?: IntFilter<"enhanced_player"> | number
     player_id?: IntFilter<"enhanced_player"> | number
+    name?: StringFilter<"enhanced_player"> | string
     enhancement_level?: IntFilter<"enhanced_player"> | number
     speed?: IntFilter<"enhanced_player"> | number
     goal_desicion?: IntFilter<"enhanced_player"> | number
@@ -3995,8 +3991,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerOrderByWithRelationInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
+    name?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
@@ -4006,22 +4002,23 @@ export namespace Prisma {
   }
 
   export type enhanced_playerWhereUniqueInput = Prisma.AtLeast<{
-    enhanced_player_id?: number
+    player_id_enhancement_level?: enhanced_playerPlayer_idEnhancement_levelCompoundUniqueInput
     AND?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
     OR?: enhanced_playerWhereInput[]
     NOT?: enhanced_playerWhereInput | enhanced_playerWhereInput[]
     player_id?: IntFilter<"enhanced_player"> | number
+    name?: StringFilter<"enhanced_player"> | string
     enhancement_level?: IntFilter<"enhanced_player"> | number
     speed?: IntFilter<"enhanced_player"> | number
     goal_desicion?: IntFilter<"enhanced_player"> | number
     shoot_power?: IntFilter<"enhanced_player"> | number
     defense?: IntFilter<"enhanced_player"> | number
     stamina?: IntFilter<"enhanced_player"> | number
-  }, "enhanced_player_id">
+  }, "player_id_enhancement_level">
 
   export type enhanced_playerOrderByWithAggregationInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
+    name?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
@@ -4039,8 +4036,8 @@ export namespace Prisma {
     AND?: enhanced_playerScalarWhereWithAggregatesInput | enhanced_playerScalarWhereWithAggregatesInput[]
     OR?: enhanced_playerScalarWhereWithAggregatesInput[]
     NOT?: enhanced_playerScalarWhereWithAggregatesInput | enhanced_playerScalarWhereWithAggregatesInput[]
-    enhanced_player_id?: IntWithAggregatesFilter<"enhanced_player"> | number
     player_id?: IntWithAggregatesFilter<"enhanced_player"> | number
+    name?: StringWithAggregatesFilter<"enhanced_player"> | string
     enhancement_level?: IntWithAggregatesFilter<"enhanced_player"> | number
     speed?: IntWithAggregatesFilter<"enhanced_player"> | number
     goal_desicion?: IntWithAggregatesFilter<"enhanced_player"> | number
@@ -4177,6 +4174,7 @@ export namespace Prisma {
 
   export type enhanced_playerCreateInput = {
     player_id: number
+    name: string
     enhancement_level: number
     speed: number
     goal_desicion: number
@@ -4186,8 +4184,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerUncheckedCreateInput = {
-    enhanced_player_id?: number
     player_id: number
+    name: string
     enhancement_level: number
     speed: number
     goal_desicion: number
@@ -4198,6 +4196,7 @@ export namespace Prisma {
 
   export type enhanced_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
@@ -4207,8 +4206,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerUncheckedUpdateInput = {
-    enhanced_player_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
@@ -4218,8 +4217,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerCreateManyInput = {
-    enhanced_player_id?: number
     player_id: number
+    name: string
     enhancement_level: number
     speed: number
     goal_desicion: number
@@ -4230,6 +4229,7 @@ export namespace Prisma {
 
   export type enhanced_playerUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
@@ -4239,8 +4239,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerUncheckedUpdateManyInput = {
-    enhanced_player_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
+    name?: StringFieldUpdateOperationsInput | string
     enhancement_level?: IntFieldUpdateOperationsInput | number
     speed?: IntFieldUpdateOperationsInput | number
     goal_desicion?: IntFieldUpdateOperationsInput | number
@@ -4404,9 +4404,14 @@ export namespace Prisma {
     _max?: NestedStringFilter<$PrismaModel>
   }
 
+  export type enhanced_playerPlayer_idEnhancement_levelCompoundUniqueInput = {
+    player_id: number
+    enhancement_level: number
+  }
+
   export type enhanced_playerCountOrderByAggregateInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
+    name?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
@@ -4416,7 +4421,6 @@ export namespace Prisma {
   }
 
   export type enhanced_playerAvgOrderByAggregateInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
@@ -4427,8 +4431,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerMaxOrderByAggregateInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
+    name?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
@@ -4438,8 +4442,8 @@ export namespace Prisma {
   }
 
   export type enhanced_playerMinOrderByAggregateInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
+    name?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder
     goal_desicion?: SortOrder
@@ -4449,7 +4453,6 @@ export namespace Prisma {
   }
 
   export type enhanced_playerSumOrderByAggregateInput = {
-    enhanced_player_id?: SortOrder
     player_id?: SortOrder
     enhancement_level?: SortOrder
     speed?: SortOrder

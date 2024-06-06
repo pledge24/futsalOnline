@@ -131,8 +131,8 @@ exports.Prisma.PlayerScalarFieldEnum = {
 };
 
 exports.Prisma.Enhanced_playerScalarFieldEnum = {
-  enhanced_player_id: 'enhanced_player_id',
   player_id: 'player_id',
+  name: 'name',
   enhancement_level: 'enhancement_level',
   speed: 'speed',
   goal_desicion: 'goal_desicion',
