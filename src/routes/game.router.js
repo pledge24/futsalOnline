@@ -431,6 +431,15 @@ router.delete("/club", authMiddleware, async (req, res) => {
     // 유저 선수 인벤토리(user_player)에 해당 선수가 있다면 수량 1증가.
     // 그렇지 않다면 새로운 레코드를 생성합니다.
     await userDataClient.$transaction(async (tx) => {
+      await tx.user_info.update({
+        where:{
+          account_id
+        },
+        data:{
+          have_club: false
+        }
+      })
+
       // 내 구단에서 해당 선수를 제거합니다.
       await tx.user_club.delete({
         where: {
@@ -809,7 +818,6 @@ router.post("/enhance", authMiddleware, async (req, res) => {
         }
       });
 
-      
       // 강화가 되었으니 강화로 사용한 타켓 카드는 수량 1 감소, 0이되면 레코드 삭제
       if(myPlayers.find(player => player.enhancement_level === +enhancement_level && player.count > 1)){
         await tx.user_player.update({
@@ -837,8 +845,17 @@ router.post("/enhance", authMiddleware, async (req, res) => {
         })
       }
       
+      // dmadmadma
+      const dp = await tx.user_player.findFirst({
+        where: { 
+          account_id: +userId,
+          player_id: +player_id,
+          enhancement_level: 0
+        },
+      });
+         
       // 강화 재료로 사용한 카드(+0강) 수량 사용한 만큼 감소, 0이되면 레코드 삭제
-      if(defaultPlayer.count > requiredCardCount){
+      if(dp.count > requiredCardCount){
         await tx.user_player.update({
           where: {
             account_id_player_id_enhancement_level: {
@@ -922,6 +939,8 @@ const find_opponent = async (myUserInfo) => {
           account_id: opponentUserList[randomValue].account_id,
         },
       });
+
+      console.log("랜덤이 문제였니???", opponentUserList, randomValue, opponentClub);
       return opponentClub;
     }
   }
@@ -1088,7 +1107,7 @@ router.post("/play", authMiddleware, async (req, res) => {
       opponentGameScore = 0; // 내 골 점수, 상대 골 점수
       const maxGoals = 10;  // 최대 골 시도 횟수
       let goalTries = Math.floor(Math.random()*maxGoals); // 지금 게임 최대 골 랜덤 설정
-      console.log(goalTries);
+      //console.log(goalTries);
     for (let goal_try = 0; goal_try < goalTries; goal_try++) {
       const randomValue = Math.random() * totalScore;
       if (randomValue < myClubScore) myGameScore++;
@@ -1122,6 +1141,8 @@ router.post("/play", authMiddleware, async (req, res) => {
                 },
               },
             });
+
+            //console.log("opponentClubopponentClub", opponentClub);
             // 상대방의 레이팅 점수를 내리고 패배횟수를 1 증가시킵니다.
             const updatedOpponentInfo = await tx.user_info.update({
               where: {
