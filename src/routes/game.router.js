@@ -212,9 +212,10 @@ await userDataClient.$transaction(async (tx) => {
         if (isPlayerExist) {
           await tx.user_player.update({
             where: {
-              account_id_player_id: {
+              account_id_player_id_enhancement_level: {
                 account_id: userId,
                 player_id: player.player_id,
+                enhancement_level: 0
               },
             },
             data: {
@@ -294,7 +295,7 @@ await userDataClient.$transaction(async (tx) => {
 
 /** 구단 선수 추가 API */
 router.post("/club", authMiddleware, async (req, res) => {
-  const { player_id } = req.body;
+  const { player_id, enhancement_level} = req.body;
   const account_id = req.user.account_id;
 
   try {
@@ -355,27 +356,15 @@ router.post("/club", authMiddleware, async (req, res) => {
         },
       });
 
-      // 인벤토리에서 enhancement_level을 0으로 설정
-      await tx.user_player.update({
-        where: {
-          account_id_player_id: {
-            account_id,
-            player_id,
-          },
-        },
-        data: {
-          enhancement_level: 0,
-        },
-      });
-
       // 인벤토리에 해당 선수의 수량이 2이상이면 수량을 1 감소시키고,
       // 수량이 1이라면 해당 레코드를 삭제합니다.
       if (playerInInventory.count > 1) {
         await tx.user_player.update({
           where: {
-            account_id_player_id: {
+            account_id_player_id_enhancement_level: {
               account_id,
               player_id,
+              enhancement_level: +enhancement_level
             },
           },
           data: {
@@ -387,9 +376,10 @@ router.post("/club", authMiddleware, async (req, res) => {
       } else {
         await tx.user_player.delete({
           where: {
-            account_id_player_id: {
+            account_id_player_id_enhancement_level: {
               account_id,
               player_id,
+              enhancement_level: +enhancement_level
             },
           },
         });
@@ -455,6 +445,7 @@ router.delete("/club", authMiddleware, async (req, res) => {
         where: {
           account_id,
           player_id: unequippingPlayer.player_id,
+          enhancement_level: unequippingPlayer.enhancement_level
         },
       });
 
@@ -462,16 +453,16 @@ router.delete("/club", authMiddleware, async (req, res) => {
       if (existingPlayer) {
         await tx.user_player.update({
           where: {
-            account_id_player_id: {
+            account_id_player_id_enhancement_level: {
               account_id,
               player_id: unequippingPlayer.player_id,
+              enhancement_level: unequippingPlayer.enhancement_level
             },
           },
           data: {
             count: {
               increment: 1,
             },
-            enhancement_level: unequippingPlayer.enhancement_level,
           },
         });
       } else {
@@ -1090,11 +1081,13 @@ router.post("/play", authMiddleware, async (req, res) => {
     // console.log("opponentClubScore", opponentClubScore);
 
     // 각 유저의 골 점수를 계산합니다. 점수 비율이 높을 수록 득점 할 확률이 높으며,
-    // 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
+    // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
     let totalScore = myClubScore + opponentClubScore; // 나의 구단 총 점수 + 상대 구단 총 점수
     let myGameScore = 0,
       opponentGameScore = 0; // 내 골 점수, 상대 골 점수
-    let goalTries = 10; // 골 시도 횟수
+    const maxGoals = 10;  // 최대 골 시도 횟수
+    let goalTries = Math.floor(Math.random()*maxGoals); // 지금 게임 최대 골 랜덤 설정
+    console.log(goalTries);
     for (let goal_try = 0; goal_try < goalTries; goal_try++) {
       const randomValue = Math.random() * totalScore;
       if (randomValue < myClubScore) myGameScore++;
