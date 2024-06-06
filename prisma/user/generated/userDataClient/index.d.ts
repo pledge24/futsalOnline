@@ -28,11 +28,6 @@ export type user_player = $Result.DefaultSelection<Prisma.$user_playerPayload>
  * 
  */
 export type user_club = $Result.DefaultSelection<Prisma.$user_clubPayload>
-/**
- * Model user_info
- * 
- */
-export type user_info = $Result.DefaultSelection<Prisma.$user_infoPayload>
 
 /**
  * ##  Prisma Client ʲˢ
@@ -185,16 +180,6 @@ export class PrismaClient<
     * ```
     */
   get user_club(): Prisma.user_clubDelegate<ExtArgs>;
-
-  /**
-   * `prisma.user_info`: Exposes CRUD operations for the **user_info** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more User_infos
-    * const user_infos = await prisma.user_info.findMany()
-    * ```
-    */
-  get user_info(): Prisma.user_infoDelegate<ExtArgs>;
 }
 
 export namespace Prisma {
@@ -674,8 +659,7 @@ export namespace Prisma {
   export const ModelName: {
     account: 'account',
     user_player: 'user_player',
-    user_club: 'user_club',
-    user_info: 'user_info'
+    user_club: 'user_club'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -692,7 +676,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meta: {
-      modelProps: 'account' | 'user_player' | 'user_club' | 'user_info'
+      modelProps: 'account' | 'user_player' | 'user_club'
       txIsolationLevel: Prisma.TransactionIsolationLevel
     },
     model: {
@@ -894,72 +878,6 @@ export namespace Prisma {
           }
         }
       }
-      user_info: {
-        payload: Prisma.$user_infoPayload<ExtArgs>
-        fields: Prisma.user_infoFieldRefs
-        operations: {
-          findUnique: {
-            args: Prisma.user_infoFindUniqueArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload> | null
-          }
-          findUniqueOrThrow: {
-            args: Prisma.user_infoFindUniqueOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          findFirst: {
-            args: Prisma.user_infoFindFirstArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload> | null
-          }
-          findFirstOrThrow: {
-            args: Prisma.user_infoFindFirstOrThrowArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          findMany: {
-            args: Prisma.user_infoFindManyArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>[]
-          }
-          create: {
-            args: Prisma.user_infoCreateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          createMany: {
-            args: Prisma.user_infoCreateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          delete: {
-            args: Prisma.user_infoDeleteArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          update: {
-            args: Prisma.user_infoUpdateArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          deleteMany: {
-            args: Prisma.user_infoDeleteManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          updateMany: {
-            args: Prisma.user_infoUpdateManyArgs<ExtArgs>,
-            result: Prisma.BatchPayload
-          }
-          upsert: {
-            args: Prisma.user_infoUpsertArgs<ExtArgs>,
-            result: $Utils.PayloadToResult<Prisma.$user_infoPayload>
-          }
-          aggregate: {
-            args: Prisma.User_infoAggregateArgs<ExtArgs>,
-            result: $Utils.Optional<AggregateUser_info>
-          }
-          groupBy: {
-            args: Prisma.user_infoGroupByArgs<ExtArgs>,
-            result: $Utils.Optional<User_infoGroupByOutputType>[]
-          }
-          count: {
-            args: Prisma.user_infoCountArgs<ExtArgs>,
-            result: $Utils.Optional<User_infoCountAggregateOutputType> | number
-          }
-        }
-      }
     }
   } & {
     other: {
@@ -1114,45 +1032,6 @@ export namespace Prisma {
    * Count Types
    */
 
-
-  /**
-   * Count Type AccountCountOutputType
-   */
-
-  export type AccountCountOutputType = {
-    user_players: number
-    user_clubs: number
-  }
-
-  export type AccountCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_players?: boolean | AccountCountOutputTypeCountUser_playersArgs
-    user_clubs?: boolean | AccountCountOutputTypeCountUser_clubsArgs
-  }
-
-  // Custom InputTypes
-  /**
-   * AccountCountOutputType without action
-   */
-  export type AccountCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the AccountCountOutputType
-     */
-    select?: AccountCountOutputTypeSelect<ExtArgs> | null
-  }
-
-  /**
-   * AccountCountOutputType without action
-   */
-  export type AccountCountOutputTypeCountUser_playersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_playerWhereInput
-  }
-
-  /**
-   * AccountCountOutputType without action
-   */
-  export type AccountCountOutputTypeCountUser_clubsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_clubWhereInput
-  }
 
 
   /**
@@ -1357,10 +1236,8 @@ export namespace Prisma {
     password?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    user_players?: boolean | account$user_playersArgs<ExtArgs>
-    user_clubs?: boolean | account$user_clubsArgs<ExtArgs>
-    user_info?: boolean | account$user_infoArgs<ExtArgs>
-    _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
+    user_player?: boolean | account$user_playerArgs<ExtArgs>
+    user_club?: boolean | account$user_clubArgs<ExtArgs>
   }, ExtArgs["result"]["account"]>
 
   export type accountSelectScalar = {
@@ -1373,19 +1250,16 @@ export namespace Prisma {
 
 
   export type accountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    user_players?: boolean | account$user_playersArgs<ExtArgs>
-    user_clubs?: boolean | account$user_clubsArgs<ExtArgs>
-    user_info?: boolean | account$user_infoArgs<ExtArgs>
-    _count?: boolean | AccountCountOutputTypeDefaultArgs<ExtArgs>
+    user_player?: boolean | account$user_playerArgs<ExtArgs>
+    user_club?: boolean | account$user_clubArgs<ExtArgs>
   }
 
 
   export type $accountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "account"
     objects: {
-      user_players: Prisma.$user_playerPayload<ExtArgs>[]
-      user_clubs: Prisma.$user_clubPayload<ExtArgs>[]
-      user_info: Prisma.$user_infoPayload<ExtArgs> | null
+      user_player: Prisma.$user_playerPayload<ExtArgs> | null
+      user_club: Prisma.$user_clubPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       account_id: number
@@ -1758,11 +1632,9 @@ export namespace Prisma {
   export interface Prisma__accountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: 'PrismaPromise';
 
-    user_players<T extends account$user_playersArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findMany'> | Null>;
+    user_player<T extends account$user_playerArgs<ExtArgs> = {}>(args?: Subset<T, account$user_playerArgs<ExtArgs>>): Prisma__user_playerClient<$Result.GetResult<Prisma.$user_playerPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
-    user_clubs<T extends account$user_clubsArgs<ExtArgs> = {}>(args?: Subset<T, account$user_clubsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_clubPayload<ExtArgs>, T, 'findMany'> | Null>;
-
-    user_info<T extends account$user_infoArgs<ExtArgs> = {}>(args?: Subset<T, account$user_infoArgs<ExtArgs>>): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
+    user_club<T extends account$user_clubArgs<ExtArgs> = {}>(args?: Subset<T, account$user_clubArgs<ExtArgs>>): Prisma__user_clubClient<$Result.GetResult<Prisma.$user_clubPayload<ExtArgs>, T, 'findUniqueOrThrow'> | null, null, ExtArgs>;
 
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -2096,9 +1968,9 @@ export namespace Prisma {
   }
 
   /**
-   * account.user_players
+   * account.user_player
    */
-  export type account$user_playersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type account$user_playerArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the user_player
      */
@@ -2108,17 +1980,12 @@ export namespace Prisma {
      */
     include?: user_playerInclude<ExtArgs> | null
     where?: user_playerWhereInput
-    orderBy?: user_playerOrderByWithRelationInput | user_playerOrderByWithRelationInput[]
-    cursor?: user_playerWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: User_playerScalarFieldEnum | User_playerScalarFieldEnum[]
   }
 
   /**
-   * account.user_clubs
+   * account.user_club
    */
-  export type account$user_clubsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type account$user_clubArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the user_club
      */
@@ -2128,26 +1995,6 @@ export namespace Prisma {
      */
     include?: user_clubInclude<ExtArgs> | null
     where?: user_clubWhereInput
-    orderBy?: user_clubOrderByWithRelationInput | user_clubOrderByWithRelationInput[]
-    cursor?: user_clubWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: User_clubScalarFieldEnum | User_clubScalarFieldEnum[]
-  }
-
-  /**
-   * account.user_info
-   */
-  export type account$user_infoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    where?: user_infoWhereInput
   }
 
   /**
@@ -2181,35 +2028,30 @@ export namespace Prisma {
     account_id: number | null
     player_id: number | null
     count: number | null
-    enhancement_level: number | null
   }
 
   export type User_playerSumAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
-    enhancement_level: number | null
   }
 
   export type User_playerMinAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
-    enhancement_level: number | null
   }
 
   export type User_playerMaxAggregateOutputType = {
     account_id: number | null
     player_id: number | null
     count: number | null
-    enhancement_level: number | null
   }
 
   export type User_playerCountAggregateOutputType = {
     account_id: number
     player_id: number
     count: number
-    enhancement_level: number
     _all: number
   }
 
@@ -2218,35 +2060,30 @@ export namespace Prisma {
     account_id?: true
     player_id?: true
     count?: true
-    enhancement_level?: true
   }
 
   export type User_playerSumAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
-    enhancement_level?: true
   }
 
   export type User_playerMinAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
-    enhancement_level?: true
   }
 
   export type User_playerMaxAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
-    enhancement_level?: true
   }
 
   export type User_playerCountAggregateInputType = {
     account_id?: true
     player_id?: true
     count?: true
-    enhancement_level?: true
     _all?: true
   }
 
@@ -2340,7 +2177,6 @@ export namespace Prisma {
     account_id: number
     player_id: number
     count: number
-    enhancement_level: number
     _count: User_playerCountAggregateOutputType | null
     _avg: User_playerAvgAggregateOutputType | null
     _sum: User_playerSumAggregateOutputType | null
@@ -2366,7 +2202,6 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
-    enhancement_level?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_player"]>
 
@@ -2374,7 +2209,6 @@ export namespace Prisma {
     account_id?: boolean
     player_id?: boolean
     count?: boolean
-    enhancement_level?: boolean
   }
 
 
@@ -2392,7 +2226,6 @@ export namespace Prisma {
       account_id: number
       player_id: number
       count: number
-      enhancement_level: number
     }, ExtArgs["result"]["user_player"]>
     composites: {}
   }
@@ -2791,7 +2624,6 @@ export namespace Prisma {
     readonly account_id: FieldRef<"user_player", 'Int'>
     readonly player_id: FieldRef<"user_player", 'Int'>
     readonly count: FieldRef<"user_player", 'Int'>
-    readonly enhancement_level: FieldRef<"user_player", 'Int'>
   }
     
 
@@ -3120,31 +2952,26 @@ export namespace Prisma {
   export type User_clubAvgAggregateOutputType = {
     account_id: number | null
     player_id: number | null
-    enhancement_level: number | null
   }
 
   export type User_clubSumAggregateOutputType = {
     account_id: number | null
     player_id: number | null
-    enhancement_level: number | null
   }
 
   export type User_clubMinAggregateOutputType = {
     account_id: number | null
     player_id: number | null
-    enhancement_level: number | null
   }
 
   export type User_clubMaxAggregateOutputType = {
     account_id: number | null
     player_id: number | null
-    enhancement_level: number | null
   }
 
   export type User_clubCountAggregateOutputType = {
     account_id: number
     player_id: number
-    enhancement_level: number
     _all: number
   }
 
@@ -3152,31 +2979,26 @@ export namespace Prisma {
   export type User_clubAvgAggregateInputType = {
     account_id?: true
     player_id?: true
-    enhancement_level?: true
   }
 
   export type User_clubSumAggregateInputType = {
     account_id?: true
     player_id?: true
-    enhancement_level?: true
   }
 
   export type User_clubMinAggregateInputType = {
     account_id?: true
     player_id?: true
-    enhancement_level?: true
   }
 
   export type User_clubMaxAggregateInputType = {
     account_id?: true
     player_id?: true
-    enhancement_level?: true
   }
 
   export type User_clubCountAggregateInputType = {
     account_id?: true
     player_id?: true
-    enhancement_level?: true
     _all?: true
   }
 
@@ -3269,7 +3091,6 @@ export namespace Prisma {
   export type User_clubGroupByOutputType = {
     account_id: number
     player_id: number
-    enhancement_level: number
     _count: User_clubCountAggregateOutputType | null
     _avg: User_clubAvgAggregateOutputType | null
     _sum: User_clubSumAggregateOutputType | null
@@ -3294,14 +3115,12 @@ export namespace Prisma {
   export type user_clubSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     account_id?: boolean
     player_id?: boolean
-    enhancement_level?: boolean
     account?: boolean | accountDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user_club"]>
 
   export type user_clubSelectScalar = {
     account_id?: boolean
     player_id?: boolean
-    enhancement_level?: boolean
   }
 
 
@@ -3318,7 +3137,6 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       account_id: number
       player_id: number
-      enhancement_level: number
     }, ExtArgs["result"]["user_club"]>
     composites: {}
   }
@@ -3716,7 +3534,6 @@ export namespace Prisma {
   interface user_clubFieldRefs {
     readonly account_id: FieldRef<"user_club", 'Int'>
     readonly player_id: FieldRef<"user_club", 'Int'>
-    readonly enhancement_level: FieldRef<"user_club", 'Int'>
   }
     
 
@@ -4031,987 +3848,6 @@ export namespace Prisma {
 
 
   /**
-   * Model user_info
-   */
-
-  export type AggregateUser_info = {
-    _count: User_infoCountAggregateOutputType | null
-    _avg: User_infoAvgAggregateOutputType | null
-    _sum: User_infoSumAggregateOutputType | null
-    _min: User_infoMinAggregateOutputType | null
-    _max: User_infoMaxAggregateOutputType | null
-  }
-
-  export type User_infoAvgAggregateOutputType = {
-    account_id: number | null
-    rank_score: number | null
-    wins: number | null
-    loses: number | null
-    draws: number | null
-    money: number | null
-  }
-
-  export type User_infoSumAggregateOutputType = {
-    account_id: number | null
-    rank_score: number | null
-    wins: number | null
-    loses: number | null
-    draws: number | null
-    money: number | null
-  }
-
-  export type User_infoMinAggregateOutputType = {
-    account_id: number | null
-    rank_score: number | null
-    wins: number | null
-    loses: number | null
-    draws: number | null
-    money: number | null
-    have_club: boolean | null
-  }
-
-  export type User_infoMaxAggregateOutputType = {
-    account_id: number | null
-    rank_score: number | null
-    wins: number | null
-    loses: number | null
-    draws: number | null
-    money: number | null
-    have_club: boolean | null
-  }
-
-  export type User_infoCountAggregateOutputType = {
-    account_id: number
-    rank_score: number
-    wins: number
-    loses: number
-    draws: number
-    money: number
-    have_club: number
-    _all: number
-  }
-
-
-  export type User_infoAvgAggregateInputType = {
-    account_id?: true
-    rank_score?: true
-    wins?: true
-    loses?: true
-    draws?: true
-    money?: true
-  }
-
-  export type User_infoSumAggregateInputType = {
-    account_id?: true
-    rank_score?: true
-    wins?: true
-    loses?: true
-    draws?: true
-    money?: true
-  }
-
-  export type User_infoMinAggregateInputType = {
-    account_id?: true
-    rank_score?: true
-    wins?: true
-    loses?: true
-    draws?: true
-    money?: true
-    have_club?: true
-  }
-
-  export type User_infoMaxAggregateInputType = {
-    account_id?: true
-    rank_score?: true
-    wins?: true
-    loses?: true
-    draws?: true
-    money?: true
-    have_club?: true
-  }
-
-  export type User_infoCountAggregateInputType = {
-    account_id?: true
-    rank_score?: true
-    wins?: true
-    loses?: true
-    draws?: true
-    money?: true
-    have_club?: true
-    _all?: true
-  }
-
-  export type User_infoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_info to aggregate.
-     */
-    where?: user_infoWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_infos to fetch.
-     */
-    orderBy?: user_infoOrderByWithRelationInput | user_infoOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: user_infoWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_infos from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_infos.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned user_infos
-    **/
-    _count?: true | User_infoCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to average
-    **/
-    _avg?: User_infoAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: User_infoSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: User_infoMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: User_infoMaxAggregateInputType
-  }
-
-  export type GetUser_infoAggregateType<T extends User_infoAggregateArgs> = {
-        [P in keyof T & keyof AggregateUser_info]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateUser_info[P]>
-      : GetScalarType<T[P], AggregateUser_info[P]>
-  }
-
-
-
-
-  export type user_infoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: user_infoWhereInput
-    orderBy?: user_infoOrderByWithAggregationInput | user_infoOrderByWithAggregationInput[]
-    by: User_infoScalarFieldEnum[] | User_infoScalarFieldEnum
-    having?: user_infoScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: User_infoCountAggregateInputType | true
-    _avg?: User_infoAvgAggregateInputType
-    _sum?: User_infoSumAggregateInputType
-    _min?: User_infoMinAggregateInputType
-    _max?: User_infoMaxAggregateInputType
-  }
-
-  export type User_infoGroupByOutputType = {
-    account_id: number
-    rank_score: number
-    wins: number
-    loses: number
-    draws: number
-    money: number
-    have_club: boolean
-    _count: User_infoCountAggregateOutputType | null
-    _avg: User_infoAvgAggregateOutputType | null
-    _sum: User_infoSumAggregateOutputType | null
-    _min: User_infoMinAggregateOutputType | null
-    _max: User_infoMaxAggregateOutputType | null
-  }
-
-  type GetUser_infoGroupByPayload<T extends user_infoGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickEnumerable<User_infoGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof User_infoGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], User_infoGroupByOutputType[P]>
-            : GetScalarType<T[P], User_infoGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type user_infoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
-    account_id?: boolean
-    rank_score?: boolean
-    wins?: boolean
-    loses?: boolean
-    draws?: boolean
-    money?: boolean
-    have_club?: boolean
-    account?: boolean | accountDefaultArgs<ExtArgs>
-  }, ExtArgs["result"]["user_info"]>
-
-  export type user_infoSelectScalar = {
-    account_id?: boolean
-    rank_score?: boolean
-    wins?: boolean
-    loses?: boolean
-    draws?: boolean
-    money?: boolean
-    have_club?: boolean
-  }
-
-
-  export type user_infoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    account?: boolean | accountDefaultArgs<ExtArgs>
-  }
-
-
-  export type $user_infoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    name: "user_info"
-    objects: {
-      account: Prisma.$accountPayload<ExtArgs>
-    }
-    scalars: $Extensions.GetPayloadResult<{
-      account_id: number
-      rank_score: number
-      wins: number
-      loses: number
-      draws: number
-      money: number
-      have_club: boolean
-    }, ExtArgs["result"]["user_info"]>
-    composites: {}
-  }
-
-
-  type user_infoGetPayload<S extends boolean | null | undefined | user_infoDefaultArgs> = $Result.GetResult<Prisma.$user_infoPayload, S>
-
-  type user_infoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = 
-    Omit<user_infoFindManyArgs, 'select' | 'include' | 'distinct'> & {
-      select?: User_infoCountAggregateInputType | true
-    }
-
-  export interface user_infoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> {
-    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['user_info'], meta: { name: 'user_info' } }
-    /**
-     * Find zero or one User_info that matches the filter.
-     * @param {user_infoFindUniqueArgs} args - Arguments to find a User_info
-     * @example
-     * // Get one User_info
-     * const user_info = await prisma.user_info.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends user_infoFindUniqueArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoFindUniqueArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findUnique'> | null, null, ExtArgs>
-
-    /**
-     * Find one User_info that matches the filter or throw an error with `error.code='P2025'` 
-     * if no matches were found.
-     * @param {user_infoFindUniqueOrThrowArgs} args - Arguments to find a User_info
-     * @example
-     * // Get one User_info
-     * const user_info = await prisma.user_info.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends user_infoFindUniqueOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoFindUniqueOrThrowArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findUniqueOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find the first User_info that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoFindFirstArgs} args - Arguments to find a User_info
-     * @example
-     * // Get one User_info
-     * const user_info = await prisma.user_info.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends user_infoFindFirstArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoFindFirstArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findFirst'> | null, null, ExtArgs>
-
-    /**
-     * Find the first User_info that matches the filter or
-     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoFindFirstOrThrowArgs} args - Arguments to find a User_info
-     * @example
-     * // Get one User_info
-     * const user_info = await prisma.user_info.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends user_infoFindFirstOrThrowArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoFindFirstOrThrowArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findFirstOrThrow'>, never, ExtArgs>
-
-    /**
-     * Find zero or more User_infos that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoFindManyArgs} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all User_infos
-     * const user_infos = await prisma.user_info.findMany()
-     * 
-     * // Get first 10 User_infos
-     * const user_infos = await prisma.user_info.findMany({ take: 10 })
-     * 
-     * // Only select the `account_id`
-     * const user_infoWithAccount_idOnly = await prisma.user_info.findMany({ select: { account_id: true } })
-     * 
-    **/
-    findMany<T extends user_infoFindManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoFindManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'findMany'>>
-
-    /**
-     * Create a User_info.
-     * @param {user_infoCreateArgs} args - Arguments to create a User_info.
-     * @example
-     * // Create one User_info
-     * const User_info = await prisma.user_info.create({
-     *   data: {
-     *     // ... data to create a User_info
-     *   }
-     * })
-     * 
-    **/
-    create<T extends user_infoCreateArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoCreateArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'create'>, never, ExtArgs>
-
-    /**
-     * Create many User_infos.
-     * @param {user_infoCreateManyArgs} args - Arguments to create many User_infos.
-     * @example
-     * // Create many User_infos
-     * const user_info = await prisma.user_info.createMany({
-     *   data: [
-     *     // ... provide data here
-     *   ]
-     * })
-     *     
-    **/
-    createMany<T extends user_infoCreateManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoCreateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a User_info.
-     * @param {user_infoDeleteArgs} args - Arguments to delete one User_info.
-     * @example
-     * // Delete one User_info
-     * const User_info = await prisma.user_info.delete({
-     *   where: {
-     *     // ... filter to delete one User_info
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends user_infoDeleteArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoDeleteArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'delete'>, never, ExtArgs>
-
-    /**
-     * Update one User_info.
-     * @param {user_infoUpdateArgs} args - Arguments to update one User_info.
-     * @example
-     * // Update one User_info
-     * const user_info = await prisma.user_info.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends user_infoUpdateArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoUpdateArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'update'>, never, ExtArgs>
-
-    /**
-     * Delete zero or more User_infos.
-     * @param {user_infoDeleteManyArgs} args - Arguments to filter User_infos to delete.
-     * @example
-     * // Delete a few User_infos
-     * const { count } = await prisma.user_info.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends user_infoDeleteManyArgs<ExtArgs>>(
-      args?: SelectSubset<T, user_infoDeleteManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more User_infos.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many User_infos
-     * const user_info = await prisma.user_info.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends user_infoUpdateManyArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoUpdateManyArgs<ExtArgs>>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one User_info.
-     * @param {user_infoUpsertArgs} args - Arguments to update or create a User_info.
-     * @example
-     * // Update or create a User_info
-     * const user_info = await prisma.user_info.upsert({
-     *   create: {
-     *     // ... data to create a User_info
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the User_info we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends user_infoUpsertArgs<ExtArgs>>(
-      args: SelectSubset<T, user_infoUpsertArgs<ExtArgs>>
-    ): Prisma__user_infoClient<$Result.GetResult<Prisma.$user_infoPayload<ExtArgs>, T, 'upsert'>, never, ExtArgs>
-
-    /**
-     * Count the number of User_infos.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoCountArgs} args - Arguments to filter User_infos to count.
-     * @example
-     * // Count the number of User_infos
-     * const count = await prisma.user_info.count({
-     *   where: {
-     *     // ... the filter for the User_infos we want to count
-     *   }
-     * })
-    **/
-    count<T extends user_infoCountArgs>(
-      args?: Subset<T, user_infoCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends $Utils.Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], User_infoCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a User_info.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {User_infoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends User_infoAggregateArgs>(args: Subset<T, User_infoAggregateArgs>): Prisma.PrismaPromise<GetUser_infoAggregateType<T>>
-
-    /**
-     * Group by User_info.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {user_infoGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends user_infoGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: user_infoGroupByArgs['orderBy'] }
-        : { orderBy?: user_infoGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends MaybeTupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, user_infoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUser_infoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-  /**
-   * Fields of the user_info model
-   */
-  readonly fields: user_infoFieldRefs;
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for user_info.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export interface Prisma__user_infoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> extends Prisma.PrismaPromise<T> {
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-
-    account<T extends accountDefaultArgs<ExtArgs> = {}>(args?: Subset<T, accountDefaultArgs<ExtArgs>>): Prisma__accountClient<$Result.GetResult<Prisma.$accountPayload<ExtArgs>, T, 'findUniqueOrThrow'> | Null, Null, ExtArgs>;
-
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>;
-  }
-
-
-
-  /**
-   * Fields of the user_info model
-   */ 
-  interface user_infoFieldRefs {
-    readonly account_id: FieldRef<"user_info", 'Int'>
-    readonly rank_score: FieldRef<"user_info", 'Int'>
-    readonly wins: FieldRef<"user_info", 'Int'>
-    readonly loses: FieldRef<"user_info", 'Int'>
-    readonly draws: FieldRef<"user_info", 'Int'>
-    readonly money: FieldRef<"user_info", 'Int'>
-    readonly have_club: FieldRef<"user_info", 'Boolean'>
-  }
-    
-
-  // Custom InputTypes
-  /**
-   * user_info findUnique
-   */
-  export type user_infoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter, which user_info to fetch.
-     */
-    where: user_infoWhereUniqueInput
-  }
-
-  /**
-   * user_info findUniqueOrThrow
-   */
-  export type user_infoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter, which user_info to fetch.
-     */
-    where: user_infoWhereUniqueInput
-  }
-
-  /**
-   * user_info findFirst
-   */
-  export type user_infoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter, which user_info to fetch.
-     */
-    where?: user_infoWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_infos to fetch.
-     */
-    orderBy?: user_infoOrderByWithRelationInput | user_infoOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for user_infos.
-     */
-    cursor?: user_infoWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_infos from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_infos.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of user_infos.
-     */
-    distinct?: User_infoScalarFieldEnum | User_infoScalarFieldEnum[]
-  }
-
-  /**
-   * user_info findFirstOrThrow
-   */
-  export type user_infoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter, which user_info to fetch.
-     */
-    where?: user_infoWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_infos to fetch.
-     */
-    orderBy?: user_infoOrderByWithRelationInput | user_infoOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for user_infos.
-     */
-    cursor?: user_infoWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_infos from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_infos.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of user_infos.
-     */
-    distinct?: User_infoScalarFieldEnum | User_infoScalarFieldEnum[]
-  }
-
-  /**
-   * user_info findMany
-   */
-  export type user_infoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter, which user_infos to fetch.
-     */
-    where?: user_infoWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of user_infos to fetch.
-     */
-    orderBy?: user_infoOrderByWithRelationInput | user_infoOrderByWithRelationInput[]
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing user_infos.
-     */
-    cursor?: user_infoWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` user_infos from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` user_infos.
-     */
-    skip?: number
-    distinct?: User_infoScalarFieldEnum | User_infoScalarFieldEnum[]
-  }
-
-  /**
-   * user_info create
-   */
-  export type user_infoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * The data needed to create a user_info.
-     */
-    data: XOR<user_infoCreateInput, user_infoUncheckedCreateInput>
-  }
-
-  /**
-   * user_info createMany
-   */
-  export type user_infoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to create many user_infos.
-     */
-    data: user_infoCreateManyInput | user_infoCreateManyInput[]
-    skipDuplicates?: boolean
-  }
-
-  /**
-   * user_info update
-   */
-  export type user_infoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * The data needed to update a user_info.
-     */
-    data: XOR<user_infoUpdateInput, user_infoUncheckedUpdateInput>
-    /**
-     * Choose, which user_info to update.
-     */
-    where: user_infoWhereUniqueInput
-  }
-
-  /**
-   * user_info updateMany
-   */
-  export type user_infoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * The data used to update user_infos.
-     */
-    data: XOR<user_infoUpdateManyMutationInput, user_infoUncheckedUpdateManyInput>
-    /**
-     * Filter which user_infos to update
-     */
-    where?: user_infoWhereInput
-  }
-
-  /**
-   * user_info upsert
-   */
-  export type user_infoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * The filter to search for the user_info to update in case it exists.
-     */
-    where: user_infoWhereUniqueInput
-    /**
-     * In case the user_info found by the `where` argument doesn't exist, create a new user_info with this data.
-     */
-    create: XOR<user_infoCreateInput, user_infoUncheckedCreateInput>
-    /**
-     * In case the user_info was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<user_infoUpdateInput, user_infoUncheckedUpdateInput>
-  }
-
-  /**
-   * user_info delete
-   */
-  export type user_infoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-    /**
-     * Filter which user_info to delete.
-     */
-    where: user_infoWhereUniqueInput
-  }
-
-  /**
-   * user_info deleteMany
-   */
-  export type user_infoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Filter which user_infos to delete
-     */
-    where?: user_infoWhereInput
-  }
-
-  /**
-   * user_info without action
-   */
-  export type user_infoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the user_info
-     */
-    select?: user_infoSelect<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: user_infoInclude<ExtArgs> | null
-  }
-
-
-  /**
    * Enums
    */
 
@@ -5039,8 +3875,7 @@ export namespace Prisma {
   export const User_playerScalarFieldEnum: {
     account_id: 'account_id',
     player_id: 'player_id',
-    count: 'count',
-    enhancement_level: 'enhancement_level'
+    count: 'count'
   };
 
   export type User_playerScalarFieldEnum = (typeof User_playerScalarFieldEnum)[keyof typeof User_playerScalarFieldEnum]
@@ -5048,24 +3883,10 @@ export namespace Prisma {
 
   export const User_clubScalarFieldEnum: {
     account_id: 'account_id',
-    player_id: 'player_id',
-    enhancement_level: 'enhancement_level'
+    player_id: 'player_id'
   };
 
   export type User_clubScalarFieldEnum = (typeof User_clubScalarFieldEnum)[keyof typeof User_clubScalarFieldEnum]
-
-
-  export const User_infoScalarFieldEnum: {
-    account_id: 'account_id',
-    rank_score: 'rank_score',
-    wins: 'wins',
-    loses: 'loses',
-    draws: 'draws',
-    money: 'money',
-    have_club: 'have_club'
-  };
-
-  export type User_infoScalarFieldEnum = (typeof User_infoScalarFieldEnum)[keyof typeof User_infoScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5103,13 +3924,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Boolean'
-   */
-  export type BooleanFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Boolean'>
-    
-
-
-  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -5128,9 +3942,8 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_players?: User_playerListRelationFilter
-    user_clubs?: User_clubListRelationFilter
-    user_info?: XOR<User_infoNullableRelationFilter, user_infoWhereInput> | null
+    user_player?: XOR<User_playerNullableRelationFilter, user_playerWhereInput> | null
+    user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
   }
 
   export type accountOrderByWithRelationInput = {
@@ -5139,9 +3952,8 @@ export namespace Prisma {
     password?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    user_players?: user_playerOrderByRelationAggregateInput
-    user_clubs?: user_clubOrderByRelationAggregateInput
-    user_info?: user_infoOrderByWithRelationInput
+    user_player?: user_playerOrderByWithRelationInput
+    user_club?: user_clubOrderByWithRelationInput
   }
 
   export type accountWhereUniqueInput = Prisma.AtLeast<{
@@ -5153,9 +3965,8 @@ export namespace Prisma {
     password?: StringFilter<"account"> | string
     createdAt?: DateTimeFilter<"account"> | Date | string
     updatedAt?: DateTimeFilter<"account"> | Date | string
-    user_players?: User_playerListRelationFilter
-    user_clubs?: User_clubListRelationFilter
-    user_info?: XOR<User_infoNullableRelationFilter, user_infoWhereInput> | null
+    user_player?: XOR<User_playerNullableRelationFilter, user_playerWhereInput> | null
+    user_club?: XOR<User_clubNullableRelationFilter, user_clubWhereInput> | null
   }, "account_id">
 
   export type accountOrderByWithAggregationInput = {
@@ -5189,7 +4000,6 @@ export namespace Prisma {
     account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
-    enhancement_level?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
@@ -5197,27 +4007,24 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
   export type user_playerWhereUniqueInput = Prisma.AtLeast<{
+    account_id?: number
     account_id_player_id?: user_playerAccount_idPlayer_idCompoundUniqueInput
     AND?: user_playerWhereInput | user_playerWhereInput[]
     OR?: user_playerWhereInput[]
     NOT?: user_playerWhereInput | user_playerWhereInput[]
-    account_id?: IntFilter<"user_player"> | number
     player_id?: IntFilter<"user_player"> | number
     count?: IntFilter<"user_player"> | number
-    enhancement_level?: IntFilter<"user_player"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id_player_id">
+  }, "account_id_player_id" | "account_id">
 
   export type user_playerOrderByWithAggregationInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
     _count?: user_playerCountOrderByAggregateInput
     _avg?: user_playerAvgOrderByAggregateInput
     _max?: user_playerMaxOrderByAggregateInput
@@ -5232,7 +4039,6 @@ export namespace Prisma {
     account_id?: IntWithAggregatesFilter<"user_player"> | number
     player_id?: IntWithAggregatesFilter<"user_player"> | number
     count?: IntWithAggregatesFilter<"user_player"> | number
-    enhancement_level?: IntWithAggregatesFilter<"user_player"> | number
   }
 
   export type user_clubWhereInput = {
@@ -5241,32 +4047,28 @@ export namespace Prisma {
     NOT?: user_clubWhereInput | user_clubWhereInput[]
     account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
-    enhancement_level?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
   }
 
   export type user_clubOrderByWithRelationInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
     account?: accountOrderByWithRelationInput
   }
 
   export type user_clubWhereUniqueInput = Prisma.AtLeast<{
+    account_id?: number
     account_id_player_id?: user_clubAccount_idPlayer_idCompoundUniqueInput
     AND?: user_clubWhereInput | user_clubWhereInput[]
     OR?: user_clubWhereInput[]
     NOT?: user_clubWhereInput | user_clubWhereInput[]
-    account_id?: IntFilter<"user_club"> | number
     player_id?: IntFilter<"user_club"> | number
-    enhancement_level?: IntFilter<"user_club"> | number
     account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id_player_id">
+  }, "account_id_player_id" | "account_id">
 
   export type user_clubOrderByWithAggregationInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
     _count?: user_clubCountOrderByAggregateInput
     _avg?: user_clubAvgOrderByAggregateInput
     _max?: user_clubMaxOrderByAggregateInput
@@ -5280,74 +4082,6 @@ export namespace Prisma {
     NOT?: user_clubScalarWhereWithAggregatesInput | user_clubScalarWhereWithAggregatesInput[]
     account_id?: IntWithAggregatesFilter<"user_club"> | number
     player_id?: IntWithAggregatesFilter<"user_club"> | number
-    enhancement_level?: IntWithAggregatesFilter<"user_club"> | number
-  }
-
-  export type user_infoWhereInput = {
-    AND?: user_infoWhereInput | user_infoWhereInput[]
-    OR?: user_infoWhereInput[]
-    NOT?: user_infoWhereInput | user_infoWhereInput[]
-    account_id?: IntFilter<"user_info"> | number
-    rank_score?: IntFilter<"user_info"> | number
-    wins?: IntFilter<"user_info"> | number
-    loses?: IntFilter<"user_info"> | number
-    draws?: IntFilter<"user_info"> | number
-    money?: IntFilter<"user_info"> | number
-    have_club?: BoolFilter<"user_info"> | boolean
-    account?: XOR<AccountRelationFilter, accountWhereInput>
-  }
-
-  export type user_infoOrderByWithRelationInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-    have_club?: SortOrder
-    account?: accountOrderByWithRelationInput
-  }
-
-  export type user_infoWhereUniqueInput = Prisma.AtLeast<{
-    account_id?: number
-    AND?: user_infoWhereInput | user_infoWhereInput[]
-    OR?: user_infoWhereInput[]
-    NOT?: user_infoWhereInput | user_infoWhereInput[]
-    rank_score?: IntFilter<"user_info"> | number
-    wins?: IntFilter<"user_info"> | number
-    loses?: IntFilter<"user_info"> | number
-    draws?: IntFilter<"user_info"> | number
-    money?: IntFilter<"user_info"> | number
-    have_club?: BoolFilter<"user_info"> | boolean
-    account?: XOR<AccountRelationFilter, accountWhereInput>
-  }, "account_id">
-
-  export type user_infoOrderByWithAggregationInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-    have_club?: SortOrder
-    _count?: user_infoCountOrderByAggregateInput
-    _avg?: user_infoAvgOrderByAggregateInput
-    _max?: user_infoMaxOrderByAggregateInput
-    _min?: user_infoMinOrderByAggregateInput
-    _sum?: user_infoSumOrderByAggregateInput
-  }
-
-  export type user_infoScalarWhereWithAggregatesInput = {
-    AND?: user_infoScalarWhereWithAggregatesInput | user_infoScalarWhereWithAggregatesInput[]
-    OR?: user_infoScalarWhereWithAggregatesInput[]
-    NOT?: user_infoScalarWhereWithAggregatesInput | user_infoScalarWhereWithAggregatesInput[]
-    account_id?: IntWithAggregatesFilter<"user_info"> | number
-    rank_score?: IntWithAggregatesFilter<"user_info"> | number
-    wins?: IntWithAggregatesFilter<"user_info"> | number
-    loses?: IntWithAggregatesFilter<"user_info"> | number
-    draws?: IntWithAggregatesFilter<"user_info"> | number
-    money?: IntWithAggregatesFilter<"user_info"> | number
-    have_club?: BoolWithAggregatesFilter<"user_info"> | boolean
   }
 
   export type accountCreateInput = {
@@ -5355,9 +4089,8 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_players?: user_playerCreateNestedManyWithoutAccountInput
-    user_clubs?: user_clubCreateNestedManyWithoutAccountInput
-    user_info?: user_infoCreateNestedOneWithoutAccountInput
+    user_player?: user_playerCreateNestedOneWithoutAccountInput
+    user_club?: user_clubCreateNestedOneWithoutAccountInput
   }
 
   export type accountUncheckedCreateInput = {
@@ -5366,9 +4099,8 @@ export namespace Prisma {
     password: string
     createdAt?: Date | string
     updatedAt?: Date | string
-    user_players?: user_playerUncheckedCreateNestedManyWithoutAccountInput
-    user_clubs?: user_clubUncheckedCreateNestedManyWithoutAccountInput
-    user_info?: user_infoUncheckedCreateNestedOneWithoutAccountInput
+    user_player?: user_playerUncheckedCreateNestedOneWithoutAccountInput
+    user_club?: user_clubUncheckedCreateNestedOneWithoutAccountInput
   }
 
   export type accountUpdateInput = {
@@ -5376,9 +4108,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUpdateManyWithoutAccountNestedInput
-    user_clubs?: user_clubUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUpdateOneWithoutAccountNestedInput
+    user_club?: user_clubUpdateOneWithoutAccountNestedInput
   }
 
   export type accountUncheckedUpdateInput = {
@@ -5387,9 +4118,8 @@ export namespace Prisma {
     password?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
-    user_clubs?: user_clubUncheckedUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUncheckedUpdateOneWithoutAccountNestedInput
+    user_player?: user_playerUncheckedUpdateOneWithoutAccountNestedInput
+    user_club?: user_clubUncheckedUpdateOneWithoutAccountNestedInput
   }
 
   export type accountCreateManyInput = {
@@ -5418,159 +4148,76 @@ export namespace Prisma {
   export type user_playerCreateInput = {
     player_id: number
     count: number
-    enhancement_level?: number
-    account: accountCreateNestedOneWithoutUser_playersInput
+    account: accountCreateNestedOneWithoutUser_playerInput
   }
 
   export type user_playerUncheckedCreateInput = {
     account_id: number
     player_id: number
     count: number
-    enhancement_level?: number
   }
 
   export type user_playerUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
-    account?: accountUpdateOneRequiredWithoutUser_playersNestedInput
+    account?: accountUpdateOneRequiredWithoutUser_playerNestedInput
   }
 
   export type user_playerUncheckedUpdateInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerCreateManyInput = {
     account_id: number
     player_id: number
     count: number
-    enhancement_level?: number
   }
 
   export type user_playerUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateManyInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateInput = {
     player_id: number
-    enhancement_level?: number
-    account: accountCreateNestedOneWithoutUser_clubsInput
+    account: accountCreateNestedOneWithoutUser_clubInput
   }
 
   export type user_clubUncheckedCreateInput = {
     account_id: number
     player_id: number
-    enhancement_level?: number
   }
 
   export type user_clubUpdateInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
-    account?: accountUpdateOneRequiredWithoutUser_clubsNestedInput
+    account?: accountUpdateOneRequiredWithoutUser_clubNestedInput
   }
 
   export type user_clubUncheckedUpdateInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubCreateManyInput = {
     account_id: number
     player_id: number
-    enhancement_level?: number
   }
 
   export type user_clubUpdateManyMutationInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUncheckedUpdateManyInput = {
     account_id?: IntFieldUpdateOperationsInput | number
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
-  }
-
-  export type user_infoCreateInput = {
-    rank_score?: number
-    wins?: number
-    loses?: number
-    draws?: number
-    money?: number
-    have_club?: boolean
-    account: accountCreateNestedOneWithoutUser_infoInput
-  }
-
-  export type user_infoUncheckedCreateInput = {
-    account_id: number
-    rank_score?: number
-    wins?: number
-    loses?: number
-    draws?: number
-    money?: number
-    have_club?: boolean
-  }
-
-  export type user_infoUpdateInput = {
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
-    account?: accountUpdateOneRequiredWithoutUser_infoNestedInput
-  }
-
-  export type user_infoUncheckedUpdateInput = {
-    account_id?: IntFieldUpdateOperationsInput | number
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type user_infoCreateManyInput = {
-    account_id: number
-    rank_score?: number
-    wins?: number
-    loses?: number
-    draws?: number
-    money?: number
-    have_club?: boolean
-  }
-
-  export type user_infoUpdateManyMutationInput = {
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type user_infoUncheckedUpdateManyInput = {
-    account_id?: IntFieldUpdateOperationsInput | number
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -5609,29 +4256,14 @@ export namespace Prisma {
     not?: NestedDateTimeFilter<$PrismaModel> | Date | string
   }
 
-  export type User_playerListRelationFilter = {
-    every?: user_playerWhereInput
-    some?: user_playerWhereInput
-    none?: user_playerWhereInput
+  export type User_playerNullableRelationFilter = {
+    is?: user_playerWhereInput | null
+    isNot?: user_playerWhereInput | null
   }
 
-  export type User_clubListRelationFilter = {
-    every?: user_clubWhereInput
-    some?: user_clubWhereInput
-    none?: user_clubWhereInput
-  }
-
-  export type User_infoNullableRelationFilter = {
-    is?: user_infoWhereInput | null
-    isNot?: user_infoWhereInput | null
-  }
-
-  export type user_playerOrderByRelationAggregateInput = {
-    _count?: SortOrder
-  }
-
-  export type user_clubOrderByRelationAggregateInput = {
-    _count?: SortOrder
+  export type User_clubNullableRelationFilter = {
+    is?: user_clubWhereInput | null
+    isNot?: user_clubWhereInput | null
   }
 
   export type accountCountOrderByAggregateInput = {
@@ -5727,35 +4359,30 @@ export namespace Prisma {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_playerAvgOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_playerMaxOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_playerMinOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_playerSumOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
     count?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_clubAccount_idPlayer_idCompoundUniqueInput = {
@@ -5766,132 +4393,50 @@ export namespace Prisma {
   export type user_clubCountOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_clubAvgOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_clubMaxOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_clubMinOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
   }
 
   export type user_clubSumOrderByAggregateInput = {
     account_id?: SortOrder
     player_id?: SortOrder
-    enhancement_level?: SortOrder
   }
 
-  export type BoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
+  export type user_playerCreateNestedOneWithoutAccountInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
+    connect?: user_playerWhereUniqueInput
   }
 
-  export type user_infoCountOrderByAggregateInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-    have_club?: SortOrder
+  export type user_clubCreateNestedOneWithoutAccountInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
+    connect?: user_clubWhereUniqueInput
   }
 
-  export type user_infoAvgOrderByAggregateInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
+  export type user_playerUncheckedCreateNestedOneWithoutAccountInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
+    connect?: user_playerWhereUniqueInput
   }
 
-  export type user_infoMaxOrderByAggregateInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-    have_club?: SortOrder
-  }
-
-  export type user_infoMinOrderByAggregateInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-    have_club?: SortOrder
-  }
-
-  export type user_infoSumOrderByAggregateInput = {
-    account_id?: SortOrder
-    rank_score?: SortOrder
-    wins?: SortOrder
-    loses?: SortOrder
-    draws?: SortOrder
-    money?: SortOrder
-  }
-
-  export type BoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
-  export type user_playerCreateNestedManyWithoutAccountInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
-    createMany?: user_playerCreateManyAccountInputEnvelope
-    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-  }
-
-  export type user_clubCreateNestedManyWithoutAccountInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
-    createMany?: user_clubCreateManyAccountInputEnvelope
-    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-  }
-
-  export type user_infoCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_infoCreateOrConnectWithoutAccountInput
-    connect?: user_infoWhereUniqueInput
-  }
-
-  export type user_playerUncheckedCreateNestedManyWithoutAccountInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
-    createMany?: user_playerCreateManyAccountInputEnvelope
-    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-  }
-
-  export type user_clubUncheckedCreateNestedManyWithoutAccountInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
-    createMany?: user_clubCreateManyAccountInputEnvelope
-    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-  }
-
-  export type user_infoUncheckedCreateNestedOneWithoutAccountInput = {
-    create?: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_infoCreateOrConnectWithoutAccountInput
-    connect?: user_infoWhereUniqueInput
+  export type user_clubUncheckedCreateNestedOneWithoutAccountInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
+    connect?: user_clubWhereUniqueInput
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -5902,42 +4447,24 @@ export namespace Prisma {
     set?: Date | string
   }
 
-  export type user_playerUpdateManyWithoutAccountNestedInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
-    upsert?: user_playerUpsertWithWhereUniqueWithoutAccountInput | user_playerUpsertWithWhereUniqueWithoutAccountInput[]
-    createMany?: user_playerCreateManyAccountInputEnvelope
-    set?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    disconnect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    delete?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    update?: user_playerUpdateWithWhereUniqueWithoutAccountInput | user_playerUpdateWithWhereUniqueWithoutAccountInput[]
-    updateMany?: user_playerUpdateManyWithWhereWithoutAccountInput | user_playerUpdateManyWithWhereWithoutAccountInput[]
-    deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
+  export type user_playerUpdateOneWithoutAccountNestedInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
+    upsert?: user_playerUpsertWithoutAccountInput
+    disconnect?: user_playerWhereInput | boolean
+    delete?: user_playerWhereInput | boolean
+    connect?: user_playerWhereUniqueInput
+    update?: XOR<XOR<user_playerUpdateToOneWithWhereWithoutAccountInput, user_playerUpdateWithoutAccountInput>, user_playerUncheckedUpdateWithoutAccountInput>
   }
 
-  export type user_clubUpdateManyWithoutAccountNestedInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
-    upsert?: user_clubUpsertWithWhereUniqueWithoutAccountInput | user_clubUpsertWithWhereUniqueWithoutAccountInput[]
-    createMany?: user_clubCreateManyAccountInputEnvelope
-    set?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    disconnect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    delete?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    update?: user_clubUpdateWithWhereUniqueWithoutAccountInput | user_clubUpdateWithWhereUniqueWithoutAccountInput[]
-    updateMany?: user_clubUpdateManyWithWhereWithoutAccountInput | user_clubUpdateManyWithWhereWithoutAccountInput[]
-    deleteMany?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
-  }
-
-  export type user_infoUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_infoCreateOrConnectWithoutAccountInput
-    upsert?: user_infoUpsertWithoutAccountInput
-    disconnect?: user_infoWhereInput | boolean
-    delete?: user_infoWhereInput | boolean
-    connect?: user_infoWhereUniqueInput
-    update?: XOR<XOR<user_infoUpdateToOneWithWhereWithoutAccountInput, user_infoUpdateWithoutAccountInput>, user_infoUncheckedUpdateWithoutAccountInput>
+  export type user_clubUpdateOneWithoutAccountNestedInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
+    upsert?: user_clubUpsertWithoutAccountInput
+    disconnect?: user_clubWhereInput | boolean
+    delete?: user_clubWhereInput | boolean
+    connect?: user_clubWhereUniqueInput
+    update?: XOR<XOR<user_clubUpdateToOneWithWhereWithoutAccountInput, user_clubUpdateWithoutAccountInput>, user_clubUncheckedUpdateWithoutAccountInput>
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -5948,88 +4475,52 @@ export namespace Prisma {
     divide?: number
   }
 
-  export type user_playerUncheckedUpdateManyWithoutAccountNestedInput = {
-    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput> | user_playerCreateWithoutAccountInput[] | user_playerUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput | user_playerCreateOrConnectWithoutAccountInput[]
-    upsert?: user_playerUpsertWithWhereUniqueWithoutAccountInput | user_playerUpsertWithWhereUniqueWithoutAccountInput[]
-    createMany?: user_playerCreateManyAccountInputEnvelope
-    set?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    disconnect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    delete?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    connect?: user_playerWhereUniqueInput | user_playerWhereUniqueInput[]
-    update?: user_playerUpdateWithWhereUniqueWithoutAccountInput | user_playerUpdateWithWhereUniqueWithoutAccountInput[]
-    updateMany?: user_playerUpdateManyWithWhereWithoutAccountInput | user_playerUpdateManyWithWhereWithoutAccountInput[]
-    deleteMany?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
+  export type user_playerUncheckedUpdateOneWithoutAccountNestedInput = {
+    create?: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_playerCreateOrConnectWithoutAccountInput
+    upsert?: user_playerUpsertWithoutAccountInput
+    disconnect?: user_playerWhereInput | boolean
+    delete?: user_playerWhereInput | boolean
+    connect?: user_playerWhereUniqueInput
+    update?: XOR<XOR<user_playerUpdateToOneWithWhereWithoutAccountInput, user_playerUpdateWithoutAccountInput>, user_playerUncheckedUpdateWithoutAccountInput>
   }
 
-  export type user_clubUncheckedUpdateManyWithoutAccountNestedInput = {
-    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput> | user_clubCreateWithoutAccountInput[] | user_clubUncheckedCreateWithoutAccountInput[]
-    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput | user_clubCreateOrConnectWithoutAccountInput[]
-    upsert?: user_clubUpsertWithWhereUniqueWithoutAccountInput | user_clubUpsertWithWhereUniqueWithoutAccountInput[]
-    createMany?: user_clubCreateManyAccountInputEnvelope
-    set?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    disconnect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    delete?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    connect?: user_clubWhereUniqueInput | user_clubWhereUniqueInput[]
-    update?: user_clubUpdateWithWhereUniqueWithoutAccountInput | user_clubUpdateWithWhereUniqueWithoutAccountInput[]
-    updateMany?: user_clubUpdateManyWithWhereWithoutAccountInput | user_clubUpdateManyWithWhereWithoutAccountInput[]
-    deleteMany?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
+  export type user_clubUncheckedUpdateOneWithoutAccountNestedInput = {
+    create?: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+    connectOrCreate?: user_clubCreateOrConnectWithoutAccountInput
+    upsert?: user_clubUpsertWithoutAccountInput
+    disconnect?: user_clubWhereInput | boolean
+    delete?: user_clubWhereInput | boolean
+    connect?: user_clubWhereUniqueInput
+    update?: XOR<XOR<user_clubUpdateToOneWithWhereWithoutAccountInput, user_clubUpdateWithoutAccountInput>, user_clubUncheckedUpdateWithoutAccountInput>
   }
 
-  export type user_infoUncheckedUpdateOneWithoutAccountNestedInput = {
-    create?: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-    connectOrCreate?: user_infoCreateOrConnectWithoutAccountInput
-    upsert?: user_infoUpsertWithoutAccountInput
-    disconnect?: user_infoWhereInput | boolean
-    delete?: user_infoWhereInput | boolean
-    connect?: user_infoWhereUniqueInput
-    update?: XOR<XOR<user_infoUpdateToOneWithWhereWithoutAccountInput, user_infoUpdateWithoutAccountInput>, user_infoUncheckedUpdateWithoutAccountInput>
-  }
-
-  export type accountCreateNestedOneWithoutUser_playersInput = {
-    create?: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_playersInput
+  export type accountCreateNestedOneWithoutUser_playerInput = {
+    create?: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_playerInput
     connect?: accountWhereUniqueInput
   }
 
-  export type accountUpdateOneRequiredWithoutUser_playersNestedInput = {
-    create?: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_playersInput
-    upsert?: accountUpsertWithoutUser_playersInput
+  export type accountUpdateOneRequiredWithoutUser_playerNestedInput = {
+    create?: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_playerInput
+    upsert?: accountUpsertWithoutUser_playerInput
     connect?: accountWhereUniqueInput
-    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_playersInput, accountUpdateWithoutUser_playersInput>, accountUncheckedUpdateWithoutUser_playersInput>
+    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_playerInput, accountUpdateWithoutUser_playerInput>, accountUncheckedUpdateWithoutUser_playerInput>
   }
 
-  export type accountCreateNestedOneWithoutUser_clubsInput = {
-    create?: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_clubsInput
-    connect?: accountWhereUniqueInput
-  }
-
-  export type accountUpdateOneRequiredWithoutUser_clubsNestedInput = {
-    create?: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_clubsInput
-    upsert?: accountUpsertWithoutUser_clubsInput
-    connect?: accountWhereUniqueInput
-    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_clubsInput, accountUpdateWithoutUser_clubsInput>, accountUncheckedUpdateWithoutUser_clubsInput>
-  }
-
-  export type accountCreateNestedOneWithoutUser_infoInput = {
-    create?: XOR<accountCreateWithoutUser_infoInput, accountUncheckedCreateWithoutUser_infoInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_infoInput
+  export type accountCreateNestedOneWithoutUser_clubInput = {
+    create?: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_clubInput
     connect?: accountWhereUniqueInput
   }
 
-  export type BoolFieldUpdateOperationsInput = {
-    set?: boolean
-  }
-
-  export type accountUpdateOneRequiredWithoutUser_infoNestedInput = {
-    create?: XOR<accountCreateWithoutUser_infoInput, accountUncheckedCreateWithoutUser_infoInput>
-    connectOrCreate?: accountCreateOrConnectWithoutUser_infoInput
-    upsert?: accountUpsertWithoutUser_infoInput
+  export type accountUpdateOneRequiredWithoutUser_clubNestedInput = {
+    create?: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+    connectOrCreate?: accountCreateOrConnectWithoutUser_clubInput
+    upsert?: accountUpsertWithoutUser_clubInput
     connect?: accountWhereUniqueInput
-    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_infoInput, accountUpdateWithoutUser_infoInput>, accountUncheckedUpdateWithoutUser_infoInput>
+    update?: XOR<XOR<accountUpdateToOneWithWhereWithoutUser_clubInput, accountUpdateWithoutUser_clubInput>, accountUncheckedUpdateWithoutUser_clubInput>
   }
 
   export type NestedIntFilter<$PrismaModel = never> = {
@@ -6126,29 +4617,14 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedBoolWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolWithAggregatesFilter<$PrismaModel> | boolean
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedBoolFilter<$PrismaModel>
-    _max?: NestedBoolFilter<$PrismaModel>
-  }
-
   export type user_playerCreateWithoutAccountInput = {
     player_id: number
     count: number
-    enhancement_level?: number
   }
 
   export type user_playerUncheckedCreateWithoutAccountInput = {
     player_id: number
     count: number
-    enhancement_level?: number
   }
 
   export type user_playerCreateOrConnectWithoutAccountInput = {
@@ -6156,19 +4632,12 @@ export namespace Prisma {
     create: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
   }
 
-  export type user_playerCreateManyAccountInputEnvelope = {
-    data: user_playerCreateManyAccountInput | user_playerCreateManyAccountInput[]
-    skipDuplicates?: boolean
-  }
-
   export type user_clubCreateWithoutAccountInput = {
     player_id: number
-    enhancement_level?: number
   }
 
   export type user_clubUncheckedCreateWithoutAccountInput = {
     player_id: number
-    enhancement_level?: number
   }
 
   export type user_clubCreateOrConnectWithoutAccountInput = {
@@ -6176,318 +4645,144 @@ export namespace Prisma {
     create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
   }
 
-  export type user_clubCreateManyAccountInputEnvelope = {
-    data: user_clubCreateManyAccountInput | user_clubCreateManyAccountInput[]
-    skipDuplicates?: boolean
-  }
-
-  export type user_infoCreateWithoutAccountInput = {
-    rank_score?: number
-    wins?: number
-    loses?: number
-    draws?: number
-    money?: number
-    have_club?: boolean
-  }
-
-  export type user_infoUncheckedCreateWithoutAccountInput = {
-    rank_score?: number
-    wins?: number
-    loses?: number
-    draws?: number
-    money?: number
-    have_club?: boolean
-  }
-
-  export type user_infoCreateOrConnectWithoutAccountInput = {
-    where: user_infoWhereUniqueInput
-    create: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-  }
-
-  export type user_playerUpsertWithWhereUniqueWithoutAccountInput = {
-    where: user_playerWhereUniqueInput
+  export type user_playerUpsertWithoutAccountInput = {
     update: XOR<user_playerUpdateWithoutAccountInput, user_playerUncheckedUpdateWithoutAccountInput>
     create: XOR<user_playerCreateWithoutAccountInput, user_playerUncheckedCreateWithoutAccountInput>
+    where?: user_playerWhereInput
   }
 
-  export type user_playerUpdateWithWhereUniqueWithoutAccountInput = {
-    where: user_playerWhereUniqueInput
+  export type user_playerUpdateToOneWithWhereWithoutAccountInput = {
+    where?: user_playerWhereInput
     data: XOR<user_playerUpdateWithoutAccountInput, user_playerUncheckedUpdateWithoutAccountInput>
-  }
-
-  export type user_playerUpdateManyWithWhereWithoutAccountInput = {
-    where: user_playerScalarWhereInput
-    data: XOR<user_playerUpdateManyMutationInput, user_playerUncheckedUpdateManyWithoutAccountInput>
-  }
-
-  export type user_playerScalarWhereInput = {
-    AND?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
-    OR?: user_playerScalarWhereInput[]
-    NOT?: user_playerScalarWhereInput | user_playerScalarWhereInput[]
-    account_id?: IntFilter<"user_player"> | number
-    player_id?: IntFilter<"user_player"> | number
-    count?: IntFilter<"user_player"> | number
-    enhancement_level?: IntFilter<"user_player"> | number
-  }
-
-  export type user_clubUpsertWithWhereUniqueWithoutAccountInput = {
-    where: user_clubWhereUniqueInput
-    update: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
-    create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
-  }
-
-  export type user_clubUpdateWithWhereUniqueWithoutAccountInput = {
-    where: user_clubWhereUniqueInput
-    data: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
-  }
-
-  export type user_clubUpdateManyWithWhereWithoutAccountInput = {
-    where: user_clubScalarWhereInput
-    data: XOR<user_clubUpdateManyMutationInput, user_clubUncheckedUpdateManyWithoutAccountInput>
-  }
-
-  export type user_clubScalarWhereInput = {
-    AND?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
-    OR?: user_clubScalarWhereInput[]
-    NOT?: user_clubScalarWhereInput | user_clubScalarWhereInput[]
-    account_id?: IntFilter<"user_club"> | number
-    player_id?: IntFilter<"user_club"> | number
-    enhancement_level?: IntFilter<"user_club"> | number
-  }
-
-  export type user_infoUpsertWithoutAccountInput = {
-    update: XOR<user_infoUpdateWithoutAccountInput, user_infoUncheckedUpdateWithoutAccountInput>
-    create: XOR<user_infoCreateWithoutAccountInput, user_infoUncheckedCreateWithoutAccountInput>
-    where?: user_infoWhereInput
-  }
-
-  export type user_infoUpdateToOneWithWhereWithoutAccountInput = {
-    where?: user_infoWhereInput
-    data: XOR<user_infoUpdateWithoutAccountInput, user_infoUncheckedUpdateWithoutAccountInput>
-  }
-
-  export type user_infoUpdateWithoutAccountInput = {
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type user_infoUncheckedUpdateWithoutAccountInput = {
-    rank_score?: IntFieldUpdateOperationsInput | number
-    wins?: IntFieldUpdateOperationsInput | number
-    loses?: IntFieldUpdateOperationsInput | number
-    draws?: IntFieldUpdateOperationsInput | number
-    money?: IntFieldUpdateOperationsInput | number
-    have_club?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type accountCreateWithoutUser_playersInput = {
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_clubs?: user_clubCreateNestedManyWithoutAccountInput
-    user_info?: user_infoCreateNestedOneWithoutAccountInput
-  }
-
-  export type accountUncheckedCreateWithoutUser_playersInput = {
-    account_id?: number
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_clubs?: user_clubUncheckedCreateNestedManyWithoutAccountInput
-    user_info?: user_infoUncheckedCreateNestedOneWithoutAccountInput
-  }
-
-  export type accountCreateOrConnectWithoutUser_playersInput = {
-    where: accountWhereUniqueInput
-    create: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
-  }
-
-  export type accountUpsertWithoutUser_playersInput = {
-    update: XOR<accountUpdateWithoutUser_playersInput, accountUncheckedUpdateWithoutUser_playersInput>
-    create: XOR<accountCreateWithoutUser_playersInput, accountUncheckedCreateWithoutUser_playersInput>
-    where?: accountWhereInput
-  }
-
-  export type accountUpdateToOneWithWhereWithoutUser_playersInput = {
-    where?: accountWhereInput
-    data: XOR<accountUpdateWithoutUser_playersInput, accountUncheckedUpdateWithoutUser_playersInput>
-  }
-
-  export type accountUpdateWithoutUser_playersInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_clubs?: user_clubUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUpdateOneWithoutAccountNestedInput
-  }
-
-  export type accountUncheckedUpdateWithoutUser_playersInput = {
-    account_id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_clubs?: user_clubUncheckedUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUncheckedUpdateOneWithoutAccountNestedInput
-  }
-
-  export type accountCreateWithoutUser_clubsInput = {
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_players?: user_playerCreateNestedManyWithoutAccountInput
-    user_info?: user_infoCreateNestedOneWithoutAccountInput
-  }
-
-  export type accountUncheckedCreateWithoutUser_clubsInput = {
-    account_id?: number
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_players?: user_playerUncheckedCreateNestedManyWithoutAccountInput
-    user_info?: user_infoUncheckedCreateNestedOneWithoutAccountInput
-  }
-
-  export type accountCreateOrConnectWithoutUser_clubsInput = {
-    where: accountWhereUniqueInput
-    create: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
-  }
-
-  export type accountUpsertWithoutUser_clubsInput = {
-    update: XOR<accountUpdateWithoutUser_clubsInput, accountUncheckedUpdateWithoutUser_clubsInput>
-    create: XOR<accountCreateWithoutUser_clubsInput, accountUncheckedCreateWithoutUser_clubsInput>
-    where?: accountWhereInput
-  }
-
-  export type accountUpdateToOneWithWhereWithoutUser_clubsInput = {
-    where?: accountWhereInput
-    data: XOR<accountUpdateWithoutUser_clubsInput, accountUncheckedUpdateWithoutUser_clubsInput>
-  }
-
-  export type accountUpdateWithoutUser_clubsInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUpdateOneWithoutAccountNestedInput
-  }
-
-  export type accountUncheckedUpdateWithoutUser_clubsInput = {
-    account_id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
-    user_info?: user_infoUncheckedUpdateOneWithoutAccountNestedInput
-  }
-
-  export type accountCreateWithoutUser_infoInput = {
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_players?: user_playerCreateNestedManyWithoutAccountInput
-    user_clubs?: user_clubCreateNestedManyWithoutAccountInput
-  }
-
-  export type accountUncheckedCreateWithoutUser_infoInput = {
-    account_id?: number
-    username: string
-    password: string
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    user_players?: user_playerUncheckedCreateNestedManyWithoutAccountInput
-    user_clubs?: user_clubUncheckedCreateNestedManyWithoutAccountInput
-  }
-
-  export type accountCreateOrConnectWithoutUser_infoInput = {
-    where: accountWhereUniqueInput
-    create: XOR<accountCreateWithoutUser_infoInput, accountUncheckedCreateWithoutUser_infoInput>
-  }
-
-  export type accountUpsertWithoutUser_infoInput = {
-    update: XOR<accountUpdateWithoutUser_infoInput, accountUncheckedUpdateWithoutUser_infoInput>
-    create: XOR<accountCreateWithoutUser_infoInput, accountUncheckedCreateWithoutUser_infoInput>
-    where?: accountWhereInput
-  }
-
-  export type accountUpdateToOneWithWhereWithoutUser_infoInput = {
-    where?: accountWhereInput
-    data: XOR<accountUpdateWithoutUser_infoInput, accountUncheckedUpdateWithoutUser_infoInput>
-  }
-
-  export type accountUpdateWithoutUser_infoInput = {
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUpdateManyWithoutAccountNestedInput
-    user_clubs?: user_clubUpdateManyWithoutAccountNestedInput
-  }
-
-  export type accountUncheckedUpdateWithoutUser_infoInput = {
-    account_id?: IntFieldUpdateOperationsInput | number
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user_players?: user_playerUncheckedUpdateManyWithoutAccountNestedInput
-    user_clubs?: user_clubUncheckedUpdateManyWithoutAccountNestedInput
-  }
-
-  export type user_playerCreateManyAccountInput = {
-    player_id: number
-    count: number
-    enhancement_level?: number
-  }
-
-  export type user_clubCreateManyAccountInput = {
-    player_id: number
-    enhancement_level?: number
   }
 
   export type user_playerUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_playerUncheckedUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
     count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
-  export type user_playerUncheckedUpdateManyWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
-    count?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
+  export type user_clubUpsertWithoutAccountInput = {
+    update: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
+    create: XOR<user_clubCreateWithoutAccountInput, user_clubUncheckedCreateWithoutAccountInput>
+    where?: user_clubWhereInput
+  }
+
+  export type user_clubUpdateToOneWithWhereWithoutAccountInput = {
+    where?: user_clubWhereInput
+    data: XOR<user_clubUpdateWithoutAccountInput, user_clubUncheckedUpdateWithoutAccountInput>
   }
 
   export type user_clubUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
   export type user_clubUncheckedUpdateWithoutAccountInput = {
     player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
   }
 
-  export type user_clubUncheckedUpdateManyWithoutAccountInput = {
-    player_id?: IntFieldUpdateOperationsInput | number
-    enhancement_level?: IntFieldUpdateOperationsInput | number
+  export type accountCreateWithoutUser_playerInput = {
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user_club?: user_clubCreateNestedOneWithoutAccountInput
+  }
+
+  export type accountUncheckedCreateWithoutUser_playerInput = {
+    account_id?: number
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user_club?: user_clubUncheckedCreateNestedOneWithoutAccountInput
+  }
+
+  export type accountCreateOrConnectWithoutUser_playerInput = {
+    where: accountWhereUniqueInput
+    create: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+  }
+
+  export type accountUpsertWithoutUser_playerInput = {
+    update: XOR<accountUpdateWithoutUser_playerInput, accountUncheckedUpdateWithoutUser_playerInput>
+    create: XOR<accountCreateWithoutUser_playerInput, accountUncheckedCreateWithoutUser_playerInput>
+    where?: accountWhereInput
+  }
+
+  export type accountUpdateToOneWithWhereWithoutUser_playerInput = {
+    where?: accountWhereInput
+    data: XOR<accountUpdateWithoutUser_playerInput, accountUncheckedUpdateWithoutUser_playerInput>
+  }
+
+  export type accountUpdateWithoutUser_playerInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_club?: user_clubUpdateOneWithoutAccountNestedInput
+  }
+
+  export type accountUncheckedUpdateWithoutUser_playerInput = {
+    account_id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_club?: user_clubUncheckedUpdateOneWithoutAccountNestedInput
+  }
+
+  export type accountCreateWithoutUser_clubInput = {
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user_player?: user_playerCreateNestedOneWithoutAccountInput
+  }
+
+  export type accountUncheckedCreateWithoutUser_clubInput = {
+    account_id?: number
+    username: string
+    password: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user_player?: user_playerUncheckedCreateNestedOneWithoutAccountInput
+  }
+
+  export type accountCreateOrConnectWithoutUser_clubInput = {
+    where: accountWhereUniqueInput
+    create: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+  }
+
+  export type accountUpsertWithoutUser_clubInput = {
+    update: XOR<accountUpdateWithoutUser_clubInput, accountUncheckedUpdateWithoutUser_clubInput>
+    create: XOR<accountCreateWithoutUser_clubInput, accountUncheckedCreateWithoutUser_clubInput>
+    where?: accountWhereInput
+  }
+
+  export type accountUpdateToOneWithWhereWithoutUser_clubInput = {
+    where?: accountWhereInput
+    data: XOR<accountUpdateWithoutUser_clubInput, accountUncheckedUpdateWithoutUser_clubInput>
+  }
+
+  export type accountUpdateWithoutUser_clubInput = {
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_player?: user_playerUpdateOneWithoutAccountNestedInput
+  }
+
+  export type accountUncheckedUpdateWithoutUser_clubInput = {
+    account_id?: IntFieldUpdateOperationsInput | number
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user_player?: user_playerUncheckedUpdateOneWithoutAccountNestedInput
   }
 
 
@@ -6495,10 +4790,6 @@ export namespace Prisma {
   /**
    * Aliases for legacy arg types
    */
-    /**
-     * @deprecated Use AccountCountOutputTypeDefaultArgs instead
-     */
-    export type AccountCountOutputTypeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = AccountCountOutputTypeDefaultArgs<ExtArgs>
     /**
      * @deprecated Use accountDefaultArgs instead
      */
@@ -6511,10 +4802,6 @@ export namespace Prisma {
      * @deprecated Use user_clubDefaultArgs instead
      */
     export type user_clubArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = user_clubDefaultArgs<ExtArgs>
-    /**
-     * @deprecated Use user_infoDefaultArgs instead
-     */
-    export type user_infoArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = user_infoDefaultArgs<ExtArgs>
 
   /**
    * Batch Payload for updateMany & deleteMany & createMany
