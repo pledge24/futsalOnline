@@ -213,6 +213,7 @@ router.post("/gatcha", authMiddleware, async (req, res) => {
           where: {
             account_id: userId,
             player_id: player.player_id,
+            enhancement_level:0
           },
         });
 
