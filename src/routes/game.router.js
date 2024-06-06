@@ -138,7 +138,7 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
   //토큰에 저장된 유저의 남은 캐쉬를 변수에 저장합니다
   const cashRemainder= playerInfo.money;
   // console.log("뽑기 전 남은 돈 :"+ cashRemainder);
-  
+
   //총 비용을 계산해서 변수에 저장합니다.
   const totalCost = numGatcha * 100;
   // console.log("뽑기 전 총 비용:"+totalCost);
@@ -167,44 +167,12 @@ if (platinumChance === 1000) {
           rarity: {
             in: ["bronze", "silver", "gold"],
           },
-        }
-        });
-
-        if (players.length === 0) {
-          return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
-        }
-
-        const randomIndex = Math.floor(Math.random() * players.length);
-        const selectedPlayer = players[randomIndex];
-
-        gatchaResult.push(selectedPlayer);
-
-        if (selectedPlayer.rarity === "bronze") {
-          gatchaMessage.push(`Bronze 메시지 ${selectedPlayer.name}`);
-        } else if (selectedPlayer.rarity === "silver") {
-          gatchaMessage.push(`Silver 메시지 ${selectedPlayer.name}`);
-        } else if (selectedPlayer.rarity === "gold") {
-          gatchaMessage.push(`Gold 메시지 ${selectedPlayer.name}`);
-        }
-      }
-    }
-    //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
-    //  for문이 돌다 멈추면 transaction필요
-    console.log(userId);
-    await userDataClient.$transaction(async (tx) => {
-      await tx.user_info.update({
-        where: {
-          account_id: userId,
-        },
-        data: {
-          money: cashAfterGatcha,
         },
       });
 //만약 플레이어가 없으면 
       if (players.length === 0) {
         return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
       }
-
       const randomIndex = Math.floor(Math.random() * players.length);
       const selectedPlayer = players[randomIndex];
       //가챠 결과: 결론적으로 user_player 테이블에 저장되는 배열
@@ -217,9 +185,9 @@ if (platinumChance === 1000) {
       } else if (selectedPlayer.rarity === "gold") {
         gatchaMessage.push({message:`골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       }
-    
-    }
-)}
+
+  }
+}
 //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
 //  for문이 돌다 멈추면 transaction필요
 await userDataClient.$transaction(async (tx) => {
