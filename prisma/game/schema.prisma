@@ -27,6 +27,7 @@ model enhanced_player {
   enhanced_player_id Int      @id @default(autoincrement())
   player_id          Int
   name               String
+
   enhancement_level  Int
   speed              Int
   goal_desicion      Int
@@ -45,3 +46,4 @@ model enhanced_value {
 
   @@map("enhanced_value")
 }
+
