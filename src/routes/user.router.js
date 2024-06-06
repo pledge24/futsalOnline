@@ -154,6 +154,7 @@ router.patch("/payment", async (req, res) => {
       where: {
         Character_Id,
       },
+      
     });
 
     return res.status(200).json({
