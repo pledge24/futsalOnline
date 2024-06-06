@@ -24,7 +24,6 @@ model player {
 }
 
 model enhanced_player {
-  enhanced_player_id Int      @id @default(autoincrement())
   player_id          Int
   name               String
 
@@ -35,6 +34,7 @@ model enhanced_player {
   defense            Int
   stamina            Int
 
+  @@id([player_id, enhancement_level])
   @@map("enhanced_player")
 }
 

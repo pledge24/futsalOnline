@@ -753,50 +753,134 @@ router.post("/enhanced_player", async (req, res) => {
 
 // 선수 강화 API
 router.post("/enhance", authMiddleware, async (req, res) => {
-  const { player_id } = req.body;
+  const { player_id, enhancement_level } = req.body;
   const userId = req.user.account_id;
+
+  if(!player_id || !enhancement_level){
+    return res.status(400).json({ message: "Invliad Request: player_id, enhancement_level are required" });
+  }
+
   try {
-    const userPlayer = await userDataClient.user_player.findUnique({
-      where: {
-        account_id_player_id: {
-          account_id: userId,
-          player_id: player_id,
-        },
+
+    // 내가 가진 선수들을 내 인벤토리에서 가져옵니다.
+    const myPlayers = await userDataClient.user_player.findMany({
+      where: { 
+        account_id: +userId,
+        player_id: +player_id,
       },
     });
-    if (!userPlayer) {
+
+    const enhancingPlayer = myPlayers.find(player => player.enhancement_level === +enhancement_level);
+    const defaultPlayer = myPlayers.find(player => player.enhancement_level === 0);
+
+    //console.log("havePlayer", enhancingPlayer);
+
+    // 만약 해당 강화 수치를 가진 선수가 인벤토리에 없다면, 해당 사실을 클라이언트에 전달합니다.
+    if (!enhancingPlayer) {
       return res.status(404).json({ message: "인벤토리에 해당 선수가 존재하지 않습니다." });
     }
-    // 현재 강화 레벨 계산
-    const currentEnhancementLevel = userPlayer.enhancement_level || 0;
 
     // 필요한 카드 개수는 강화 레벨 + 1
-    const requiredCardCount = currentEnhancementLevel + 1;
+    const requiredCardCount = +enhancement_level + 1;
+
+    //console.log("requiredCardCount", requiredCardCount)
 
     // 카드 개수가 충분한지 확인
-    if (userPlayer.count < requiredCardCount) {
+    // 0레벨 강화인 경우 최소 2개 필요, 1레벨 이상 강화인 경우 최소 레벨+1개 필요.
+    if(!defaultPlayer || +enhancement_level===0 && defaultPlayer.count < 2 || defaultPlayer.count < requiredCardCount){
       return res.status(400).json({ message: "강화에 필요한 선수 카드가 부족합니다." });
     }
 
-    // 강화 성공 시 강화된 선수 데이터를 유저 인벤토리에 저장
-    const enhancedPlayer = await userDataClient.user_player.update({
-      where: {
-        account_id_player_id: {
-          account_id: userId,
-          player_id: player_id,
+    // ---------- 강화에 따른 인벤토리 변경 -----------
+
+    const updatedPlayer = await userDataClient.$transaction(async (tx) =>{
+      
+      
+      // 강화된(+1) 카드를 하나 추가. 레코드가 있으면 수량 1 증가, 없으면 레코드 새로 생성
+      const updatedPlayer = await tx.user_player.upsert({
+        where: {
+          account_id_player_id_enhancement_level: {
+            account_id: userId,
+            player_id: +player_id,
+            enhancement_level: +enhancement_level+1
+          }
         },
-      },
-      data: {
-        enhancement_level: currentEnhancementLevel + 1, // 현재 강화 레벨에서 1 증가
-        count: userPlayer.count - requiredCardCount, // 사용한 선수 카드 갯수를 뺀 값
-      },
-    });
+        update: {
+          count: { increment: 1 }
+        },
+        create: {
+          account_id: userId,
+          player_id: +player_id,
+          enhancement_level: +enhancement_level+1,
+          count: 1
+        }
+      });
+
+      
+      // 강화가 되었으니 강화로 사용한 타켓 카드는 수량 1 감소, 0이되면 레코드 삭제
+      if(myPlayers.find(player => player.enhancement_level === +enhancement_level && player.count > 1)){
+        await tx.user_player.update({
+          where: {
+            account_id_player_id_enhancement_level: {
+              account_id: userId,
+              player_id: +player_id,
+              enhancement_level: +enhancement_level
+            }
+          },
+          data:{
+            count: { decrement: 1 }
+          }
+        })
+      }
+      else{
+        await tx.user_player.delete({
+          where: {
+            account_id_player_id_enhancement_level: {
+              account_id: userId,
+              player_id: +player_id,
+              enhancement_level: +enhancement_level
+            }
+          }
+        })
+      }
+      
+      // 강화 재료로 사용한 카드(+0강) 수량 사용한 만큼 감소, 0이되면 레코드 삭제
+      if(defaultPlayer.count > requiredCardCount){
+        await tx.user_player.update({
+          where: {
+            account_id_player_id_enhancement_level: {
+              account_id: userId,
+              player_id: +player_id,
+              enhancement_level: 0
+            }
+          },
+          data:{
+            count: { decrement: requiredCardCount }
+          }
+        })
+      }
+      else{
+        await tx.user_player.delete({
+          where: {
+            account_id_player_id_enhancement_level: {
+              account_id: userId,
+              player_id: +player_id,
+              enhancement_level: 0
+            }
+          }
+        })
+      }
+
+      return updatedPlayer;
+    })
+    
 
     // 강화 성공 여부에 따라 응답을 다르게 처리할 수 있습니다.
     // 예시로 성공 시에는 성공 메시지와 강화된 선수 데이터를 응답합니다.
     return res.status(200).json({
       message: "강화가 성공적으로 완료되었습니다.",
-      enhancedPlayer,
+      updatedPlayer: updatedPlayer
+     
     });
   } catch (error) {
     console.error("Error enhancing player:", error);
@@ -813,9 +897,10 @@ const find_opponent = async (myUserInfo) => {
   const rating = myUserInfo.rank_score; // 내 레이팅 점수
   const myAccountId = myUserInfo.account_id; // 내 계정 id
 
+  console.log("rating, myAccountId", rating, myAccountId)
   // 내 레이팅의 -1000~+1000인 상대를 찾습니다.
   // 상대를 찾았다면 상대 구단 정보를 반환하고, 더 이상 찾지 않고 while문을 종료합니다.
-  while (ratingRange < 1000) {
+  while (ratingRange <= 1600) {
     // 현재 레이팅 범위에 상대가 있는지 찾는다(당연히 나는 제외).
     const opponentUserList = await userDataClient.user_info.findMany({
       where: {
@@ -823,7 +908,7 @@ const find_opponent = async (myUserInfo) => {
           account_id: myAccountId,
         },
         rank_score: {
-          gte: rating - ratingRange,
+          gte: (rating - ratingRange) > 0 ? (rating - ratingRange) : 0,
           lte: rating + ratingRange,
         },
         have_club: true,
@@ -948,16 +1033,20 @@ router.post("/play", authMiddleware, async (req, res) => {
      * @returns 구단 총 점수
      */
     async function getClubScore(club) {
-      const playerIds = club.map((player) => player.player_id);
+      const playerInfos = [];
+
 
       // 클럽에 존재하는 선수 데이터를 가져옵니다.
-      const playerInfos = await gameDataClient.player.findMany({
-        where: {
-          player_id: {
-            in: playerIds,
-          },
-        },
-      });
+      for(const player of club){
+        const playerInfo = await gameDataClient.enhanced_player.findFirst({
+          where: {
+            player_id: player.player_id,
+            enhancement_level: player.enhancement_level
+          }
+        });
+
+        playerInfos.push(playerInfo);
+      }
 
       // Test용
       // console.log(playerInfos);
@@ -1059,12 +1148,13 @@ router.post("/play", authMiddleware, async (req, res) => {
 
         // Test용
         // console.log("updatedMyInfo, updatedOpponentInfo", updatedMyInfo, updatedOpponentInfo);
-        gameResult.rank_score = `랭크 점수 ${myUserInfo.rank_score}으로 100 상승`;
+        gameResult.rank_score = `랭크 점수 ${updatedMyInfo.rank_score}으로 100 상승`;
       }
     } else if (myGameScore < opponentGameScore) {
       // 나의 패배
       gameResult.result = `패배하였습니다... ${myGameScore} : ${opponentGameScore}`;
 
+      
       // 랭크모드일 경우, 게임 결과에 따라 유저 정보를 수정합니다.
       if (play_mode === "rank") {
         const [updatedMyInfo, updatedOpponentInfo] = await userDataClient.$transaction(
@@ -1079,7 +1169,7 @@ router.post("/play", authMiddleware, async (req, res) => {
                   increment: 1,
                 },
                 rank_score: {
-                  decrement: 100,
+                  decrement: myUserInfo.rank_score - 100 > 0 ? 100 : 0,
                 },
               },
             });
@@ -1103,7 +1193,7 @@ router.post("/play", authMiddleware, async (req, res) => {
 
         // Test용
         // console.log(updatedMyInfo, updatedOpponentInfo);
-        gameResult.rank_score = `랭크 점수 ${myUserInfo.rank_score}으로 100 하락...`;
+        gameResult.rank_score = `랭크 점수 ${updatedMyInfo.rank_score}으로 100 하락...`;
       }
     } else {
       // 무승부
@@ -1126,7 +1216,7 @@ router.post("/play", authMiddleware, async (req, res) => {
         });
         gameResult.rank_score = `랭크 점수 ${myUserInfo.rank_score}으로 변동없음`;
 
-        //console.log(updatedInfos);
+        //console.log(myUserInfo);
       }
     }
 
