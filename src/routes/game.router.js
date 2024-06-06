@@ -154,7 +154,7 @@ router.post("/gatcha", authMiddleware, async (req, res) => {
     //------------가챠 시작-------------
     for (let i = 0; i < numGatcha; i++) {
       //우선, 플래티넘찬스(1000분의 1확률로 플래티넘 찬스에 도달하면 즐라탄을 뽑을 수 있습니다)
-      let platinumChance = Math.floor(Math.random() * 1000);
+      let platinumChance = Math.floor(Math.random() * 1000+1);
       //플래티넘 찬스가 1~1000중 1000이 되면 즐라탄을 획득(0.1퍼센트 확률)
       if (platinumChance === 1000) {
         //player_id:9번인 즐라탄 전용 메시지입니다. 가챠 메시지에 추가해줍니다.
