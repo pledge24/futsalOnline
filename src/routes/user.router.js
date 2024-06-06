@@ -149,7 +149,7 @@ router.patch("/payment", async (req, res) => {
 
   try {
 
-    const character = await CuserClient.userinfo.findUnique({
+    const character = await userDataClient.userinfo.findUnique({
       where: { Character_Id: Number(Character_Id) },
     });
 
