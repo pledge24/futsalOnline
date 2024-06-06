@@ -138,7 +138,7 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
   //토큰에 저장된 유저의 남은 캐쉬를 변수에 저장합니다
   const cashRemainder= playerInfo.money;
   // console.log("뽑기 전 남은 돈 :"+ cashRemainder);
-  
+
   //총 비용을 계산해서 변수에 저장합니다.
   const totalCost = numGatcha * 100;
   // console.log("뽑기 전 총 비용:"+totalCost);
@@ -173,7 +173,6 @@ if (platinumChance === 1000) {
       if (players.length === 0) {
         return res.status(404).json({ message: "뽑을 수 있는 선수가 없습니다" });
       }
-
       const randomIndex = Math.floor(Math.random() * players.length);
       const selectedPlayer = players[randomIndex];
       //가챠 결과: 결론적으로 user_player 테이블에 저장되는 배열
@@ -186,7 +185,7 @@ if (platinumChance === 1000) {
       } else if (selectedPlayer.rarity === "gold") {
         gatchaMessage.push({message:`골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       }
-      
+
   }
 }
 //  gatcharesult = > 인벤토리 갖다 넣기 행(record) 찾고 없으면 1 있으면 ++ for문으로
@@ -292,7 +291,7 @@ await userDataClient.$transaction(async (tx) => {
 //   }
 // });
 
-/** 구간 선수 추가 API */
+/** 구단 선수 추가 API */
 router.post("/club", authMiddleware, async (req, res) => {
   const { player_id } = req.body;
   const account_id = req.user.account_id;
@@ -635,6 +634,120 @@ router.get("/club", async (req, res) => {
   } catch (error) {
     console.error("구단 선수 조회 중 에러 발생", error);
     return res.status(500).json({ message: "구단 선수 조회 중 오류가 발생했습니다." });
+  }
+});
+
+// 강화 선수 데이터 생성 (dev) 선수 0 ~ 10강까지 한번에
+router.post("/enhanced_players_batch", async (req, res) => {
+  const { player_id } = req.body;
+
+  try {
+    // 선수 기본 데이터 조회
+    const player = await gameDataClient.player.findUnique({
+      where: { player_id: player_id },
+    });
+
+    if (!player) {
+      return res.status(404).json({ message: "선수가 존재하지 않습니다." });
+    }
+
+    // 강화된 선수 데이터 생성
+    const enhancedPlayers = [];
+
+    for (let i = 0; i < 11; i++) {
+      const enhancement_level = i;
+
+      // 강화 값 조회
+      const increment = await gameDataClient.enhanced_value.findFirst({
+        where: {
+          rarity: player.rarity,
+          enhancement_level: enhancement_level,
+        },
+      });
+
+      if (!increment) {
+        return res.status(404).json({ message: "강화 값이 존재하지 않습니다." });
+      }
+
+      const enhancedPlayer = await gameDataClient.enhanced_player.create({
+        data: {
+          player_id: player.player_id,
+          enhancement_level: enhancement_level,
+          name: player.name,
+          speed: player.speed + increment.increment,
+          goal_desicion: player.goal_desicion + increment.increment,
+          shoot_power: player.shoot_power + increment.increment,
+          defense: player.defense + increment.increment,
+          stamina: player.stamina + increment.increment,
+        },
+      });
+
+      enhancedPlayers.push(enhancedPlayer);
+    }
+
+    return res.status(200).json({
+      message: "강화된 선수가 정상적으로 추가되었습니다.",
+      enhancedPlayers,
+    });
+  } catch (error) {
+    console.error("선수 생성 중 에러 발생", error);
+    return res.status(500).json({
+      message: "선수 생성 중 오류가 발생했습니다.",
+      error: error.message,
+    });
+  }
+});
+
+// 강화 선수 데이터 생성 (dev) 선수 0 ~ 10 강까지 하나씩
+router.post("/enhanced_player", async (req, res) => {
+  const { player_id, enhancement_level } = req.body;
+
+  try {
+    // 선수 기본 데이터 조회
+    const player = await gameDataClient.player.findUnique({
+      where: { player_id: player_id },
+    });
+
+    if (!player) {
+      return res.status(404).json({ message: "선수가 존재하지 않습니다." });
+    }
+
+    // 강화 값 조회
+    const increment = await gameDataClient.enhanced_value.findFirst({
+      where: {
+        rarity: player.rarity,
+        enhancement_level: enhancement_level,
+      },
+    });
+
+    if (!increment) {
+      return res.status(404).json({ message: "강화 값이 존재하지 않습니다." });
+    }
+
+    // 강화된 선수 데이터 생성
+    const enhancedPlayer = await gameDataClient.enhanced_player.create({
+      data: {
+        player_id: player.player_id,
+        enhancement_level: enhancement_level,
+        name: player.name,
+        speed: player.speed + increment.increment,
+        goal_desicion: player.goal_desicion + increment.increment,
+        shoot_power: player.shoot_power + increment.increment,
+        defense: player.defense + increment.increment,
+        stamina: player.stamina + increment.increment,
+      },
+    });
+
+    return res.status(200).json({
+      message: "강화된 선수가 정상적으로 추가되었습니다.",
+      enhancedPlayer,
+    });
+  } catch (error) {
+    console.error("선수 생성 중 에러 발생", error);
+    return res.status(500).json({
+      message: "선수 생성 중 오류가 발생했습니다.",
+      error: error.message,
+    });
   }
 });
 
@@ -1064,4 +1177,24 @@ router.get("/user/:username", async (req, res) => {
   }
 });
 
+// 강화 수치 생성 API(dev)
+router.post("/increment", async (req, res, next) => {
+  const { rarity, enhancement_level, increment } = req.body;
+  console.log("any");
+  try {
+    const createdIncrement = await gameDataClient.enhanced_value.create({
+      data: {
+        rarity,
+        enhancement_level,
+        increment,
+      },
+    });
+
+
+    return res.status(200).json({ message: "강화 수치를 정상적으로 생성했습니다." });
+  } catch (error) {
+    console.error("강화 수치 생성 중 오류:", error);
+    return res.status(500).json({ message: "강화 수치 생성 중 오류가 발생했습니다." });
+  }
+});
 export default router;
