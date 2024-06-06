@@ -317,7 +317,8 @@ router.post("/club", authMiddleware, async (req, res) => {
     const playerInInventory = await userDataClient.user_player.findFirst({
       where: {
         account_id,
-        player_id,
+        player_id: +player_id,
+        enhancement_level: +enhancement_level
       },
     });
 
@@ -770,7 +771,9 @@ router.post("/enhanced_player", async (req, res) => {
 router.post("/enhance", authMiddleware, async (req, res) => {
   const { player_id, enhancement_level } = req.body;
   const userId = req.user.account_id;
-
+  if(enhancement_level < 0 && enhancement_level > 10){
+    return res.status(400).json({error:"유효하지 않은 강화횟수 입니다."})
+  }
   if (!player_id || !enhancement_level) {
     return res
       .status(400)
