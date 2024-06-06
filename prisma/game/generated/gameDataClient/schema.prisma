@@ -1,11 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
-  output   = "./generated/gameDataClient"
+  provider      = "prisma-client-js"
+  output        = "./generated/gameDataClient"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource gamedb {
   provider = "mysql"
-  url      = env("DATABASE_URL1")
+  url      = env("DATABASE_GAME_URL")
 }
 
 model player {
@@ -19,4 +20,26 @@ model player {
   rarity        String // 등급
 
   @@map("players")
+}
+
+model enhanced_player {
+  enhanced_player_id Int @id @default(autoincrement())
+  player_id          Int
+  enhancement_level  Int
+  speed              Int
+  goal_desicion      Int
+  shoot_power        Int
+  defense            Int
+  stamina            Int
+
+  @@map("enhanced_player")
+}
+
+model enhanced_value {
+  enhanced_value_id Int    @id @default(autoincrement())
+  rarity            String
+  enhancement_level Int
+  increment         Int
+
+  @@map("enhanced_value")
 }

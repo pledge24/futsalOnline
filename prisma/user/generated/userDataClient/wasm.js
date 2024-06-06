@@ -130,12 +130,24 @@ exports.Prisma.AccountScalarFieldEnum = {
 exports.Prisma.User_playerScalarFieldEnum = {
   account_id: 'account_id',
   player_id: 'player_id',
-  count: 'count'
+  count: 'count',
+  enhancement_level: 'enhancement_level'
 };
 
 exports.Prisma.User_clubScalarFieldEnum = {
   account_id: 'account_id',
-  player_id: 'player_id'
+  player_id: 'player_id',
+  enhancement_level: 'enhancement_level'
+};
+
+exports.Prisma.User_infoScalarFieldEnum = {
+  account_id: 'account_id',
+  rank_score: 'rank_score',
+  wins: 'wins',
+  loses: 'loses',
+  draws: 'draws',
+  money: 'money',
+  have_club: 'have_club'
 };
 
 exports.Prisma.SortOrder = {
@@ -147,7 +159,8 @@ exports.Prisma.SortOrder = {
 exports.Prisma.ModelName = {
   account: 'account',
   user_player: 'user_player',
-  user_club: 'user_club'
+  user_club: 'user_club',
+  user_info: 'user_info'
 };
 
 /**

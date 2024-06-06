@@ -5,9 +5,7 @@ import { userDataClient } from "../utils/prisma/index.js";
 import authMiddleware from "../middlewares/auth.middleware.js";
 import { validateID } from "../middlewares/userValidate.js";
 import { validatePassword } from "../middlewares/userValidate.js";
-import { userDataClient } from "../middlewares/userValidate.js";
 import dotenv from "dotenv";
-
 
 dotenv.config();
 
@@ -137,47 +135,34 @@ router.get("/ranking", async (req, res) => {
 
 // 캐쉬 충전 엔드포인트
 router.patch("/payment", async (req, res) => {
-  const { Character_Id, amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
+  const Character_Id = +req.params.Character_Id;
+  const { amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
 
-  if (!Character_Id ||  Character_Id <= 0) {
-    return res.status(400).json({ errorMessage: "유효한 Character_Id를 제공해야 합니다." });
-  }
-
-  if (!amount || amount < 1000) {
+  if (!amount || amount <= 1000) {
     return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
   }
 
   try {
 
-    const character = await userDataClient.userinfo.findUnique({
-      where: { Character_Id: Number(Character_Id) },
-    });
-
-    if (!character) {
-      return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
-    }
-    
     // 캐쉬 충전
     const newBalance = character.cash + amount;
 
-    await userDataClient.userinfo.update({
+    await CuserClient.userinfo.update({
       data: {
         cash: newBalance,
       },
       where: {
         Character_Id,
       },
-      
     });
 
     return res.status(200).json({
       message: `캐쉬가 성공적으로 충전되었습니다.`,
       newBalance: newBalance,
     });
-    
   } catch (error) {
-    console.error("캐쉬를 가져오는 중 오류가 발생했습니다.", error);
-    res.status(500).json({ error: "서버에서 오류가 발생했습니다." }); 
+    console.error(error);
+    return res.status(500).json({ errorMessage: "서버 오류가 발생했습니다. 나중에 다시 시도해주세요." });
   }
 });
 

@@ -130,6 +130,24 @@ exports.Prisma.PlayerScalarFieldEnum = {
   rarity: 'rarity'
 };
 
+exports.Prisma.Enhanced_playerScalarFieldEnum = {
+  enhanced_player_id: 'enhanced_player_id',
+  player_id: 'player_id',
+  enhancement_level: 'enhancement_level',
+  speed: 'speed',
+  goal_desicion: 'goal_desicion',
+  shoot_power: 'shoot_power',
+  defense: 'defense',
+  stamina: 'stamina'
+};
+
+exports.Prisma.Enhanced_valueScalarFieldEnum = {
+  enhanced_value_id: 'enhanced_value_id',
+  rarity: 'rarity',
+  enhancement_level: 'enhancement_level',
+  increment: 'increment'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -137,7 +155,9 @@ exports.Prisma.SortOrder = {
 
 
 exports.Prisma.ModelName = {
-  player: 'player'
+  player: 'player',
+  enhanced_player: 'enhanced_player',
+  enhanced_value: 'enhanced_value'
 };
 
 /**
