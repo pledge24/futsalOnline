@@ -139,12 +139,24 @@ router.get("/ranking", async (req, res) => {
 router.patch("/payment", async (req, res) => {
   const { Character_Id, amount } = req.body; // 충전할 금액을 요청 본문에서 가져옵니다.
 
+  if (!Character_Id ||  Character_Id <= 0) {
+    return res.status(400).json({ errorMessage: "유효한 Character_Id를 제공해야 합니다." });
+  }
+
   if (!amount || amount < 1000) {
     return res.status(400).json({ errorMessage: "충전 금액은 1,000원보다 큰 숫자여야 합니다." });
   }
 
   try {
 
+    const character = await CuserClient.userinfo.findUnique({
+      where: { Character_Id: Number(Character_Id) },
+    });
+
+    if (!character) {
+      return res.status(404).json({ errorMessage: "캐릭터를 찾을 수 없습니다." });
+    }
+    
     // 캐쉬 충전
     const newBalance = character.cash + amount;
 
