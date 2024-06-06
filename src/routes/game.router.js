@@ -113,6 +113,7 @@ router.put("/player/:player_id", async (req, res) => {
 
 router.post('/gatcha', authMiddleware, async (req, res) => {try {
   const { tickets } = req.body;
+  console.log(tickets);
 
   const userId= req.user.account_id;
   const numGatcha = +tickets === 10 ? 10 : (+tickets === 1 ? 1 : 0);
@@ -157,7 +158,7 @@ router.post('/gatcha', authMiddleware, async (req, res) => {try {
 if (platinumChance === 1000) {
   //player_id:9번인 즐라탄 전용 메시지입니다. 가챠 메시지에 추가해줍니다.
   //즐라탄을 가챠결과에 추가해줍니다
-  gatchaMessage.push(`${zlatan.name}이 당신을 뽑았습니다!`);
+  gatchaMessage.push(`🎉🎉🎉🏆${zlatan.name}🏆이 당신을 뽑았습니다!🎉🎉🎉`);
   gatchaResult.push(zlatan);
 }
 //플래티넘 카드 뽑기에 실패했다면 실행되는 브실골 뽑기입니다.
@@ -182,9 +183,9 @@ if (platinumChance === 1000) {
       if (selectedPlayer.rarity === "bronze") {
         gatchaMessage.push({message:`브론즈등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
       } else if (selectedPlayer.rarity === "silver") {
-        gatchaMessage.push({message:`실버등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
+        gatchaMessage.push({message:`💪실버등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다💪`});
       } else if (selectedPlayer.rarity === "gold") {
-        gatchaMessage.push({message:`골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다`});
+        gatchaMessage.push({message:`⭐️⭐️⭐️골드등급 선수 ${selectedPlayer.name}을(를) 뽑았습니다⭐️⭐️⭐️`});
       }
 
   }
@@ -236,7 +237,7 @@ await userDataClient.$transaction(async (tx) => {
       }
     });
 
-    return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage });
+    return res.status(200).json({ message: "테스트 성공, 선수를 뽑았습니다.", gatchaMessage, cash_remainder: cashAfterGatcha +" 게임머니 남았습니다."});
   } catch (error) {
     console.error(error);
     return res.status(500).json({ message: "서버에서 오류가 발생했습니다." });
@@ -1081,13 +1082,13 @@ router.post("/play", authMiddleware, async (req, res) => {
     // console.log("opponentClubScore", opponentClubScore);
 
     // 각 유저의 골 점수를 계산합니다. 점수 비율이 높을 수록 득점 할 확률이 높으며,
-    // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
+   // 최대 설정한 골 시도 횟수(goalTries)만큼 반복합니다.
     let totalScore = myClubScore + opponentClubScore; // 나의 구단 총 점수 + 상대 구단 총 점수
     let myGameScore = 0,
       opponentGameScore = 0; // 내 골 점수, 상대 골 점수
-    const maxGoals = 10;  // 최대 골 시도 횟수
-    let goalTries = Math.floor(Math.random()*maxGoals); // 지금 게임 최대 골 랜덤 설정
-    console.log(goalTries);
+      const maxGoals = 10;  // 최대 골 시도 횟수
+      let goalTries = Math.floor(Math.random()*maxGoals); // 지금 게임 최대 골 랜덤 설정
+      console.log(goalTries);
     for (let goal_try = 0; goal_try < goalTries; goal_try++) {
       const randomValue = Math.random() * totalScore;
       if (randomValue < myClubScore) myGameScore++;
