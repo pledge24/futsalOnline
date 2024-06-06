@@ -22,3 +22,25 @@ model player {
 
   @@map("players")
 }
+
+model enhanced_player {
+  enhanced_player_id Int @id @default(autoincrement())
+  player_id          Int
+  enhancement_level  Int
+  speed              Int
+  goal_desicion      Int
+  shoot_power        Int
+  defense            Int
+  stamina            Int
+
+  @@map("enhanced_player")
+}
+
+model enhanced_value {
+  enhanced_value_id  Int      @id @default(autoincrement())
+  rarity             String
+  enhancement_level  Int
+  increment          Int
+
+  @@map("enhanced_value")
+}

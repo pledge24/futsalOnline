@@ -11,7 +11,7 @@ dotenv.config();
 
 const router = express.Router();
 
-// 회원가입 API (임시)
+// 회원가입 API
 router.post("/sign-up", validateID, validatePassword, async (req, res, next) => {
   try {
     const { account_id, username, password, confirmPassword } = req.body;

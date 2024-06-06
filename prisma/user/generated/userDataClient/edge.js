@@ -141,7 +141,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\zmwps\\OneDrive\\바탕 화면\\NodeJSWorkspace\\futsalOnline\\prisma\\user\\generated\\userDataClient",
+      "value": "E:\\Web\\futsalOnline\\prisma\\user\\generated\\userDataClient",
       "fromEnvVar": null
     },
     "config": {
@@ -171,6 +171,7 @@ const config = {
     "userdb"
   ],
   "activeProvider": "mysql",
+  "postinstall": false,
   "inlineDatasources": {
     "userdb": {
       "url": {
