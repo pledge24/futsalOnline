@@ -89,18 +89,16 @@ router.post("/sign-in", async (req, res, next) => {
   }
 });
 
-//랭킹 api
+/**랭킹 api*/
 router.get("/ranking", async (req, res) => {
   try {
+    //userRank 배열에 10명의 점수가 가장 높은 유저부터 정렬해서 배치함
     const userRank = await userDataClient.user_info.findMany({
       orderBy: {
-        //내림차순
         rank_score: 'desc'
       },
-      //10개 출력
       take: 10,
       include:{
-        //계정 테이블에 접근해서 유저이름 가져오기
         account:{
           select:{
           username:true
@@ -108,7 +106,9 @@ router.get("/ranking", async (req, res) => {
         }
       }
     });
-
+    //유저 정보 10개가 저장된 배열을 맵으로 펴서 승률을 연산하고, 정보가 알맞은 순서로 나타나게 지정한다.
+    //전적이 없으면 승률을 0.00%로 지정, 전적이 있으면 승리 횟수를 총 게임 횟수로 나눠서 100을 곱해서,
+    //출력할 떄 소숫점 두자리까지 표시하고 뒤에 %를 붙여서 출력하게 지정한다.
     const rankedUsers = userRank.map((user, index)=>{
       const totalGames = user.wins + user.draws + user.loses;
       // 승률 계산
@@ -130,6 +130,7 @@ router.get("/ranking", async (req, res) => {
     res.status(500).json({ error: "서버에서 오류가 발생했습니다." }); 
   }
 });
+
 
 
 // 캐쉬 충전 엔드포인트
